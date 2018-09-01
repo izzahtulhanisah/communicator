@@ -234,9 +234,9 @@ header("location: ../../index.html");
                     </li>
 					
 					<li>
-                        <a href="https://goo.gl/forms/7jMeopZr5O4mSgoe2">
-                            <i class="material-icons">feedback</i>
-                            <span>Feedback</span>
+                        <a href="../../page/staff/admin_contact.php">
+                            <i class="material-icons">help_outline</i>
+                            <span>Need Help</span>
                         </a>
                     </li>
                 </ul>

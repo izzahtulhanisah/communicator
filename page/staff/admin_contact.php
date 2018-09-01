@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+
 <?php
 session_start();
 //error_reporting(0);
 if(!isset($_SESSION['employee_id'])){
 header("location: ../../index.html");
 }
+
 ?>
 
 <html>
@@ -12,7 +14,7 @@ header("location: ../../index.html");
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>FLEXICOMM | Staff Update Profile</title>
+    <title>FlexiCOMM | Contact</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -28,9 +30,6 @@ header("location: ../../index.html");
 
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
-
-    <!-- Sweet Alert Css -->
-    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
@@ -73,14 +72,13 @@ header("location: ../../index.html");
                 <ul class="nav navbar-nav navbar-right">
 
                     <!-- Notifications -->
-                    <li class="dropdown">
+                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             <i class="material-icons">notifications</i>
 
 							 <?php
 								include "database.php";
 
-								$abc=$_SESSION['employee_id'];
 								$sql  = '
 										SELECT employee_id,task_status, COUNT(*)
 										 AS count
@@ -104,7 +102,7 @@ header("location: ../../index.html");
                             <li class="body">
                                 <ul class="menu">
                                     <li>
-                                        <a href="employee_open_delay_task.php">
+                                        <a href="../../page/staff/employee_open_delay_task.php">
                                             <div class="icon-circle bg-red">
                                                 <i class="material-icons">date_range</i>
                                             </div>
@@ -112,7 +110,8 @@ header("location: ../../index.html");
 
 													<?php
 														include "database.php";
-														$t ="SELECT employee_id,task_status, COUNT(*)
+														
+														$t = "SELECT employee_id,task_status, COUNT(*)
 															 AS count
 															 FROM task
 															 WHERE task_status='delayed'
@@ -141,14 +140,12 @@ header("location: ../../index.html");
 
                                 </ul>
                             </li>
-                            <!--<li class="footer">
-                                <a href="javascript:void(0);">View All Notifications</a>
-                            </li>-->
+                            <li class="footer">
+                                <!-- <a href="javascript:void(0);">View All Notifications</a> -->
+                            </li>
                         </ul>
                     </li>
                     <!-- #END# Notifications -->
-
-                    <!--<li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>-->
                 </ul>
             </div>
         </div>
@@ -174,7 +171,7 @@ header("location: ../../index.html");
 					$employee_email=$row['employee_email'];
 				?>
 
-                <<div class="info-container">
+                <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $employee_name; ?></div>
                     <div class="email"><?php echo $employee_email; ?></div>
                     <div class="btn-group user-helper-dropdown">
@@ -201,13 +198,13 @@ header("location: ../../index.html");
                         </a>
                     </li>
 
-					<li class="active">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
 						<ul class="ml-menu">
-							<li class="active">
+							<li>
                                 <a href="../../page/staff/employee_view_profile.php">Your Profile</a>
                             </li>
 							<li>
@@ -237,14 +234,7 @@ header("location: ../../index.html");
                         </a>
                     </li>
 					
-					<li>
-                        <a href="https://goo.gl/forms/7jMeopZr5O4mSgoe2">
-                            <i class="material-icons">feedback</i>
-                            <span>Feedback</span>
-                        </a>
-                    </li>
-					
-					<li>
+					<li  class="active">
                         <a href="../../page/staff/admin_contact.php">
                             <i class="material-icons">help_outline</i>
                             <span>Need Help</span>
@@ -255,7 +245,7 @@ header("location: ../../index.html");
             <!-- #Menu -->
             <!-- Footer -->
             <div class="legal">
-               <div class="copyright">
+                <div class="copyright">
                     <a href="javascript:void(0);">Powered by <a href= "http://flexcility.com/"><img src="../../images/flexcility.png" alt="Flexcility Logo" width="100" height="20"> </a></a>.
                 </div>
                 <div class="version">
@@ -265,7 +255,8 @@ header("location: ../../index.html");
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-        
+        <!-- Right Sidebar -->
+        <!-- #END# Right Sidebar -->
     </section>
 
     <section class="content">
@@ -273,199 +264,59 @@ header("location: ../../index.html");
             <div class="block-header">
                 <h2></h2>
             </div>
+        </div>
+		
+		<div class="container">
+		  <div class="panel panel-success" style="width: 1000px">
+			<div class="panel-heading"><center><b>Please Contact Your System Administration for Assistance</b></center></div>
+			<div class="panel-body">
+				<form action="" method="post">
+				<?php
 
-			<div class="body">
-                <ol class="breadcrumb">
-					<li>
-                        <a href="../../page/staff/employee_home.php">
-                        <i class="material-icons">home</i> Home
-                        </a>
-                    </li>
-                    <li class="active">
-                        <i class="material-icons">person</i> Profile Details
-                    </li>
-             </ol>
-            </div>
-            <!-- Vertical Layout -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-blue-grey">
-                            <h2>
-                                <center><strong>PROFILE DETAILS</strong></center>
-                            </h2>
-                        </div>
-                        <div class="body">
+					include 'database.php';
+					
+					
+					$sql = mysqli_query($conn,"SELECT * FROM admin");
+					$row = mysqli_fetch_array($sql);
+					$admin_id=$row['admin_id'];
+					$admin_name=$row['admin_name'];
+					$admin_email=$row['admin_email'];
+					$admin_phone=$row['admin_phone'];
+					$admin_department=$row['admin_department'];
+					$admin_position=$row['admin_position'];
+					$admin_address=$row['admin_address'];
 
-						<?php
-							include "database.php";
+					//$result = $con -> query($sql);
+				?>
 
-							$abc=$_SESSION['employee_id'];
-							$sql = mysqli_query($conn,"SELECT * FROM employee WHERE employee_id = '$abc'");
-							$row = mysqli_fetch_array($sql);
-							$employee_id=$row['employee_id'];
-							$employee_name=$row['employee_name'];
-							$employee_department=$row['employee_department'];
-							$employee_position=$row['employee_position'];
-							$employee_email=$row['employee_email'];
-							$employee_phoneno=$row['employee_phoneno'];
-							$employee_address=$row['employee_address'];
-						?>
-                            <form id="form_validation" action="update_employee_profile.php" method="post">
-                                <label for="employee_name">Name</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <?php echo $employee_name; ?>
-                                    </div>
-                                </div>
-								<label for="employee_department">Department</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <?php echo $employee_department; ?>
-                                    </div>
-                                </div>
-								<label for="employee_position">Position</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <?php echo $employee_position; ?>
-                                    </div>
-                                </div>
-								<label for="employee_email">Email</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <?php echo $employee_email; ?>
-                                    </div>
-                                </div>
-								<label for="employee_phoneno">Phone Number</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <?php echo $employee_phoneno; ?>
-                                    </div>
-                                </div>
-								<label for="employee_address">Address</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <?php echo $employee_address; ?>
-                                    </div>
-                                </div>
-
-								<br>
-								<div class="form-group" align="right">
-									<a href = "employee_update_profile.php" class="btn btn-success waves-effect"><span class="glyphicon glyphicon-edit"></span>UPDATE</button></a>
-								</div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Vertical Layout -->
-			
-		<!-- Update Password -->
-		<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title" id="defaultModalLabel"><center>CHANGE PASSWORD</center></h4>
-					</div>
-					<div class="modal-body">
-
-						<form method="post" class="form-horizontal" role="form">
-							<input type="hidden" name="edit_id" value="<?php echo $employee_id; ?>">
-
-
-							<div class="row clearfix">
-								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-									<label for="employee_password">Current Password</label>
-								</div>
-								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-									<div class="form-group">
-										<div class="form-line">
-											<input type="password" id="employee_password" name="employee_password" value="" class="form-control" placeholder="Enter Current Password">
-										</div>
-									</div>
-								</div>
+					 <label for="admin_name">Name</label>
+						<div class="form-group">
+							<div class="form-line">
+								<?php echo $admin_name; ?>
 							</div>
-
-							<div class="row clearfix">
-								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-									<label for="password1">New Password</label>
-								</div>
-								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-									<div class="form-group">
-										<div class="form-line">
-											<input type="password" id="password1" name="password1" value="" class="form-control" placeholder="Enter New Password">
-										</div>
-									</div>
-								</div>
+						</div>
+					<br>
+					
+					<label for="admin_email">Email</label>
+						<div class="form-group">
+							<div class="form-line">
+								<?php echo $admin_email; ?>
 							</div>
-
-							<div class="row clearfix">
-								<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-									<label for="password2">Confirm Password</label>
-								</div>
-								<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-									<div class="form-group">
-										<div class="form-line">
-											<input type="password" id="password2" name="password2" value="" class="form-control" placeholder="Enter Confirm Password">
-										</div>
-									</div>
-								</div>
+						</div>
+					<br>
+					
+					<label for="admin_phone">Phone Number</label>
+						<div class="form-group">
+							<div class="form-line">
+								<?php echo $admin_phone; ?>
 							</div>
-								<input type="hidden" name="employee_id" value="<?php echo $_SESSION['employee_id']; ?>"  />
-
-							<div class="modal-footer">
-								<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-								<button type="submit" class="btn btn-success waves-effect" name="update_password"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
-							</div>
-
-						<?php
-
-							if(isset($_POST['update_password'])){
-								include "database.php";
-
-								$employee_id = mysqli_real_escape_string($conn,$_POST['employee_id']);
-								$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
-								$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
-								$employee_password = mysqli_real_escape_string($conn,$_POST['employee_password']);
-
-								$select = "SELECT * FROM employee WHERE employee_id = '$employee_id' ";
-								$result = $conn->query($select);
-								while($row = $result->fetch_assoc()){
-									$password = $row["employee_password"];
-								}
-
-								if($employee_password == $password){
-									if($password1===$password2){
-
-										$query = "UPDATE employee SET employee_id= '$employee_id', employee_password='$password1' WHERE  employee_id='$employee_id'  ";
-										echo "<script type = \"text/javascript\">
-													alert(\"Password Updated\");
-
-												</script>";
-										$result = $conn->query($query);
-									}
-									else{
-										echo "<script type = \"text/javascript\">
-													alert(\"Password Not Match\");
-													window.location = (\"employee_home.php\")
-												</script>";
-									}
-								}
-								else{
-									echo "<script type = \"text/javascript\">
-													alert(\"Wrong Password\");
-													window.location = (\"employee_home.php\")
-												</script>";
-								}
-							}
-						?>
-
-						</form>
-					</div>
-				</div>
+						</div>
+					<br>
+					<br><br>
+				</form>
 			</div>
+		  </div>
 		</div>
-
     </section>
 
     <!-- Jquery Core Js -->
@@ -475,7 +326,7 @@ header("location: ../../index.html");
     <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../../pages/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>

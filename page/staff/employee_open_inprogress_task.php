@@ -210,12 +210,20 @@ header("location: ../../index.html");
                     </li>
 
 					<li>
-                        <a href="../../page/staff/employee_view_profile.php">
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/staff/employee_view_profile.php">Your Profile</a>
+                            </li>
+							<li>
+                                <a href="../../page/staff/employee_question.php">Edit Secret Answers</a>
+                            </li>
+                        </ul>
                     </li>
-
+					
 					<li>
                         <a href="../../page/staff/employee_view_project_list.php">
                             <i class="material-icons">library_books</i>
@@ -227,6 +235,13 @@ header("location: ../../index.html");
                         <a href="../../page/staff/employee_open_task.php">
                             <i class="material-icons">date_range</i>
                             <span>Tasks</span>
+                        </a>
+                    </li>
+					
+					<li>
+                        <a href="../../page/staff/admin_contact.php">
+                            <i class="material-icons">help_outline</i>
+                            <span>Need Help</span>
                         </a>
                     </li>
                 </ul>

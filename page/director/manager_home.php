@@ -93,8 +93,6 @@ $manager_idd = $_SESSION['manager_id'];
 											{
 												while($row=mysqli_fetch_assoc($result))
 												{
-													//echo $row['c'];
-
 													echo '<span class="label-count">'.$row['count'].'</span>';
 												}
 											}
@@ -201,10 +199,18 @@ $manager_idd = $_SESSION['manager_id'];
                     </li>
 
 					<li>
-                        <a href="../../page/director/manager_view_profile.php">
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/director/manager_view_profile.php">Your Profile</a>
+                            </li>
+							<li>
+                                <a href="../../page/director/manager_question.php">Edit Secret Answers</a>
+                            </li>
+                        </ul>
                     </li>
 
 					<li>
@@ -220,7 +226,20 @@ $manager_idd = $_SESSION['manager_id'];
                             <span>Tasks</span>
                         </a>
                     </li>
-
+					
+					<li>
+                        <a href="../../page/director/company_details.php">
+                            <i class="material-icons">location_city</i>
+                            <span>Company Details</span>
+                        </a>
+                    </li>
+					
+					<li>
+                        <a href="../../page/director/admin_contact.php">
+                            <i class="material-icons">help_outline</i>
+                            <span>Need Help</span>
+                        </a>
+                    </li>
                     </li>
                 </ul>
             </div>

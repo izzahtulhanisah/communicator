@@ -2,7 +2,7 @@
 <?php
 session_start();
 //error_reporting(0);
-if(!isset($_SESSION['admin_id'])){
+if(!isset($_SESSION['manager_id'])){
 header("location: ../../index.html");
 }
 ?>
@@ -12,7 +12,7 @@ header("location: ../../index.html");
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>FlexiCOMM | Admin Manage Profile</title>
+    <title>FlexiCOMM | Company Details</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -67,13 +67,85 @@ header("location: ../../index.html");
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="../../page/admin/admin_home.php">Flexi<b>COMMUNICATOR</b></a>
+                <a class="navbar-brand" href="../../page/director/manager_home.php">Flexi<b>COMMUNICATOR</b></a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
 
                     <!-- Notifications -->
-                    
+                     <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">notifications</i>
+
+							 <?php
+								include "database.php";
+								$sql  = '
+										SELECT employee_id,task_status, COUNT(*)
+										 AS count
+										 FROM task
+										 WHERE task_status="delayed"
+
+										 ';
+
+										 $result=mysqli_query($conn,$sql);
+											if($result)
+											{
+												while($row=mysqli_fetch_assoc($result))
+												{
+													//echo $row['c'];
+
+													echo '<span class="label-count">'.$row['count'].'</span>';
+												}
+											}
+							?>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu">
+                                    <li>
+                                        <a href="../../page/director/manager_open_delay_task.php">
+                                            <div class="icon-circle bg-red">
+                                                <i class="material-icons">date_range</i>
+                                            </div>
+                                            <div class="menu-info">
+
+													<?php
+														include "database.php";
+														$t = "SELECT employee_id,task_status, COUNT(*)
+																	 AS count
+																	 FROM task
+																	 WHERE task_status='delayed'
+
+																	 '";
+														$result=mysqli_query($conn,$sql);
+
+														if($result)
+														{
+															while($row=mysqli_fetch_assoc($result))
+															{
+														echo '<h4>';
+														 echo '
+																 '.$row['count'].' delayed task
+																';
+																echo '<h4>';
+														 }}
+													?>
+
+                                               <p>
+                                                    <i class="material-icons">access_time</i>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <!-- <a href="javascript:void(0);">View All Notifications</a> -->
+                            </li>
+                        </ul>
+                    </li>
                     <!-- #END# Notifications -->
                 </ul>
             </div>
@@ -90,31 +162,27 @@ header("location: ../../index.html");
                 </div>
 
 				<?php
-				include 'database.php';
+					include "database.php";
 
-					if (mysqli_connect_errno())
-					  {
-					  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-					  }
-					$abc=$_SESSION['admin_id'];
-					$sql = mysqli_query($conn,"SELECT * FROM admin WHERE admin_id = '$abc'");
+					$abc=$_SESSION['manager_id'];
+					$sql = mysqli_query($conn,"SELECT * FROM manager WHERE manager_id = '$abc'");
 					$row = mysqli_fetch_array($sql);
-					$admin_id=$row['admin_id'];
-					$admin_name=$row['admin_name'];
-					$admin_email=$row['admin_email'];
+					$manager_id=$row['manager_id'];
+					$manager_name=$row['manager_name'];
+					$manager_email=$row['manager_email'];
 				?>
 
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $admin_name; ?></div>
-                    <div class="email"><?php echo $admin_email; ?></div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $manager_name; ?></div>
+                    <div class="email"><?php echo $manager_email; ?></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="admin_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
+                            <li><a href="manager_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="#changepass" data-toggle="modal"><i class="material-icons">create</i>Edit Password</a></li>
                             <li role="seperator" class="divider"></li>
-                            <li><a href="admin_logout.php"><i class="material-icons">input</i>Sign Out</a></li>
+                            <li><a href="manager_logout.php"><i class="material-icons">input</i>Sign Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -125,83 +193,55 @@ header("location: ../../index.html");
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
                     <li>
-                        <a href="../../page/admin/admin_home.php">
+                        <a href="../../page/director/manager_home.php">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
                     </li>
 
-					<li class="active">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
 						<ul class="ml-menu">
-							<li class="active">
-                                <a href="../../page/admin/admin_view_profile.php">Your Profile</a>
+							<li>
+                                <a href="../../page/director/manager_view_profile.php">Your Profile</a>
                             </li>
 							<li>
-                                <a href="../../page/admin/admin_question.php">Edit Secret Answers</a>
-                            </li>
-                        </ul>
-                    </li>
-					
-					<li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">account_balance</i>
-                            <span>Company</span>
-                        </a>
-						<ul class="ml-menu">
-							<li>
-                                <a href="../../page/admin/company_details.php">Details</a>
-                            </li>
-							<li>
-                                <a href="../../page/admin/add_company_details.php">Add New</a>
+                                <a href="../../page/director/manager_question.php">Edit Secret Answers</a>
                             </li>
                         </ul>
                     </li>
 
 					<li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">edit</i>
-                            <span>Registration</span>
+                        <a href="../../page/director/manager_view_project_list.php">
+                            <i class="material-icons">view_list</i>
+                            <span>Assignments</span>
                         </a>
-						<ul class="ml-menu">
-							<li>
-                                <a href="../../page/admin/admin_register_director.php">Director</a>
-                            </li>
-							<li>
-                                <a href="../../page/admin/admin_register_manager.php">Manager</a>
-                            </li>
-							<li>
-                                <a href="../../page/admin/admin_register_staff.php">Staff</a>
-                            </li>
-                        </ul>
+                    </li>
+
+                   <li>
+                        <a href="../../page/director/manager_view_employee_task.php">
+                            <i class="material-icons">date_range</i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+					
+					<li class="active">
+                        <a href="../../page/director/company_details.php">
+                            <i class="material-icons">location_city</i>
+                            <span>Company Details</span>
+                        </a>
                     </li>
 					
 					<li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">group_add</i>
-                            <span>Users</span>
+                        <a href="../../page/director/admin_contact.php">
+                            <i class="material-icons">help_outline</i>
+                            <span>Need Help</span>
                         </a>
-                        <ul class="ml-menu">
-							<li>
-                                <a href="../../page/admin/director.php">Director</a>
-                            </li>
-							<li>
-                                <a href="../../page/admin/manager.php">Manager</a>
-                            </li>
-                            <li>
-                                <a href="../../page/admin/staff.php">Staff</a>
-                            </li>
-                        </ul>
                     </li>
 					
-					<li>
-                        <a href="https://goo.gl/forms/7jMeopZr5O4mSgoe2">
-                            <i class="material-icons">feedback</i>
-                            <span>Feedback</span>
-                        </a>
                     </li>
                 </ul>
             </div>
@@ -219,6 +259,7 @@ header("location: ../../index.html");
         </aside>
         <!-- #END# Left Sidebar -->
         <!-- Right Sidebar -->
+
         <!-- #END# Right Sidebar -->
     </section>
 
@@ -231,12 +272,12 @@ header("location: ../../index.html");
 			<div class="body">
                 <ol class="breadcrumb">
 					<li>
-                        <a href="../../page/admin/admin_home.php">
+                        <a href="../../page/director/manager_home.php">
                         <i class="material-icons">home</i> Home
                         </a>
                     </li>
                     <li class="active">
-                        <i class="material-icons">edit</i> Manage Profile Details
+                        <i class="material-icons">edit</i> Company Details
                     </li>
              </ol>
             </div>
@@ -246,7 +287,7 @@ header("location: ../../index.html");
                     <div class="card">
                         <div class="header bg-blue-grey">
                             <h2>
-                                <center><strong>PROFILE DETAILS</strong></center>
+                                <center><strong>COMPANY DETAILS</strong></center>
                             </h2>
                         </div>
                         <div class="body">
@@ -254,67 +295,65 @@ header("location: ../../index.html");
 						<?php
 
 							include 'database.php';
+							$sql = mysqli_query($conn,"SELECT * FROM company");
+							$id=$row['id'];
 							
-							$abc=$_SESSION['admin_id'];
-							$sql = mysqli_query($conn,"SELECT * FROM admin WHERE admin_id = '$abc'");
+							$sql = mysqli_query($conn,"SELECT * FROM company");
 							$row = mysqli_fetch_array($sql);
-							$admin_id=$row['admin_id'];
-							$admin_name=$row['admin_name'];
-							$admin_email=$row['admin_email'];
-							$admin_phone=$row['admin_phone'];
-							$admin_department=$row['admin_department'];
-							$admin_position=$row['admin_position'];
-							$admin_address=$row['admin_address'];
+							$id=$row['id'];
+							$company_name=$row['company_name'];
+							$company_email=$row['company_email'];
+							$company_website=$row['company_website'];
+							$company_phoneno=$row['company_phoneno'];
+							$company_industry=$row['company_industry'];
+							$company_address=$row['company_address'];
 
 							//$result = $con -> query($sql);
 
 						?>
-                            <form id="form_validation" action="update_admin_profile.php" method="post">
-                                <label for="admin_name">Name</label>
+                            <form id="form_validation" action="update_company_details.php" method="post">
+                                <label for="company_name">Name</label>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <?php echo $admin_name; ?>
+                                        <?php echo $company_name; ?>
                                     </div>
                                 </div>
 								
-								<label for="adminemail">Email</label>
+								<label for="c">Website</label>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <?php echo $admin_email; ?>
+                                        <?php echo $company_website; ?>
                                     </div>
                                 </div>
 								
-								<label for="admin_department">Department</label>
+								<label for="company_email">Email</label>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <?php echo $admin_department; ?>
+                                        <?php echo $company_email; ?>
                                     </div>
                                 </div>
 								
-								<label for="admin_position">Position</label>
+								<label for="company_industry">Industry</label>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <?php echo $admin_position; ?>
-                                    </div>
-                                </div>
-								<label for="admin_phone">Phone Number</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <?php echo $admin_phone; ?>
+                                        <?php echo $company_industry; ?>
                                     </div>
                                 </div>
 								
-								<label for="admin_address">Address</label>
+								<label for="company_phoneno">Phone Number</label>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <?php echo $admin_address; ?>
+                                        <?php echo $company_phoneno; ?>
+                                    </div>
+                                </div>
+								
+								<label for="company_address">Address</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <?php echo $company_address; ?>
                                     </div>
                                 </div>
                                 
-								<br>
-								<div class="form-group" align="right">
-									<a href = "admin_update_profile.php" class="btn btn-success waves-effect"><span class="glyphicon glyphicon-edit"></span>UPDATE</button></a>
-								</div>
                             </form>
                         </div>
                     </div>
@@ -332,17 +371,17 @@ header("location: ../../index.html");
 						<div class="modal-body">
 
 							<form method="post" class="form-horizontal" role="form">
-								<input type="hidden" name="edit_id" value="<?php echo $admin_id; ?>">
+								<input type="hidden" name="edit_id" value="<?php echo $manager_id; ?>">
 
 
 								<div class="row clearfix">
 									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-										<label for="admin_password">Current Password</label>
+										<label for="manager_password">Current Password</label>
 									</div>
 									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 										<div class="form-group">
 											<div class="form-line">
-												<input type="password" id="admin_password" name="admin_password" value="" class="form-control" placeholder="Enter Current Password">
+												<input type="password" id="manager_password" name="manager_password" value="" class="form-control" placeholder="Enter Current Password">
 											</div>
 										</div>
 									</div>
@@ -373,7 +412,7 @@ header("location: ../../index.html");
 										</div>
 									</div>
 								</div>
-									<input type="hidden" name="admin_id" value="<?php echo $_SESSION['admin_id']; ?>"  />
+									<input type="hidden" name="manager_id" value="<?php echo $_SESSION['manager_id']; ?>"  />
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
@@ -383,40 +422,36 @@ header("location: ../../index.html");
 							<?php
 
 								if(isset($_POST['update_password'])){
-								include 'database.php';
-								
-									$admin_id = mysqli_real_escape_string($conn,$_POST['admin_id']);
+									include "database.php";
+
+									$manager_id = mysqli_real_escape_string($conn,$_POST['manager_id']);
 									$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
 									$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
-									$admin_password = mysqli_real_escape_string($conn,$_POST['admin_password']);
+									$manager_password = mysqli_real_escape_string($conn,$_POST['manager_password']);
 
-									$select = "SELECT * FROM admin WHERE admin_id = '$admin_id' ";
+									$select = "SELECT * FROM manager WHERE manager_id = '$manager_id' ";
 									$result = $conn->query($select);
 									while($row = $result->fetch_assoc()){
-										$password = $row["admin_password"];
+										$password = $row["manager_password"];
 									}
 
-									if($sv_password == $password){
+									if($manager_password == $password){
 										if($password1===$password2){
-											$query = "UPDATE admin SET admin_id= '$admin_id', admin_password='$password1' WHERE  admin_id='$admin_id'  ";
-											echo "<script type = \"text/javascript\">
-														alert(\"New Password Updated\");
-														
-													</script>";
+											$query = "UPDATE manager SET manager_id= '$manager_id', manager_password='$password1' WHERE  manager_id='$manager_id'  ";
 											$result = $conn->query($query);
 										}
 										else{
 											echo "<script type = \"text/javascript\">
 														alert(\"Password Not Match\");
-														window.location = (\"admin_view_profile.php\")
+														window.location = (\"manager_home.php\")
 													</script>";
 										}
 									}
 									else{
 										echo "<script type = \"text/javascript\">
-														alert(\"Wrong Current Password\");
-														window.location = (\"admin_view_profile.php\")
-													</script>";
+														alert(\"Wrong Password\");
+														window.location = (\"manager_home.php\")
+												</script>";
 									}
 								}
 							?>

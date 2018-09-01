@@ -38,6 +38,7 @@ header("location: ../../index.html");
 </head>
 
 <body class="theme-green">
+
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -75,16 +76,15 @@ header("location: ../../index.html");
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             <i class="material-icons">notifications</i>
 
-							 <?php
-								include "database.php";
-
+							<?php
+								include 'database.php';
 								$sql  = '
-										SELECT employee_id,task_status, COUNT(*)
-										 AS count
-										 FROM task
-										 WHERE task_status="delayed"
-										 AND employee_id = "'.$_SESSION['employee_id'].'"
-										 ';
+										SELECT sv_id,task_status, COUNT(*)
+										AS count
+										FROM task2
+										WHERE task_status="delayed"
+										AND sv_id = "'.$_SESSION['sv_id'].'"
+										';
 
 										 $result=mysqli_query($conn,$sql);
 											if($result)
@@ -101,21 +101,20 @@ header("location: ../../index.html");
                             <li class="body">
                                 <ul class="menu">
                                     <li>
-                                        <a href="../../page/staff/employee_open_delay_task.php">
+                                        <a href="../../page/supervisor/sv_delay.php">
                                             <div class="icon-circle bg-red">
                                                 <i class="material-icons">date_range</i>
                                             </div>
                                             <div class="menu-info">
 
 													<?php
-														include "database.php";
-														
-														$t = "SELECT employee_id,task_status, COUNT(*)
-															 AS count
-															 FROM task
-															 WHERE task_status='delayed'
-															 AND employee_id = '".$_SESSION['employee_id']."'
-															 '";
+														include 'database.php';
+														$t = "SELECT sv_id,task_status, COUNT(*)
+																	 AS count
+																	 FROM task2
+																	 WHERE task_status='delayed'
+																	 AND sv_id = '".$_SESSION['sv_id']."'
+																	 '";
 														$result=mysqli_query($conn,$sql);
 
 														if($result)
@@ -136,7 +135,6 @@ header("location: ../../index.html");
                                             </div>
                                         </a>
                                     </li>
-
                                 </ul>
                             </li>
                             <li class="footer">
@@ -160,29 +158,32 @@ header("location: ../../index.html");
                 </div>
 
 				<?php
-					include "database.php";
+				include 'database.php';
 
-					$abc=$_SESSION['employee_id'];
-					$sql = mysqli_query($conn,"SELECT * FROM employee WHERE employee_id = '$abc'");
+					if (mysqli_connect_errno())
+					  {
+					  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+					  }
+					  
+					$abc=$_SESSION['sv_id'];
+					$sql = mysqli_query($conn,"SELECT * FROM supervisor WHERE sv_id = '$abc'");
 					$row = mysqli_fetch_array($sql);
-					$employee_id=$row['employee_id'];
-					$employee_name=$row['employee_name'];
-					$employee_email=$row['employee_email'];
+					$sv_id=$row['sv_id'];
+					$sv_name=$row['sv_name'];
+					$sv_email=$row['sv_email'];
 				?>
 
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $employee_name; ?></div>
-                    <div class="email"><?php echo $employee_email; ?></div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $sv_name; ?></div>
+                    <div class="email"><?php echo $sv_email; ?></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="employee_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
+                            <li><a href="sv_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="#changepass" data-toggle="modal"><i class="material-icons">create</i>Edit Password</a></li>
-							<li role="seperator" class="divider"></li>
-                            <li><a href="employee_question.php"><i class="material-icons">verified_user</i>Edit Answers</a></li>
                             <li role="seperator" class="divider"></li>
-                            <li><a href="employee_logout.php"><i class="material-icons">input</i>Sign Out</a></li>
+                            <li><a href="sv_logout.php"><i class="material-icons">input</i>Sign Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -192,41 +193,83 @@ header("location: ../../index.html");
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li>
-                        <a href="../../page/staff/employee_home.php">
+                    <li class="active">
+                        <a href="../../page/supervisor/sv_home.php">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
                     </li>
 
-					<li class="active">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
 						<ul class="ml-menu">
 							<li>
-                                <a href="../../page/staff/employee_view_profile.php">Your Profile</a>
+                                <a href="../../page/supervisor/sv_view_profile.php">Your Profile</a>
                             </li>
-							<li class="active">
-                                <a href="../../page/staff/employee_question.php">Edit Secret Answers</a>
+							<li>
+                                <a href="../../page/supervisor/sv_question.php">Edit Secret Answers</a>
                             </li>
                         </ul>
                     </li>
 
 					<li>
-                        <a href="../../page/staff/employee_view_project_list.php">
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">view_list</i>
                             <span>Assignments</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/supervisor/sv_view_all_project.php">All Assignments</a>
+                            </li>
+							<li>
+                                <a href="../../page/supervisor/sv_view_project_list.php">My Assignments</a>
+                            </li>
+                        </ul>
                     </li>
-
-                   <li>
-                        <a href="../../page/staff/employee_open_task.php">
+					
+					<li>
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">date_range</i>
                             <span>Tasks</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/supervisor/sv_task.php">My Task</a>
+                            </li>
+							<li>
+                                <a href="../../page/supervisor/sv_team_task.php">Team Task</a>
+                            </li>
+                        </ul>
                     </li>
+
+					<li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">group</i>
+                            <span>Users</span>
+                        </a>
+                        <ul class="ml-menu">
+							<li>
+                                <a href="../../page/supervisor/sv_view_sv.php">Manager Profiles</a>
+                            </li>
+							<li>
+                                <a href="../../page/supervisor/sv_view_staff.php">Staff Profiles</a>
+                            </li>
+							<li>
+                                <a href="../../page/supervisor/company_details.php">Company Details</a>
+                            </li>
+                        </ul>
+                    </li>
+					
+					<li>
+                        <a href="https://goo.gl/forms/7jMeopZr5O4mSgoe2">
+                            <i class="material-icons">feedback</i>
+                            <span>Feedback</span>
+                        </a>
+                    </li>
+					
                 </ul>
             </div>
             <!-- #Menu -->
@@ -254,36 +297,36 @@ header("location: ../../index.html");
         </div>
 		<?php
 		include 'database.php';
-		$employee_id=$_SESSION['employee_id'];
+		$sv_id=$_SESSION['sv_id'];
 
 
-		$select = "SELECT * FROM employee WHERE employee_id = '$employee_id' ";
+		$select = "SELECT * FROM supervisor WHERE sv_id = '$sv_id' ";
 		$result = $conn->query($select);
 		while($row = $result->fetch_assoc()){
-			$employee_id = $row["employee_id"];
-			$employee_name = $row["employee_name"];
+			$sv_id = $row["sv_id"];
+			$sv_name = $row["sv_name"];
 		}
 
 		if(isset($_POST['send'])){
 
 			$question1 = $_POST['question1'];
 			$question2 = $_POST['question2'];
-			$employee_id = $_POST['employee_id'];
+			$sv_id = $_POST['sv_id'];
 
-			$query = "UPDATE employee SET question1='$question1', question2='$question2' WHERE employee_id='$employee_id'";
+			$query = "UPDATE supervisor SET question1='$question1', question2='$question2' WHERE sv_id='$sv_id'";
 			$res = $conn->query($query);
 
 			if($res === TRUE){
 				echo "<script type = \"text/javascript\">
 					alert(\"Successfully Edited Answers\");
-					window.location = (\"employee_question.php\")
+					window.location = (\"sv_question.php\")
 					</script>";
 				}
 
 			else {
 				echo "<script type = \"text/javascript\">
 					alert(\"Failed to Edit Answers\");
-					window.location = (\"employee_question.php\")
+					window.location = (\"sv_question.php\")
 					</script>";
 				}
 		}
@@ -292,12 +335,11 @@ header("location: ../../index.html");
 		<?php
 		include "database.php";
 
-		$employee_id=$_SESSION['employee_id'];
-		$sql = mysqli_query($conn,"SELECT * FROM employee WHERE employee_id = '$employee_id'");
+		$sv_id=$_SESSION['sv_id'];
+		$sql = mysqli_query($conn,"SELECT * FROM supervisor WHERE sv_id = '$sv_id'");
 		$row = mysqli_fetch_array($sql);
-		$employee_id=$row['employee_id'];
-		$employee_name=$row['employee_name'];
-		$employee_name=$row['employee_name'];
+		$sv_id=$row['sv_id'];
+		$sv_name=$row['sv_name'];
 		$question1=$row['question1'];
 		$question2=$row['question2'];
 		?>
@@ -313,7 +355,7 @@ header("location: ../../index.html");
 						<label>What is your favorite movie?</label>
 						<input class="form-control" name="question2" type="text" value="<?php echo $question2; ?>"></input>
 						<br>
-						<input type="hidden" class="btn btn-primary" name="employee_id" value="<?php echo $employee_id; ?>" />
+						<input type="hidden" class="btn btn-primary" name="sv_id" value="<?php echo $sv_id; ?>" />
 						 <!--<button class="btn btn-bg-grey" type="button" onclick="window.location.href='profile.php'">Back</button>-->
 						<input type="submit" class="btn btn-success pull-right" name="send" value="Submit" />
 						<br><br>

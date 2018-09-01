@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <?php
 session_start();
 //error_reporting(0);
@@ -12,7 +13,7 @@ header("location: ../../index.html");
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>FLEXICOMM | Director Manage Profile</title>
+    <title>FlexiCOMM | Secret Question</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -28,9 +29,6 @@ header("location: ../../index.html");
 
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
-
-    <!-- Sweet Alert Css -->
-    <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
@@ -71,14 +69,14 @@ header("location: ../../index.html");
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <!-- Notifications -->
-                    <li class="dropdown">
+
+                     <!-- Notifications -->
+                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             <i class="material-icons">notifications</i>
 
 							 <?php
 								include "database.php";
-
 								$sql  = '
 										SELECT employee_id,task_status, COUNT(*)
 										 AS count
@@ -92,8 +90,6 @@ header("location: ../../index.html");
 											{
 												while($row=mysqli_fetch_assoc($result))
 												{
-													//echo $row['c'];
-
 													echo '<span class="label-count">'.$row['count'].'</span>';
 												}
 											}
@@ -141,14 +137,12 @@ header("location: ../../index.html");
 
                                 </ul>
                             </li>
-                            <!--<li class="footer">
-                                <a href="javascript:void(0);">View All Notifications</a>
-                            </li>-->
+                            <li class="footer">
+                                <!-- <a href="javascript:void(0);">View All Notifications</a> -->
+                            </li>
                         </ul>
                     </li>
                     <!-- #END# Notifications -->
-
-                    <!--<li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>-->
                 </ul>
             </div>
         </div>
@@ -159,14 +153,13 @@ header("location: ../../index.html");
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
             <div class="user-info">
-               <!-- <div class="image">
-                    <img src="../../images/user.png" width="48" height="48" alt="User" />
-                </div> -->
+                <div class="image">
+                    <!-- <img src="../../images/user.png" width="48" height="48" alt="User" /> -->
+                </div>
 
 				<?php
-
 					include "database.php";
-					
+
 					$abc=$_SESSION['manager_id'];
 					$sql = mysqli_query($conn,"SELECT * FROM manager WHERE manager_id = '$abc'");
 					$row = mysqli_fetch_array($sql);
@@ -195,20 +188,20 @@ header("location: ../../index.html");
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li>
+                    <li class="active">
                         <a href="../../page/director/manager_home.php">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
                     </li>
 
-					<li class="active">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
 						<ul class="ml-menu">
-							<li class="active">
+							<li>
                                 <a href="../../page/director/manager_view_profile.php">Your Profile</a>
                             </li>
 							<li>
@@ -244,13 +237,14 @@ header("location: ../../index.html");
                             <span>Need Help</span>
                         </a>
                     </li>
-					
+
+                    </li>
                 </ul>
             </div>
             <!-- #Menu -->
             <!-- Footer -->
             <div class="legal">
-               <div class="copyright">
+                <div class="copyright">
                     <a href="javascript:void(0);">Powered by <a href= "http://flexcility.com/"><img src="../../images/flexcility.png" alt="Flexcility Logo" width="100" height="20"> </a></a>.
                 </div>
                 <div class="version">
@@ -260,200 +254,85 @@ header("location: ../../index.html");
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-    
-    </section>
+        <!-- Right Sidebar -->
 
+        <!-- #END# Right Sidebar -->
+    </section>
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
-                <h2></h2>
+                <h2>EDIT SECRET ANSWERS</h2>
             </div>
-
-			<div class="body">
-                <ol class="breadcrumb">
-					<li>
-                        <a href="../../page/director/manager_home.php">
-                        <i class="material-icons">home</i> Home
-                        </a>
-                    </li>
-                    <li>
-						<a href="../../page/director/manager_view_profile.php">
-                        <i class="material-icons">person</i>Profile Details
-						</a>
-                    </li>
-
-					<li class="active">
-                        <i class="material-icons">edit</i> Manage Profile Details
-                    </li>
-             </ol>
-             </ol>
-            </div>
-            <!-- Vertical Layout -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-blue-grey">
-                            <h2>
-                                <center><strong>UPDATE PROFILE DETAILS</strong></center>
-                            </h2>
-                        </div>
-                        <div class="body">
-
-						<?php
-
-							include "database.php";
-							
-							$abc=$_SESSION['manager_id'];
-							$sql = mysqli_query($conn,"SELECT * FROM manager WHERE manager_id = '$abc'");
-							$row = mysqli_fetch_array($sql);
-							$manager_id=$row['manager_id'];
-							$manager_name=$row['manager_name'];
-							$manager_email=$row['manager_email'];
-							$manager_phoneno=$row['manager_phoneno'];
-							$manager_address=$row['manager_address'];
-
-							//$result = $con -> query($sql);
-
-						?>
-                            <form id="form_validation" action="update_manager_profile.php" method="post">
-                                <label for="manager_name">Name</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" id="manager_name" class="form-control" name="manager_name" value="<?php echo $manager_name; ?>" placeholder="Enter your name" required>
-                                    </div>
-                                </div>
-								
-								<label for="email_address">Email</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="email" id="email_address" class="form-control" name="manager_email" value="<?php echo $manager_email; ?>" placeholder="Enter your email address" required>
-                                    </div>
-                                </div>
-								<label for="manager_phoneno">Phone Number</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" id="manager_phoneno" class="form-control" name="manager_phoneno" value="<?php echo $manager_phoneno; ?>" placeholder="Enter your phone number" required>
-                                    </div>
-                                </div>
-								<label for="manager_address">Address</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" id="manager_address" class="form-control" name="manager_address" value="<?php echo $manager_address; ?>" placeholder="Enter your address" required>
-                                    </div>
-                                </div>
-
-								<br>
-								<div class="form-group" align="right">
-                                <button type="submit" class="btn btn-success waves-effect" type="submit"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
-								</div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Vertical Layout -->
-
-			<!-- Update Password -->
-			<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="defaultModalLabel"><center>CHANGE PASSWORD</center></h4>
-						</div>
-						<div class="modal-body">
-
-							<form method="post" class="form-horizontal" role="form">
-								<input type="hidden" name="edit_id" value="<?php echo $manager_id; ?>">
-
-
-								<div class="row clearfix">
-									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-										<label for="manager_password">Current Password</label>
-									</div>
-									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-										<div class="form-group">
-											<div class="form-line">
-												<input type="password" id="manager_password" name="manager_password" value="" class="form-control" placeholder="Enter Current Password">
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row clearfix">
-									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-										<label for="password1">New Password</label>
-									</div>
-									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-										<div class="form-group">
-											<div class="form-line">
-												<input type="password" id="password1" name="password1" value="" class="form-control" placeholder="Enter New Password">
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="row clearfix">
-									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-										<label for="password2">Confirm Password</label>
-									</div>
-									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-										<div class="form-group">
-											<div class="form-line">
-												<input type="password" id="password2" name="password2" value="" class="form-control" placeholder="Enter Confirm Password">
-											</div>
-										</div>
-									</div>
-								</div>
-									<input type="hidden" name="manager_id" value="<?php echo $_SESSION['manager_id']; ?>"  />
-
-								<div class="modal-footer">
-									<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-									<button type="submit" class="btn btn-success waves-effect" name="update_password"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
-								</div>
-
-							<?php
-
-								if(isset($_POST['update_password'])){
-									include "database.php";
-									
-									$manager_id = mysqli_real_escape_string($conn,$_POST['manager_id']);
-									$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
-									$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
-									$manager_password = mysqli_real_escape_string($conn,$_POST['manager_password']);
-
-									$select = "SELECT * FROM manager WHERE manager_id = '$manager_id' ";
-									$result = $conn->query($select);
-									while($row = $result->fetch_assoc()){
-										$password = $row["manager_password"];
-									}
-
-									if($manager_password == $password){
-										if($password1===$password2){
-											$query = "UPDATE manager SET manager_id= '$manager_id', manager_password='$password1' WHERE  manager_id='$manager_id'  ";
-											$result = $conn->query($query);
-										}
-										else{
-											echo "<script type = \"text/javascript\">
-														alert(\"Password Not Match\");
-														window.location = (\"manager_home.php\")
-													</script>";
-										}
-									}
-									else{
-										echo "<script type = \"text/javascript\">
-														alert(\"Wrong Password\");
-														window.location = (\"manager_home.php\")
-													</script>";
-									}
-								}
-							?>
-
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
         </div>
+		<?php
+		include 'database.php';
+		$manager_id=$_SESSION['manager_id'];
+
+
+		$select = "SELECT * FROM manager WHERE manager_id = '$manager_id' ";
+		$result = $conn->query($select);
+		while($row = $result->fetch_assoc()){
+			$manager_id = $row["manager_id"];
+			$manager_name = $row["manager_name"];
+		}
+
+		if(isset($_POST['send'])){
+
+			$question1 = $_POST['question1'];
+			$question2 = $_POST['question2'];
+			$manager_id = $_POST['manager_id'];
+
+			$query = "UPDATE manager SET question1='$question1', question2='$question2' WHERE manager_id='$manager_id'";
+			$res = $conn->query($query);
+
+			if($res === TRUE){
+				echo "<script type = \"text/javascript\">
+					alert(\"Successfully Edited Answers\");
+					window.location = (\"manager_question.php\")
+					</script>";
+				}
+
+			else {
+				echo "<script type = \"text/javascript\">
+					alert(\"Failed to Edit Answers\");
+					window.location = (\"manager_question.php\")
+					</script>";
+				}
+		}
+
+		?>
+		<?php
+		include "database.php";
+
+		$manager_id=$_SESSION['manager_id'];
+		$sql = mysqli_query($conn,"SELECT * FROM manager WHERE manager_id = '$manager_id'");
+		$row = mysqli_fetch_array($sql);
+		$manager_id=$row['manager_id'];
+		$manager_name=$row['manager_name'];
+		$question1=$row['question1'];
+		$question2=$row['question2'];
+		?>
+
+			<div class="container">
+			  <div class="panel panel-success" style="width: 1000px">
+				<div class="panel-heading"><center>Edit Answers of Secret Questions</center></div>
+				<div class="panel-body">
+					<form action="" method="post">
+						<label>In what city were you born?</label>
+						<input class="form-control" name="question1" type="text" value="<?php echo $question1; ?>"></input>
+						<br>
+						<label>What is your favorite movie?</label>
+						<input class="form-control" name="question2" type="text" value="<?php echo $question2; ?>"></input>
+						<br>
+						<input type="hidden" class="btn btn-primary" name="manager_id" value="<?php echo $manager_id; ?>" />
+						 <!--<button class="btn btn-bg-grey" type="button" onclick="window.location.href='profile.php'">Back</button>-->
+						<input type="submit" class="btn btn-success pull-right" name="send" value="Submit" />
+						<br><br>
+					</form>
+				</div>
+			  </div>
+			</div>
+		</div>				
     </section>
 
     <!-- Jquery Core Js -->
@@ -463,7 +342,7 @@ header("location: ../../index.html");
     <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../../pages/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>

@@ -133,10 +133,18 @@ header("location: ../../index.html");
                     </li>
 
 					<li>
-						<a href="../../page/admin/admin_view_profile.php">
-							<i class="material-icons">person</i>
-							<span>Profile</span>
-						</a>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">person</i>
+                            <span>Profile</span>
+                        </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/admin/admin_view_profile.php">Your Profile</a>
+                            </li>
+							<li>
+                                <a href="../../page/admin/admin_question.php">Edit Secret Answers</a>
+                            </li>
+                        </ul>
                     </li>
 					
 					<li>
@@ -187,9 +195,14 @@ header("location: ../../index.html");
                             <li>
                                 <a href="../../page/admin/staff.php">Staff</a>
                             </li>
-							
-
                         </ul>
+                    </li>
+					
+					<li>
+                        <a href="https://goo.gl/forms/7jMeopZr5O4mSgoe2">
+                            <i class="material-icons">feedback</i>
+                            <span>Feedback</span>
+                        </a>
                     </li>
                 </ul>
             </div>

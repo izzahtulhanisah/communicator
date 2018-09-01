@@ -202,11 +202,19 @@ header("location: ../../index.html");
                         </a>
                     </li>
 
-					<li  class="active">
-                        <a href="../../page/director/manager_view_profile.php">
+					<li class="active">
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
+						<ul class="ml-menu">
+							<li class="active">
+                                <a href="../../page/director/manager_view_profile.php">Your Profile</a>
+                            </li>
+							<li>
+                                <a href="../../page/director/manager_question.php">Edit Secret Answers</a>
+                            </li>
+                        </ul>
                     </li>
 
 					<li>
@@ -220,6 +228,20 @@ header("location: ../../index.html");
                         <a href="../../page/director/manager_view_employee_task.php">
                             <i class="material-icons">date_range</i>
                             <span>Tasks</span>
+                        </a>
+                    </li>
+
+					<li>
+                        <a href="../../page/director/company_details.php">
+                            <i class="material-icons">location_city</i>
+                            <span>Company Details</span>
+                        </a>
+                    </li>
+					
+					<li>
+                        <a href="../../page/director/admin_contact.php">
+                            <i class="material-icons">help_outline</i>
+                            <span>Need Help</span>
                         </a>
                     </li>					
                 </ul>

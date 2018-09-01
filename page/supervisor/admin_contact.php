@@ -3,9 +3,10 @@
 <?php
 session_start();
 //error_reporting(0);
-if(!isset($_SESSION['admin_id'])){
+if(!isset($_SESSION['sv_id'])){
 header("location: ../../index.html");
 }
+
 ?>
 
 <html>
@@ -13,7 +14,7 @@ header("location: ../../index.html");
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>FlexiCOMM | Secret Question</title>
+    <title>FlexiCOMM | Contact</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -38,7 +39,7 @@ header("location: ../../index.html");
 </head>
 
 <body class="theme-green">
-
+    <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="preloader">
@@ -65,13 +66,82 @@ header("location: ../../index.html");
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="../../page/admin/admin_home.php">Flexi<b>COMMUNICATOR</b></a>
+                <a class="navbar-brand" href="../../page/supervisor/sv_home.php">Flexi<b>COMMUNICATOR</b></a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
 
                     <!-- Notifications -->
-                    
+                     <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">notifications</i>
+
+							<?php
+								include 'database.php';
+								$sql  = '
+										SELECT sv_id,task_status, COUNT(*)
+										AS count
+										FROM task2
+										WHERE task_status="delayed"
+										AND sv_id = "'.$_SESSION['sv_id'].'"
+										';
+
+										 $result=mysqli_query($conn,$sql);
+											if($result)
+											{
+												while($row=mysqli_fetch_assoc($result))
+												{
+													echo '<span class="label-count">'.$row['count'].'</span>';
+												}
+											}
+							?>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu">
+                                    <li>
+                                        <a href="../../page/supervisor/sv_delay.php">
+                                            <div class="icon-circle bg-red">
+                                                <i class="material-icons">date_range</i>
+                                            </div>
+                                            <div class="menu-info">
+
+													<?php
+														include 'database.php';
+														$t = "SELECT sv_id,task_status, COUNT(*)
+																	 AS count
+																	 FROM task2
+																	 WHERE task_status='delayed'
+																	 AND sv_id = '".$_SESSION['sv_id']."'
+																	 '";
+														$result=mysqli_query($conn,$sql);
+
+														if($result)
+														{
+															while($row=mysqli_fetch_assoc($result))
+															{
+														echo '<h4>';
+														 echo '
+																 You have '.$row['count'].' delayed task
+																';
+																echo '<h4>';
+														 }}
+													?>
+
+                                               <p>
+                                                    <i class="material-icons">access_time</i>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <!-- <a href="javascript:void(0);">View All Notifications</a> -->
+                            </li>
+                        </ul>
+                    </li>
                     <!-- #END# Notifications -->
                 </ul>
             </div>
@@ -94,25 +164,26 @@ header("location: ../../index.html");
 					  {
 					  echo "Failed to connect to MySQL: " . mysqli_connect_error();
 					  }
-					$abc=$_SESSION['admin_id'];
-					$sql = mysqli_query($conn,"SELECT * FROM admin WHERE admin_id = '$abc'");
+					  
+					$abc=$_SESSION['sv_id'];
+					$sql = mysqli_query($conn,"SELECT * FROM supervisor WHERE sv_id = '$abc'");
 					$row = mysqli_fetch_array($sql);
-					$admin_id=$row['admin_id'];
-					$admin_name=$row['admin_name'];
-					$admin_email=$row['admin_email'];
+					$sv_id=$row['sv_id'];
+					$sv_name=$row['sv_name'];
+					$sv_email=$row['sv_email'];
 				?>
 
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $admin_name; ?></div>
-                    <div class="email"><?php echo $admin_email; ?></div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $sv_name; ?></div>
+                    <div class="email"><?php echo $sv_email; ?></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="admin_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
+                            <li><a href="sv_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="#changepass" data-toggle="modal"><i class="material-icons">create</i>Edit Password</a></li>
                             <li role="seperator" class="divider"></li>
-                            <li><a href="admin_logout.php"><i class="material-icons">input</i>Sign Out</a></li>
+                            <li><a href="sv_logout.php"><i class="material-icons">input</i>Sign Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -123,84 +194,82 @@ header("location: ../../index.html");
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
                     <li>
-                        <a href="../../page/admin/admin_home.php">
+                        <a href="../../page/supervisor/sv_home.php">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
                     </li>
 
-					<li class="active">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
 						<ul class="ml-menu">
 							<li>
-                                <a href="../../page/admin/admin_view_profile.php">Your Profile</a>
-                            </li>
-							<li class="active">
-                                <a href="../../page/admin/admin_question.php">Edit Secret Answers</a>
-                            </li>
-                        </ul>
-                    </li>
-					
-					<li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">account_balance</i>
-                            <span>Company</span>
-                        </a>
-						<ul class="ml-menu">
-							<li class="active">
-                                <a href="../../page/admin/company_details.php">Details</a>
+                                <a href="../../page/supervisor/sv_view_profile.php">Your Profile</a>
                             </li>
 							<li>
-                                <a href="../../page/admin/add_company_details.php">Add New</a>
+                                <a href="../../page/supervisor/sv_question.php">Edit Secret Answers</a>
                             </li>
                         </ul>
                     </li>
 
 					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">edit</i>
-                            <span>Registration</span>
+                            <i class="material-icons">view_list</i>
+                            <span>Assignments</span>
                         </a>
 						<ul class="ml-menu">
 							<li>
-                                <a href="../../page/admin/admin_register_director.php">Director</a>
+                                <a href="../../page/supervisor/sv_view_all_project.php">All Assignments</a>
                             </li>
 							<li>
-                                <a href="../../page/admin/admin_register_manager.php">Manager</a>
-                            </li>
-							<li>
-                                <a href="../../page/admin/admin_register_staff.php">Staff</a>
+                                <a href="../../page/supervisor/sv_view_project_list.php">My Assignments</a>
                             </li>
                         </ul>
                     </li>
 					
 					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">group_add</i>
+                            <i class="material-icons">date_range</i>
+                            <span>Tasks</span>
+                        </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/supervisor/sv_task.php">My Task</a>
+                            </li>
+							<li>
+                                <a href="../../page/supervisor/sv_team_task.php">Team Task</a>
+                            </li>
+                        </ul>
+                    </li>
+
+					<li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">group</i>
                             <span>Users</span>
                         </a>
                         <ul class="ml-menu">
 							<li>
-                                <a href="../../page/admin/director.php">Director</a>
+                                <a href="../../page/supervisor/sv_view_sv.php">Manager Profiles</a>
                             </li>
 							<li>
-                                <a href="../../page/admin/manager.php">Manager</a>
+                                <a href="../../page/supervisor/sv_view_staff.php">Staff Profiles</a>
                             </li>
-                            <li>
-                                <a href="../../page/admin/staff.php">Staff</a>
+							<li>
+                                <a href="../../page/supervisor/company_details.php">Company Details</a>
                             </li>
                         </ul>
                     </li>
 					
-					<li>
-                        <a href="https://goo.gl/forms/7jMeopZr5O4mSgoe2">
-                            <i class="material-icons">feedback</i>
-                            <span>Feedback</span>
+					<li class="active">
+                        <a href="../../page/supervisor/admin_contact.php">
+                            <i class="material-icons">help_outline</i>
+                            <span>Need Help</span>
                         </a>
                     </li>
+					
                 </ul>
             </div>
             <!-- #Menu -->
@@ -218,83 +287,65 @@ header("location: ../../index.html");
         <!-- #END# Left Sidebar -->
         <!-- Right Sidebar -->
         <!-- #END# Right Sidebar -->
-    </section>
 
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
-                <h2>EDIT SECRET ANSWERS</h2>
+                <h2></h2>
             </div>
         </div>
-		<?php
-		include 'database.php';
-		$admin_id=$_SESSION['admin_id'];
+		
+		<div class="container">
+		  <div class="panel panel-success" style="width: 1000px">
+			<div class="panel-heading"><center><b>Please Contact Your System Administration for Assistance</b></center></div>
+			<div class="panel-body">
+				<form action="" method="post">
+				<?php
 
+					include 'database.php';
+					
+					
+					$sql = mysqli_query($conn,"SELECT * FROM admin");
+					$row = mysqli_fetch_array($sql);
+					$admin_id=$row['admin_id'];
+					$admin_name=$row['admin_name'];
+					$admin_email=$row['admin_email'];
+					$admin_phone=$row['admin_phone'];
+					$admin_department=$row['admin_department'];
+					$admin_position=$row['admin_position'];
+					$admin_address=$row['admin_address'];
 
-		$select = "SELECT * FROM admin WHERE admin_id = '$admin_id' ";
-		$result = $conn->query($select);
-		while($row = $result->fetch_assoc()){
-			$admin_id = $row["admin_id"];
-			$admin_name = $row["admin_name"];
-		}
+					//$result = $con -> query($sql);
+				?>
 
-		if(isset($_POST['send'])){
-
-			$question1 = $_POST['question1'];
-			$question2 = $_POST['question2'];
-			$admin_id = $_POST['admin_id'];
-
-			$query = "UPDATE admin SET question1='$question1', question2='$question2' WHERE admin_id='$admin_id'";
-			$res = $conn->query($query);
-
-			if($res === TRUE){
-				echo "<script type = \"text/javascript\">
-					alert(\"Successfully Edited Answers\");
-					window.location = (\"admin_question.php\")
-					</script>";
-				}
-
-			else {
-				echo "<script type = \"text/javascript\">
-					alert(\"Failed to Edit Answers\");
-					window.location = (\"admin_question.php\")
-					</script>";
-				}
-		}
-
-		?>
-		<?php
-		include "database.php";
-
-		$admin_id=$_SESSION['admin_id'];
-		$sql = mysqli_query($conn,"SELECT * FROM admin WHERE admin_id = '$admin_id'");
-		$row = mysqli_fetch_array($sql);
-		$admin_id=$row['admin_id'];
-		$admin_name=$row['admin_name'];
-		$question1=$row['question1'];
-		$question2=$row['question2'];
-		?>
-
-			<div class="container">
-			  <div class="panel panel-success" style="width: 1000px">
-				<div class="panel-heading"><center>Edit Answers of Secret Questions</center></div>
-				<div class="panel-body">
-					<form action="" method="post">
-						<label>In what city were you born?</label>
-						<input class="form-control" name="question1" type="text" value="<?php echo $question1; ?>"></input>
-						<br>
-						<label>What is your favorite movie?</label>
-						<input class="form-control" name="question2" type="text" value="<?php echo $question2; ?>"></input>
-						<br>
-						<input type="hidden" class="btn btn-primary" name="admin_id" value="<?php echo $admin_id; ?>" />
-						 <!--<button class="btn btn-bg-grey" type="button" onclick="window.location.href='profile.php'">Back</button>-->
-						<input type="submit" class="btn btn-success pull-right" name="send" value="Submit" />
-						<br><br>
-					</form>
-				</div>
-			  </div>
+					 <label for="admin_name">Name</label>
+						<div class="form-group">
+							<div class="form-line">
+								<?php echo $admin_name; ?>
+							</div>
+						</div>
+					<br>
+					
+					<label for="admin_email">Email</label>
+						<div class="form-group">
+							<div class="form-line">
+								<?php echo $admin_email; ?>
+							</div>
+						</div>
+					<br>
+					
+					<label for="admin_phone">Phone Number</label>
+						<div class="form-group">
+							<div class="form-line">
+								<?php echo $admin_phone; ?>
+							</div>
+						</div>
+					<br>
+					<br><br>
+				</form>
 			</div>
-		</div>				
+		  </div>
+		</div>
     </section>
 
     <!-- Jquery Core Js -->
