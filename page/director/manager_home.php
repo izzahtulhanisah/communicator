@@ -81,11 +81,17 @@ $manager_idd = $_SESSION['manager_id'];
 							 <?php
 								include "database.php";
 								$sql  = '
-										SELECT employee_id,task_status, COUNT(*)
-										 AS count
-										 FROM task
-										 WHERE task_status="delayed"
+										SELECT task_status, COUNT( * ) AS count
+										FROM (
 
+										SELECT task_status
+										FROM task
+										UNION ALL 
+										SELECT task_status
+										FROM task2
+										)t
+										WHERE task_status =  "Delayed"
+										GROUP BY task_status
 										 ';
 
 										 $result=mysqli_query($conn,$sql);
@@ -111,10 +117,17 @@ $manager_idd = $_SESSION['manager_id'];
 
 													<?php
 														include "database.php";
-														$t = "SELECT employee_id,task_status, COUNT(*)
-																	 AS count
-																	 FROM task
-																	 WHERE task_status='delayed'
+														$t = "SELECT task_status, COUNT( * ) AS count
+															FROM (
+
+															SELECT task_status
+															FROM task
+															UNION ALL 
+															SELECT task_status
+															FROM task2
+															)t
+															WHERE task_status =  'Delayed'
+															GROUP BY task_status
 
 																	 '";
 														$result=mysqli_query($conn,$sql);
@@ -125,7 +138,7 @@ $manager_idd = $_SESSION['manager_id'];
 															{
 														echo '<h4>';
 														 echo '
-																 '.$row['count'].' delayed task
+																 '.$row['count'].' delayed task 
 																';
 																echo '<h4>';
 														 }}
@@ -220,11 +233,19 @@ $manager_idd = $_SESSION['manager_id'];
                         </a>
                     </li>
 
-                   <li>
-                        <a href="../../page/director/manager_view_employee_task.php">
+					<li>
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">date_range</i>
-                            <span>Tasks</span>
+                            <span>Task</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/director/manager_view_employee_task.php">Staff</a>
+                            </li>
+							<li>
+                                <a href="../../page/director/manager_view_sv_task.php">Manager</a>
+                            </li>
+                        </ul>
                     </li>
 					
 					<li>
@@ -310,7 +331,9 @@ $manager_idd = $_SESSION['manager_id'];
 							<?php
 								include "database.php";
 
-								$sql2 = "SELECT count(task_id) AS total FROM task";
+								//$sql2 = "SELECT count(task_id) AS total FROM task";
+								$sql2="SELECT COUNT( DISTINCT t1.task_id ) + COUNT( DISTINCT t2.task_id ) AS total
+									   FROM task t1, task2 t2";
 								$result2 = mysqli_query($conn,$sql2);
 								$values2=mysqli_fetch_assoc($result2);
 								$num_rows=$values2['total'];
@@ -323,7 +346,7 @@ $manager_idd = $_SESSION['manager_id'];
                 </div>
                 </a>
 
-        				<a href= "../../page/director/manager_open_delay_task.php">
+        		<a href= "../../page/director/manager_open_delay_task.php">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box bg-red hover-expand-effect">
                         <div class="icon">
@@ -336,9 +359,17 @@ $manager_idd = $_SESSION['manager_id'];
 							<?php
 								include "database.php";
 								
-								$sql3 = "SELECT count(task_id) AS total
+								$sql3 = "SELECT task_status, COUNT( * ) AS total
+										FROM (
+
+										SELECT task_status
 										FROM task
-										WHERE task_status = 'Delayed'"
+										UNION ALL 
+										SELECT task_status
+										FROM task2
+										)t
+										WHERE task_status =  'Delayed'
+										GROUP BY task_status"
 										;
 								$result3 = mysqli_query($conn,$sql3);
 								$values3=mysqli_fetch_assoc($result3);
@@ -365,9 +396,11 @@ $manager_idd = $_SESSION['manager_id'];
 							<?php
 								include "database.php";
 
-								$sql4 = "SELECT count(employee_id) AS total
-										FROM employee
-										";
+								//$sql4 = "SELECT count(employee_id) AS total
+										//FROM employee
+										//";
+								$sql4 = "SELECT COUNT( DISTINCT t1.employee_id ) + COUNT( DISTINCT t2.sv_id ) + COUNT( DISTINCT t3.manager_id ) AS total
+									   FROM employee t1, supervisor t2, manager t3";
 								$result4 = mysqli_query($conn,$sql4);
 								$values4=mysqli_fetch_assoc($result4);
 								$num_rows=$values4['total'];
@@ -381,7 +414,6 @@ $manager_idd = $_SESSION['manager_id'];
               </a>
             </div>
             <!-- #END# Widgets -->
-
 			<div class="row clearfix">
                 <!-- Task Info -->
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -403,7 +435,7 @@ $manager_idd = $_SESSION['manager_id'];
                                             <th width= '15%'>Date</th>
                                             <th width= '50%'>Details</th>
                                             <th width= '15%'></th>
-                                            <th width= '15%'>By</th>
+                                            <!--<th width= '15%'>By</th>-->
 
                                         </tr>
                                     </thead>
@@ -454,7 +486,7 @@ $manager_idd = $_SESSION['manager_id'];
 											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?></td>
-											<td><i><?php echo $manager_id;?></i>
+											<!--<td><i><?php echo $manager_id;?></i>-->
 											</td>
 
 									<?php

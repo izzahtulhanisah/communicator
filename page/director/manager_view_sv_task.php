@@ -2,7 +2,7 @@
 
 <?php
 session_start();
-//error_reporting(0);
+error_reporting(0);
 if(!isset($_SESSION['manager_id'])){
 header("location: ../../index.html");
 }
@@ -13,7 +13,7 @@ header("location: ../../index.html");
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>FlexiCOMM | Secret Question</title>
+    <title>FLEXICOMM | Manager Task List</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -29,6 +29,9 @@ header("location: ../../index.html");
 
     <!-- Animation Css -->
     <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- JQuery DataTable Css -->
+    <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
@@ -69,14 +72,14 @@ header("location: ../../index.html");
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-
-                     <!-- Notifications -->
-                     <li class="dropdown">
+                    <!-- Notifications -->
+                    <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             <i class="material-icons">notifications</i>
 
 							 <?php
 								include "database.php";
+
 								$sql  = '
 										SELECT employee_id,task_status, COUNT(*)
 										 AS count
@@ -90,6 +93,8 @@ header("location: ../../index.html");
 											{
 												while($row=mysqli_fetch_assoc($result))
 												{
+													//echo $row['c'];
+
 													echo '<span class="label-count">'.$row['count'].'</span>';
 												}
 											}
@@ -109,11 +114,9 @@ header("location: ../../index.html");
 													<?php
 														include "database.php";
 														$t = "SELECT employee_id,task_status, COUNT(*)
-																	 AS count
-																	 FROM task
-																	 WHERE task_status='delayed'
-
-																	 '";
+															  AS count
+															  FROM task
+															  WHERE task_status='delayed''";
 														$result=mysqli_query($conn,$sql);
 
 														if($result)
@@ -138,11 +141,13 @@ header("location: ../../index.html");
                                 </ul>
                             </li>
                             <li class="footer">
-                                <!-- <a href="javascript:void(0);">View All Notifications</a> -->
+                                <a href="javascript:void(0);">View All Notifications</a>
                             </li>
                         </ul>
                     </li>
                     <!-- #END# Notifications -->
+
+                    <!-- <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li> -->
                 </ul>
             </div>
         </div>
@@ -158,8 +163,9 @@ header("location: ../../index.html");
                 </div>
 
 				<?php
-					include "database.php";
 
+					include "database.php";
+					
 					$abc=$_SESSION['manager_id'];
 					$sql = mysqli_query($conn,"SELECT * FROM manager WHERE manager_id = '$abc'");
 					$row = mysqli_fetch_array($sql);
@@ -195,7 +201,7 @@ header("location: ../../index.html");
                         </a>
                     </li>
 
-					<li class="active">
+					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
@@ -204,7 +210,7 @@ header("location: ../../index.html");
 							<li>
                                 <a href="../../page/director/manager_view_profile.php">Your Profile</a>
                             </li>
-							<li class="active">
+							<li>
                                 <a href="../../page/director/manager_question.php">Edit Secret Answers</a>
                             </li>
                         </ul>
@@ -217,7 +223,7 @@ header("location: ../../index.html");
                         </a>
                     </li>
 
-					<li>
+					<li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">date_range</i>
                             <span>Task</span>
@@ -226,7 +232,7 @@ header("location: ../../index.html");
 							<li>
                                 <a href="../../page/director/manager_view_employee_task.php">Staff</a>
                             </li>
-							<li>
+							<li class="active">
                                 <a href="../../page/director/manager_view_sv_task.php">Manager</a>
                             </li>
                         </ul>
@@ -245,8 +251,7 @@ header("location: ../../index.html");
                             <span>Need Help</span>
                         </a>
                     </li>
-
-                    </li>
+					
                 </ul>
             </div>
             <!-- #Menu -->
@@ -256,91 +261,248 @@ header("location: ../../index.html");
                     <a href="javascript:void(0);">Powered by <a href= "http://flexcility.com/"><img src="../../images/flexcility.png" alt="Flexcility Logo" width="100" height="20"> </a></a>.
                 </div>
                 <div class="version">
-                    &copy; 2018 <b>Beta Version </b>
+                    &copy; 2018 <b>Beta Version</b>
                 </div>
             </div>
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-        <!-- Right Sidebar -->
-
-        <!-- #END# Right Sidebar -->
     </section>
+
     <section class="content">
         <div class="container-fluid">
-            <div class="block-header">
-                <h2>EDIT SECRET ANSWERS</h2>
+
+			<div class="body">
+
+				<ol class="breadcrumb">
+					<li>
+						<a href="../../page/director/manager_home.php">
+							<i class="material-icons">home</i> Home
+						</a>
+					</li>
+					<li class="active">
+						<i class="material-icons">date_range</i> Tasks
+					</li>
+				</ol>
+
             </div>
-        </div>
-		<?php
-		include 'database.php';
-		$manager_id=$_SESSION['manager_id'];
+             
+			 <!-- Exportable Table -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-white">
+                            <h2><center><strong>
+                                TASK LIST : MANAGER
+                            </strong><center></h2>
+
+                        </div>
+                        <div class="body">
+						<div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr class="bg-blue-grey">
+                                        <th>No</th>
+										<th>Manager Name</th>
+										<th>Assignments</th>
+										<th>Tasks</th>
+										<th>Start Date</th>
+										<th>Due Date</th>
+										<th>Status</th>
 
 
-		$select = "SELECT * FROM manager WHERE manager_id = '$manager_id' ";
-		$result = $conn->query($select);
-		while($row = $result->fetch_assoc()){
-			$manager_id = $row["manager_id"];
-			$manager_name = $row["manager_name"];
-		}
+                                    </tr>
+                                </thead>
 
-		if(isset($_POST['send'])){
+                                <tbody>
 
-			$question1 = $_POST['question1'];
-			$question2 = $_POST['question2'];
-			$manager_id = $_POST['manager_id'];
+								<?php
+								include "database.php";
 
-			$query = "UPDATE manager SET question1='$question1', question2='$question2' WHERE manager_id='$manager_id'";
-			$res = $conn->query($query);
+								$sql2 = "UPDATE task2
+										 SET task_status =
+										 CASE
+											 WHEN NOW() > task_due_date THEN 'Delayed'
+											 WHEN NOW() < task_due_date THEN 'In Progress'
+										END ";
+										$result2 = mysqli_query($sql2);
 
-			if($res === TRUE){
-				echo "<script type = \"text/javascript\">
-					alert(\"Successfully Edited Answers\");
-					window.location = (\"manager_question.php\")
-					</script>";
-				}
+									$sql  = 'SELECT supervisor.sv_name,supervisor.sv_id, task2.task_id,
+											task2.task_title,project.project_id,project.project_name, task2.task_status, task2.task_created, task2.task_due_date,
+											task2.task_description,task2.task_comment,
+											(SELECT COUNT(task2.sv_id)
+												FROM task2
+												WHERE supervisor.sv_id=task2.sv_id)
+												AS jumlah
 
-			else {
-				echo "<script type = \"text/javascript\">
-					alert(\"Failed to Edit Answers\");
-					window.location = (\"manager_question.php\")
-					</script>";
-				}
-		}
+											FROM task2
+											LEFT JOIN supervisor ON supervisor.sv_id=task2.sv_id
+											LEFT JOIN project ON task2.project_id = project.project_id
+											ORDER BY supervisor.sv_name, supervisor.sv_id';
 
-		?>
-		<?php
-		include "database.php";
+								$result = $conn -> query($sql);
 
-		$manager_id=$_SESSION['manager_id'];
-		$sql = mysqli_query($conn,"SELECT * FROM manager WHERE manager_id = '$manager_id'");
-		$row = mysqli_fetch_array($sql);
-		$manager_id=$row['manager_id'];
-		$manager_name=$row['manager_name'];
-		$question1=$row['question1'];
-		$question2=$row['question2'];
-		?>
+								if($result -> num_rows> 0) {
+									$no = 1;
+									$jum = 1;
+									while ($row = $result -> fetch_assoc()) {
 
-			<div class="container">
-			  <div class="panel panel-success" style="width: 1000px">
-				<div class="panel-heading"><center>Edit Answers of Secret Questions</center></div>
-				<div class="panel-body">
-					<form action="" method="post">
-						<label>In what city were you born?</label>
-						<input class="form-control" name="question1" type="text" value="<?php echo $question1; ?>"></input>
-						<br>
-						<label>What is your favorite movie?</label>
-						<input class="form-control" name="question2" type="text" value="<?php echo $question2; ?>"></input>
-						<br>
-						<input type="hidden" class="btn btn-primary" name="manager_id" value="<?php echo $manager_id; ?>" />
-						 <!--<button class="btn btn-bg-grey" type="button" onclick="window.location.href='profile.php'">Back</button>-->
-						<input type="submit" class="btn btn-success pull-right" name="send" value="Submit" />
-						<br><br>
-					</form>
+										$project_name = $row['project_name'];
+										$task_title = $row['task_title'];
+										$task_status = $row['task_status'];
+
+										if($task_status == 'Delayed'){
+												$alert = "<div class='badge bg-red'>
+												<strong>$task_status</strong>
+												</div>";
+											}else if($task_status == 'In Progress'){
+												$alert = "<div class='badge bg-blue'>
+												<strong>$task_status</strong>
+												</div>";
+											}else {
+												$alert = $alert = "<div class='badge bg-green'>
+												<strong>$task_status</strong>
+												</div>";
+											}
+
+										$task_created = $row['task_created'];
+										$task_due_date = $row['task_due_date'];
+										$task_description = $row['task_description'];
+										$task_comment = $row['task_comment'];
+										$sv_id = $row['sv_id'];
+										$sv_name = $row['sv_name'];
+
+										echo "<tr>";
+											if($jum <= 1) {
+												echo "<td align='center' rowspan='".$row['jumlah']."'>$no</td>
+												<td rowspan='".$row['jumlah']."'><a href = 'manager_view_details_taskm.php?sv_id=$sv_id'>$sv_name</a></td>";
+												$jum = $row['jumlah'];
+												$no++;
+											}
+											else {
+												$jum = $jum - 1;
+											}
+
+												echo "<td>$project_name</td>
+												<td>$task_title</td>
+												<td>".date('d-m-Y', strtotime($row['task_created']))."</td>
+												<td>".date('d-m-Y', strtotime($row['task_due_date']))."</td>
+												<td>$alert</td>
+												";
+									}
+								}
+								$conn -> close();
+								?>
+                                </tbody>
+                            </table>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Exportable Table -->
+			<!-- Update Password -->
+			<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="defaultModalLabel"><center>CHANGE PASSWORD</center></h4>
+						</div>
+						<div class="modal-body">
+
+							<form method="post" class="form-horizontal" role="form">
+								<input type="hidden" name="edit_id" value="<?php echo $manager_id; ?>">
+
+
+								<div class="row clearfix">
+									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+										<label for="manager_password">Current Password</label>
+									</div>
+									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+										<div class="form-group">
+											<div class="form-line">
+												<input type="password" id="manager_password" name="manager_password" value="" class="form-control" placeholder="Enter Current Password">
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row clearfix">
+									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+										<label for="password1">New Password</label>
+									</div>
+									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+										<div class="form-group">
+											<div class="form-line">
+												<input type="password" id="password1" name="password1" value="" class="form-control" placeholder="Enter New Password">
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row clearfix">
+									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+										<label for="password2">Confirm Password</label>
+									</div>
+									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+										<div class="form-group">
+											<div class="form-line">
+												<input type="password" id="password2" name="password2" value="" class="form-control" placeholder="Enter Confirm Password">
+											</div>
+										</div>
+									</div>
+								</div>
+									<input type="hidden" name="manager_id" value="<?php echo $_SESSION['manager_id']; ?>"  />
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+									<button type="submit" class="btn btn-success waves-effect" name="update_password"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
+								</div>
+
+							<?php
+
+								if(isset($_POST['update_password'])){
+									include "database.php";
+
+									$manager_id = mysqli_real_escape_string($conn,$_POST['manager_id']);
+									$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
+									$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
+									$manager_password = mysqli_real_escape_string($conn,$_POST['manager_password']);
+
+									$select = "SELECT * FROM manager WHERE manager_id = '$manager_id' ";
+									$result = $conn->query($select);
+									while($row = $result->fetch_assoc()){
+										$password = $row["manager_password"];
+									}
+
+									if($manager_password == $password){
+										if($password1===$password2){
+											$query = "UPDATE manager SET manager_id= '$manager_id', manager_password='$password1' WHERE  manager_id='$manager_id'  ";
+											$result = $conn->query($query);
+										}
+										else{
+											echo "<script type = \"text/javascript\">
+														alert(\"Password Not Match\");
+														window.location = (\"manager_home.php\")
+													</script>";
+										}
+									}
+									else{
+										echo "<script type = \"text/javascript\">
+														alert(\"Wrong Password\");
+														window.location = (\"manager_home.php\")
+													</script>";
+									}
+								}
+							?>
+
+							</form>
+						</div>
+					</div>
 				</div>
-			  </div>
 			</div>
-		</div>				
+
+        </div>
     </section>
 
     <!-- Jquery Core Js -->
@@ -350,7 +512,7 @@ header("location: ../../index.html");
     <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../../pages/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
@@ -358,8 +520,20 @@ header("location: ../../index.html");
     <!-- Waves Effect Plugin Js -->
     <script src="../../plugins/node-waves/waves.js"></script>
 
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+
     <!-- Custom Js -->
     <script src="../../js/admin.js"></script>
+    <script src="../../js/page/director/jquery-datatable.js"></script>
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>

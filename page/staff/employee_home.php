@@ -392,7 +392,7 @@ header("location: ../../index.html");
                                             <th width= '15%'>Date</th>
                                             <th width= '50%'>Details</th>
                                             <th width= '15%'></th>
-                                            <th width= '15%'>By</th>
+                                            <!--<th width= '15%'>By</th>-->
 
                                         </tr>
                                     </thead>
@@ -443,7 +443,7 @@ header("location: ../../index.html");
 											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?></td>
-											<td><i><?php echo $manager_id;?></i>
+											<!--<td><i><?php echo $manager_id;?></i>-->
 											</td>
 									<?php
 									$x++;}

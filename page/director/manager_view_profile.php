@@ -81,12 +81,18 @@ header("location: ../../index.html");
 								include "database.php";
 
 								$sql  = '
-										SELECT employee_id,task_status, COUNT(*)
-										 AS count
-										 FROM task
-										 WHERE task_status="delayed"
+										SELECT task_status, COUNT( * ) AS count
+										FROM (
 
-										 ';
+										SELECT task_status
+										FROM task
+										UNION ALL 
+										SELECT task_status
+										FROM task2
+										)t
+										WHERE task_status =  "Delayed"
+										GROUP BY task_status
+										';
 
 										 $result=mysqli_query($conn,$sql);
 											if($result)
@@ -112,12 +118,17 @@ header("location: ../../index.html");
 													<?php
 														include "database.php";
 														
-														$t = "SELECT employee_id,task_status, COUNT(*)
-																	 AS count
-																	 FROM task
-																	 WHERE task_status='delayed'
-
-																	 '";
+														$t = "SELECT task_status, COUNT( * ) AS count
+															  FROM (
+															  SELECT task_status
+															  FROM task
+															  UNION ALL 
+															  SELECT task_status
+															  FROM task2
+															  )t
+															  WHERE task_status =  'Delayed'
+															  GROUP BY task_status
+															 '";
 														$result=mysqli_query($conn,$sql);
 
 														if($result)
@@ -225,10 +236,18 @@ header("location: ../../index.html");
                     </li>
 
                    <li>
-                        <a href="../../page/director/manager_view_employee_task.php">
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">date_range</i>
-                            <span>Tasks</span>
+                            <span>Task</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/director/manager_view_employee_task.php">Staff</a>
+                            </li>
+							<li>
+                                <a href="../../page/director/manager_view_sv_task.php">Manager</a>
+                            </li>
+                        </ul>
                     </li>
 
 					<li>

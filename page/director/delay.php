@@ -13,7 +13,7 @@ header("location: ../../index.html");
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>FLEXICOMM | Staff Task Details</title>
+    <title>FLEXICOMM | Delayed Tasks</title>
     <!-- Favicon-->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
@@ -33,11 +33,17 @@ header("location: ../../index.html");
     <!-- JQuery DataTable Css -->
     <link href="../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
 
+	<!-- Bootstrap Select Css -->
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
     <!-- Custom Css -->
     <link href="../../css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../css/themes/all-themes.css" rel="stylesheet" />
+
+	<!-- Bootstrap Select Css
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />-->
 </head>
 
 <body class="theme-green">
@@ -72,8 +78,9 @@ header("location: ../../index.html");
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
+
                     <!-- Notifications -->
-                    <li class="dropdown">
+                   <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             <i class="material-icons">notifications</i>
 
@@ -85,7 +92,6 @@ header("location: ../../index.html");
 										 AS count
 										 FROM task
 										 WHERE task_status="delayed"
-
 										 ';
 
 										 $result=mysqli_query($conn,$sql);
@@ -93,8 +99,6 @@ header("location: ../../index.html");
 											{
 												while($row=mysqli_fetch_assoc($result))
 												{
-													//echo $row['c'];
-
 													echo '<span class="label-count">'.$row['count'].'</span>';
 												}
 											}
@@ -111,25 +115,27 @@ header("location: ../../index.html");
                                             </div>
                                             <div class="menu-info">
 
-													<?php
-														include "database.php";
-														$t = "SELECT employee_id,task_status, COUNT(*)
-															  AS count
-															  FROM task
-															  WHERE task_status='delayed''";
-														$result=mysqli_query($conn,$sql);
+												<?php
+													include "database.php";
+													$t = "SELECT employee_id,task_status, COUNT(*)
+																 AS count
+																 FROM task
+																 WHERE task_status='delayed'
 
-														if($result)
+																 '";
+													$result=mysqli_query($conn,$sql);
+
+													if($result)
+													{
+														while($row=mysqli_fetch_assoc($result))
 														{
-															while($row=mysqli_fetch_assoc($result))
-															{
-																echo '<h4>';
-																echo '
-																	'.$row['count'].' delayed task
-																';
-																echo '<h4>';
-														 }}
-													?>
+													echo '<h4>';
+													 echo '
+															 '.$row['count'].' delayed task
+															';
+															echo '<h4>';
+													 }}
+												?>
 
                                                <p>
                                                     <i class="material-icons">access_time</i>
@@ -140,14 +146,12 @@ header("location: ../../index.html");
 
                                 </ul>
                             </li>
-                            <li class="footer">
+                            <!--<li class="footer">
                                 <a href="javascript:void(0);">View All Notifications</a>
-                            </li>
+                            </li>-->
                         </ul>
                     </li>
                     <!-- #END# Notifications -->
-
-                    <!-- <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li> -->
                 </ul>
             </div>
         </div>
@@ -161,6 +165,7 @@ header("location: ../../index.html");
                 <div class="image">
                     <!-- <img src="../../images/user.png" width="48" height="48" alt="User" /> -->
                 </div>
+
 
 				<?php
 
@@ -180,12 +185,12 @@ header("location: ../../index.html");
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="manager_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
+							<li><a href="manager_update_profile.php"><i class="material-icons">person</i>Edit Profile</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="#changepass" data-toggle="modal"><i class="material-icons">create</i>Edit Password</a></li>
                             <li role="seperator" class="divider"></li>
-                            <li><a href="manager_logout.php"><i class="material-icons">input</i>Sign Out</a></li>
-                        </ul>
+                            <li><a href="manager_logout.php"><i class="material-icons">input</i>Sign Out</a></li>                        
+						</ul>
                     </div>
                 </div>
             </div>
@@ -194,7 +199,7 @@ header("location: ../../index.html");
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li>
+                       <li>
                         <a href="../../page/director/manager_home.php">
                             <i class="material-icons">home</i>
                             <span>Home</span>
@@ -229,7 +234,7 @@ header("location: ../../index.html");
                             <span>Task</span>
                         </a>
 						<ul class="ml-menu">
-							<li class="active">
+							<li>
                                 <a href="../../page/director/manager_view_employee_task.php">Staff</a>
                             </li>
 							<li>
@@ -237,7 +242,7 @@ header("location: ../../index.html");
                             </li>
                         </ul>
                     </li>
-					
+
 					<li>
                         <a href="../../page/director/company_details.php">
                             <i class="material-icons">location_city</i>
@@ -250,8 +255,7 @@ header("location: ../../index.html");
                             <i class="material-icons">help_outline</i>
                             <span>Need Help</span>
                         </a>
-                    </li>
-
+                    </li>					
                 </ul>
             </div>
             <!-- #Menu -->
@@ -268,147 +272,134 @@ header("location: ../../index.html");
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-        
+        <!-- Right Sidebar -->
+        <!-- #END# Right Sidebar -->
     </section>
 
     <section class="content">
         <div class="container-fluid">
 
-			<div class="body">
+		 <div class="body">
 
-				<ol class="breadcrumb">
-					<li>
-						<a href="../../page/director/manager_home.php">
-							<i class="material-icons">home</i> Home
-						</a>
-					</li>
-					<li>
-						<a href="../../page/director/manager_view_employee_task.php">
-							<i class="material-icons">date_range</i> Tasks
-						</a>
-					</li>
-					 <li class="active">
-						<i class="material-icons">list</i> Task Details
-					</li>
-				</ol>
+			<ol class="breadcrumb">
+				<li>
+					<a href="../../page/director/manager_home.php">
+						<i class="material-icons">home</i> Home
+					</a>
+				</li>
+				<li>
+					<a href="../../page/director/manager_view_employee_task.php">
+					<i class="material-icons">date_range</i> Tasks
+					</a>
+				</li>
 
-            </div>
+				<li class="active">
+					<i class="material-icons">insert_invitation</i> Delayed Tasks
+				</li>
+			</ol>
+
+		</div>
            
-			 <!-- Exportable Table -->
+            <!-- Exportable Table -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
-                        <div class="header bg-white">
-                            <h2><center><strong>
-                                TASK LIST FOR
-								<?php $employee_id = $_GET['employee_id'];
-							echo $employee_id; ?>
-							</strong></center></h2>
-
+                        <div class="header clearfix bg-blue-grey">
+                            <h2><center>
+                                TASKS LIST : <b>DELAYED</b>
+								
+                                </button>
+                            </center></h2>
                         </div>
                         <div class="body">
-						<div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
+                          <div class = "table-responsive">
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                 <thead>
-                                    <tr class="bg-blue-grey">
-                                        <th width="5%">No</th>
-										<th width="10%">Assignment</th>
-										<th width="25%">Task</th>
+                                    <tr>
+                                        <th  width="5%">No.</th>
+										<th width="10%">Assignments</th>
+										<th width="15%">Tasks</th>
 										<th width="15%">Start Date</th>
 										<th width="15%">Due Date</th>
-										<th width="15%">Status</th>
+										<th width="10%">Status</th>
 										<th width="25%">Issues</th>
 										<th width="25%">Solutions</th>
-										<th width="10%">Action</th>
-
+										<th width="15%">Action</th>
+									</tr>
                                     </tr>
                                 </thead>
 
                                 <tbody>
+                                    <?php
+									include "database.php";
 
-								<?php
-								include "database.php";
-								
-									$sql  = "SELECT task.task_id,task.task_title, task.task_status, task.task_created, task.task_due_date, task.task_description,task.task_comment,
-											project.project_id, project.project_name,task.employee_id, employee.employee_id,employee.employee_name,
-											(SELECT COUNT(task.employee_id)
-												FROM task
-												WHERE project.project_id=task.project_id)
-												AS jumlah
+									
+									$result2 = $conn -> query($sql2);
 
+
+									$sql = "SELECT task.task_id,task.task_title, task.task_status, task.task_created, task.task_due_date, task.task_description, task.task_comment, project.project_id, project.project_name, employee.employee_id
 											FROM task,project, employee
 											WHERE task.project_id = project.project_id
 											AND task.employee_id = employee.employee_id
-											AND task.employee_id='$employee_id'
+											AND task.task_status = 'Delayed'
+											";
+									$result = $conn->query($sql);
+									if ($result->num_rows > 0) {
+										// output data of each row
+										$x=1;
+										while($row = $result->fetch_assoc()) {
+											$employee_id = $row['employee_id'];
+											$task_id = $row['task_id'];
+											$task_title = $row['task_title'];
+											$project_name = $row['project_name'];
+											$task_status = $row['task_status'];
 
-											ORDER BY project.project_name, employee.employee_id";
+                                              if($task_status == 'Delayed'){
+                                              $alert = "<div class='badge bg-red'>
+                                              <strong>$task_status</strong>
+                                              </div>";
+                                                }else if($task_status == 'In Progress'){
+                                                  $alert = "<div class='badge bg-green'>
+                                                  <strong>$task_status</strong>
+                                                  </div>";
+                                                }else {
+                                                  $alert = $task_status;
+                                                }
 
-								$result = $conn -> query($sql);
-
-								if($result -> num_rows> 0) {
-									$no = 1;
-									$jum = 1;
-									while ($row = $result -> fetch_assoc()) {
-
-										$task_id = $row['task_id'];
-										$project_name = $row['project_name'];
-										$task_title = $row['task_title'];
-										$task_status = $row['task_status'];
-
-										if($task_status == 'Delayed'){
-												$alert = "<div class='badge bg-red'>
-												<strong>$task_status</strong>
-												</div>";
-											}else if($task_status == 'In Progress'){
-												$alert = "<div class='badge bg-blue'>
-												<strong>$task_status</strong>
-												</div>";
-											}else {
-												$alert = $alert = "<div class='badge bg-green'>
-												<strong>$task_status</strong>
-												</div>";
-											}
-
-										$task_created = $row['task_created'];
-										$task_due_date = $row['task_due_date'];
-										$task_description = $row['task_description'];
-										$task_comment = $row['task_comment'];
-
-										echo "<tr>";
-											if($jum <= 1) {
-												echo "<td align='center' rowspan='".$row['jumlah']."'>$no</td>
-												<td td rowspan='".$row['jumlah']."'>$project_name</td>";
-												$jum = $row['jumlah'];
-												$no++;
-											}
-											else {
-												$jum = $jum - 1;
-											}
-
-												echo "
-
-												<td>$task_title</td>
-												<td>".date('d-m-Y', strtotime($row['task_created']))."</td>
-												<td>".date('d-m-Y', strtotime($row['task_due_date']))."</td>
-												<td>$alert</td>
-												<td>".nl2br($task_description)."</td>
-												<td>".nl2br($task_comment)."</td>
-												";
-								?>
-
-												<td>
-													<div class='btn-group' role='group' aria-label='...'>
-													<a href="#defaultModal<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span>Details</button></a>
-													</div>
-												</td>
+											$task_created = $row['task_created'];
+											$task_due_date = $row['task_due_date'];
+											$task_description = $row['task_description'];
+											$task_comment = $row['task_comment'];
 
 
-									 <!-- Update Project List -->
+									?>
+											<tr>
+												<td><?php echo $x; ?></td>
+												<td><?php echo $project_name; ?></td>
+												<td><?php echo $task_title; ?></td>
+												<td><?php echo date('d-m-Y', strtotime($row['task_created'])); ?></td>
+												<td><?php echo date('d-m-Y', strtotime($row['task_due_date'])); ?></td>
+												<td><?php echo $alert; ?></td>
+												<td><?php echo nl2br($task_description); ?></td>
+												<td><?php echo nl2br($task_comment); ?></td>
+
+
+									<td>
+										<div class='btn-btn'>
+											<a href="#defaultModal<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
+											<a href="#delete<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
+
+										</div>
+									</td>
+
+
+
+									 <!-- Update Task List -->
 										<div class="modal fade" id="defaultModal<?php echo $task_id; ?>" tabindex="-1" role="dialog">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
-														<h4 class="modal-title" id="defaultModalLabel"><center>ADD SOLUTIONS</center></h4>
+														<h4 class="modal-title" id="defaultModalLabel"><center>UPDATE TASK</center></h4>
 													</div>
 													<div class="modal-body">
 
@@ -416,32 +407,31 @@ header("location: ../../index.html");
 															<input type="hidden" name="edit_task_id" value="<?php echo $task_id; ?>">
 															<input type="hidden" name="edit_employee_id" value="<?php echo $employee_id;  ?>">
 
-															<div class="row clearfix">
-
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																		<label for="project_name">Assignment</label>
-																	</div>
-																	<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																		<div class="form-group">
-																			<div class="form-line">
-																				<?php echo $project_name; ?>
-																			</div>
-																		</div>
-																	</div>
-																</div>
 																<div class="row clearfix">
 																	<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																		<label for="task_title">Task</label>
+																		<label for="task_title">Person in Charge</label>
 																	</div>
 																	<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																		<div class="form-group">
 																			<div class="form-line">
-																			<?php echo $task_title; ?>
+																				<input type="text" id="employee_id" name="employee_id" value="<?php echo $employee_id; ?>" class="form-control" placeholder="Staff?" required>
 																			</div>
 																		</div>
 																	</div>
 																</div>
-
+																
+																<div class="row clearfix">
+																	<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																		<label for="task_title">Tasks</label>
+																	</div>
+																	<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																		<div class="form-group">
+																			<div class="form-line">
+																				<input type="text" id="task_title" name="task_title" value="<?php echo $task_title; ?>" class="form-control" placeholder="Enter Tasks Title" required>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 
 																<div class="row clearfix">
 																	<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -450,7 +440,7 @@ header("location: ../../index.html");
 																	<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																		<div class="form-group">
 																			<div class="form-line">
-																				<?php echo $before30=date('Y-m-d', strtotime("$task_due_date")); ?>
+																				<input type="date" id="task_due_date" name="task_due_date" value="<?php echo $before30=date('Y-m-d', strtotime("$task_due_date")); ?>" class="form-control date" placeholder="Ex: 30/07/2018">
 																			</div>
 																		</div>
 																	</div>
@@ -463,7 +453,7 @@ header("location: ../../index.html");
 																	<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																		<div class="form-group">
 																			<div class="form-line">
-																			<textarea readonly name="task_description" id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder=""><?php echo $task_description; ?></textarea>
+																			<textarea name="task_description" id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Issues"><?php echo $task_description; ?></textarea>
 																			</div>
 																		</div>
 																	</div>
@@ -484,7 +474,7 @@ header("location: ../../index.html");
 
 															<div class="modal-footer">
 																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-																<button type="submit" class="btn btn-success waves-effect" name="update_task"><span class="glyphicon glyphicon-edit"></span>SUBMIT</button>
+																<button type="submit" class="btn btn-success waves-effect" name="update_task"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
 															</div>
 														</form>
 													</div>
@@ -493,25 +483,24 @@ header("location: ../../index.html");
 										</div>
 
 
-
 									 <!-- Delete Project List -->
-										<div class="modal fade" id="delete<?php echo $project_id; ?>" tabindex="-1" role="dialog">
+										<div class="modal fade" id="delete<?php echo $task_id; ?>" tabindex="-1" role="dialog">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
-														<h4 class="modal-title" id="defaultModalLabel">Delete Assignment</h4>
+														<h4 class="modal-title" id="defaultModalLabel"><center>DELETE TASK</center></h4>
 													</div>
 													<div class="modal-body">
 
 														<form method="post" class="form-horizontal" role="form">
-															<input type="hidden" name="delete_id" value="<?php echo $project_id; ?>">
-															<div class="alert bg-red">
-																<p><strong>Are you sure you want to delete <?php echo $project_name; ?> ?</strong></p>
-															</div>
+															<input type="hidden" name="delete_id" value="<?php echo $task_id; ?>">
+
+																<p><strong>Are you sure you want to delete <?php echo $task_title; ?> ?</strong></p>
+
 
 															<div class="modal-footer">
-																<button type="submit" class="btn btn-info waves-effect" name="delete"><span class="glyphicon glyphicon-trash"></span>DELETE</button>
-																<button type="button" class="btn btn bg-pink waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																<button type="submit" class="btn btn-danger waves-effect" name="delete"><span class="glyphicon glyphicon-trash"></span>DELETE</button>
 															</div>
 														</form>
 													</div>
@@ -519,24 +508,27 @@ header("location: ../../index.html");
 											</div>
 										</div>
 
+
+
 									<?php
 									$x++;}
 
-									//Update Project
+									//Update Task
 									if(isset($_POST['update_task'])){
 										$edit_task_id = $_POST['edit_task_id'];
-										//$task_id = $_POST['task_id'];
-										//$edit_employee_id = $_POST['edit_employee_id'];
 										$project_name = $_POST['project_name'];
 										$task_title = $_POST['task_title'];
 										$task_due_date = $_POST['task_due_date'];
 										$task_description = $_POST['task_description'];
 										$task_comment = $_POST['task_comment'];
 										$sql = "UPDATE task SET
+											task_title='$task_title',
+											task_due_date='$task_due_date',
+											task_description='$task_description',
 											task_comment='$task_comment'
 										   WHERE task_id='$edit_task_id' ";
 										if ($conn->query($sql) === TRUE) {
-								echo "<script>alert('*Solutions Updated*');window.location.href='javascript:history.back(-1);'</script>";
+											echo '<script>window.location.href="manager_open_delay_task.php"</script>';
 										} else {
 											echo "Error updating record: " . $conn->error;
 										}
@@ -545,9 +537,9 @@ header("location: ../../index.html");
 									if(isset($_POST['delete'])){
 										// sql to delete a record
 										$delete_id = $_POST['delete_id'];
-										$sql = "DELETE FROM project WHERE project_id='$delete_id' ";
-										if ($con->query($sql) === TRUE) {
-											echo '<script>window.location.href="manager_view_details_task.php"</script>';
+										$sql = "DELETE FROM task WHERE task_id='$delete_id' ";
+										if ($conn->query($sql) === TRUE) {
+											echo '<script>window.location.href="manager_open_delay_task.php"</script>';
 											} else {
 												echo "Error deleting record: " . $conn->error;
 											}
@@ -556,86 +548,15 @@ header("location: ../../index.html");
 								}
 									?>
 
-								<!-- Add New Project -->
-								<div class="modal fade" id="addProject" tabindex="-1" role="dialog">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h4 class="modal-title" id="defaultModalLabel">Add New Assignment</h4>
-											</div>
-											<div class="modal-body">
-												<form action = "employee_add_project.php" method="post" class="form-horizontal" role="form">
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_name">Title</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																	<input type="text" name="project_name" class="form-control" placeholder="Enter Assignment Title">
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_description">Description</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																<textarea name="project_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Project Description" required></textarea>
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_date_created">Start Date</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																	<input type="date" name="project_date_created" class="form-control date">
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_due_date">Due Date</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																	<input type="date" name="project_due_date" class="form-control">
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<div class="modal-footer">
-														<button type="submit" class="btn btn-info waves-effect"><span class="glyphicon glyphicon-plus"></span>ADD NEW</button>
-														<button type="button" class="btn btn-danger waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-													</div>
-												</form>
-											</div>
-
-										</div>
-									</div>
-								</div>
+								
+								
+                                </tbody>
                             </table>
-							</div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- #END# Exportable Table -->
-
-
         </div>
     </section>
 
@@ -671,6 +592,9 @@ header("location: ../../index.html");
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
+
+	 <!-- Select Plugin Js
+    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>-->
 </body>
 
 </html>

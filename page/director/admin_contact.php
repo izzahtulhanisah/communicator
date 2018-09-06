@@ -218,11 +218,19 @@ header("location: ../../index.html");
                         </a>
                     </li>
 
-                   <li>
-                        <a href="../../page/director/manager_view_employee_task.php">
+					<li>
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">date_range</i>
-                            <span>Tasks</span>
+                            <span>Task</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/director/manager_view_employee_task.php">Staff</a>
+                            </li>
+							<li>
+                                <a href="../../page/director/manager_view_sv_task.php">Manager</a>
+                            </li>
+                        </ul>
                     </li>
 					
 					<li>
@@ -288,6 +296,7 @@ header("location: ../../index.html");
 
 					//$result = $con -> query($sql);
 				?>
+				
 
 					 <label for="admin_name">Name</label>
 						<div class="form-group">

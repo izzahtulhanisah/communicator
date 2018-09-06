@@ -208,10 +208,18 @@ $manager_idd = $_SESSION['manager_id'];
                     </li>
 
 					<li>
-                        <a href="../../page/director/manager_view_profile.php">
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
                         </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/director/manager_view_profile.php">Your Profile</a>
+                            </li>
+							<li>
+                                <a href="../../page/director/manager_question.php">Edit Secret Answers</a>
+                            </li>
+                        </ul>
                     </li>
 
 					<li>
@@ -221,12 +229,33 @@ $manager_idd = $_SESSION['manager_id'];
                         </a>
                     </li>
 
-                   <li>
-                        <a href="../../page/director/manager_view_employee_task.php">
+					<li>
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">date_range</i>
-                            <span>Tasks</span>
+                            <span>Task</span>
+                        </a>
+						<ul class="ml-menu">
+							<li>
+                                <a href="../../page/director/manager_view_employee_task.php">Staff</a>
+                            </li>
+							<li>
+                                <a href="../../page/director/manager_view_sv_task.php">Manager</a>
+                            </li>
+                        </ul>
+                    </li>
+					
+					<li>
+                        <a href="../../page/director/company_details.php">
+                            <i class="material-icons">location_city</i>
+                            <span>Company Details</span>
                         </a>
                     </li>
+					
+					<li>
+                        <a href="../../page/director/admin_contact.php">
+                            <i class="material-icons">help_outline</i>
+                            <span>Need Help</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -275,7 +304,7 @@ $manager_idd = $_SESSION['manager_id'];
                                             <th width= '15%'>Date</th>
                                             <th width= '45%'>Details</th>
                                             <th width= '15%'>Status</th>
-											<th width= '15%'>Created By</th>
+											<!--<th width= '15%'>Created By</th>-->
 											<th width= '15%'>Action</th>
 
                                         </tr>
@@ -327,7 +356,7 @@ $manager_idd = $_SESSION['manager_id'];
 											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?></td>
-											<td><?php echo $manager_id;?></td>
+											<!--<td><?php echo $manager_id;?></td>-->
 
 											<td>
 												<div class='' role='group' aria-label='...'>

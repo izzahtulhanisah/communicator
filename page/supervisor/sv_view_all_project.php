@@ -41,6 +41,10 @@ header("location: ../../index.html");
 	
 	<!-- Calendar for date range -->
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	
+	<!-- Bootstrap Select Css -->
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
 
 </head>
 
@@ -345,7 +349,7 @@ header("location: ../../index.html");
 										<th width="15%">Start Date</th>
 										<th width="15%">Due Date</th>
 										<th width="10%">Status</th>
-										<th width="15%">Action</th>
+										<!--<th width="15%">Action</th>-->
 									</tr>
                                     </tr>
                                 </thead>
@@ -385,7 +389,7 @@ header("location: ../../index.html");
 
 											echo "<tr>
 													<td>$x</td>
-													<td><a href = 'sv_project_list.php?project_id=$project_id&project_name=$project_name'>$project_name</a></td>
+													<td>$project_name</td>
 													";
 									?>
 
@@ -411,13 +415,13 @@ header("location: ../../index.html");
 												}
 												?>
 											</td>
-											<td>
+											<!--<td>
 												<div>
 													<a href="#defaultModal<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
 													<a href="#delete<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
 													<a href="#complete<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-ok' aria-hidden='true'></span></button></a>
 												</div>
-											</td>
+											</td>-->
 
 
 
@@ -629,6 +633,25 @@ header("location: ../../index.html");
 																	</div>
 																</div>
 															</div>
+															
+															<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																<label for="task_title">Manager</label>
+															</div>
+
+															<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																<select name='sv_id' class="form-control show-tick" id="sv_id">
+																	<option value='' selected='selected'>-- Please select --</option>
+																	<?php
+																	include "database.php";
+																	$t = "select * from supervisor ";
+																	$result2 = $conn -> query($t);
+																	while ($row = $result2 -> fetch_assoc()){
+
+																		echo "<option value='".$row['sv_id']."'>".$row['sv_name']."</option>";
+																	}
+																	?>
+																</select>
+															</div>
 
 															<div class="row clearfix">
 																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -697,7 +720,7 @@ header("location: ../../index.html");
     <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../../pages/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
@@ -722,6 +745,8 @@ header("location: ../../index.html");
 
     <!-- Demo Js -->
     <script src="../../js/demo.js"></script>
+	
+
 	
 		<!-- Date Range -->
 	

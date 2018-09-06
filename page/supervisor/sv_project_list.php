@@ -372,7 +372,7 @@ header("location: ../../index.html");
 										include 'database.php';
 											$project_id = $_GET['project_id'];
 
-											$sql = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, supervisor.sv_id, supervisor.sv_name, employee.employee_name, task.employee_id, task2.sv_id, 
+											/*$sql = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, supervisor.sv_id, supervisor.sv_name, employee.employee_name, task.employee_id, task2.sv_id, 
 													GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee,
 													GROUP_CONCAT( DISTINCT supervisor.sv_name ) AS supervisor
 													FROM project, task, employee, supervisor, task2
@@ -382,7 +382,14 @@ header("location: ../../index.html");
 													AND project.project_id = task2.project_id
 													AND task.project_id =  '$project_id'
 													GROUP BY project.project_id
-													";
+													";*/
+											$sql = "SELECT project.project_id, project.project_name, project.project_description, 
+														   project.project_date_created, project.project_due_date, project.project_status,project.sv_id,
+														   supervisor.sv_id, supervisor.sv_name
+													FROM project,supervisor 
+													WHERE project.sv_id = supervisor.sv_id
+													AND project.project_id='$project_id'";
+													
 											$result = $conn->query($sql);
 
 
@@ -390,9 +397,10 @@ header("location: ../../index.html");
 												// output data of each row
 												while($row = $result->fetch_assoc()) {
 													//$id = $row['id'];
+													echo "<table class='table table-bordered table-striped table-hover '>";
 													echo "<tr>";
-														echo "<th>ID</th>";
-														echo "<td>" . $row["project_id"]. "</td>";
+														echo "<th width = '30%'>ID</th>";
+														echo "<td width = '70%'>" . $row["project_id"]. "</td>";
 													echo "</tr>";
 
 													echo "<tr>";
@@ -439,8 +447,43 @@ header("location: ../../index.html");
 													
 													echo "<tr>";
 													echo "<th>Project Manager</th>";
-														echo "<td>" . $row["supervisor"]. "</td>";
+														echo "<td>" . $row["sv_name"]. "</td>";
 													echo "</tr>";
+
+													/*echo "<tr>";
+														echo "<th>Staff (PIC)</th>";
+														echo "<td>" . $row["employee"]. "</td>";
+													echo "</tr>";*/
+
+
+												}
+											} else {
+												echo "0 results";
+											}
+											
+											$conn->close();
+										?>
+										
+										<?php
+											include "database.php";
+											$project_id = $_GET['project_id'];
+
+											$sql2 = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, employee.employee_name, task.employee_id,
+													GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee
+													FROM project, task, employee
+													WHERE project.project_id = task.project_id
+													AND task.employee_id = employee.employee_id
+													AND task.project_id =  '$project_id'
+													GROUP BY project.project_id
+													";
+											$result = $conn->query($sql2);
+
+
+											if ($result->num_rows > 0) {
+												// output data of each row
+												while($row = $result->fetch_assoc()) {
+													//$id = $row['id'];
+													
 
 													echo "<tr>";
 														echo "<th>Staff (PIC)</th>";
@@ -450,8 +493,13 @@ header("location: ../../index.html");
 
 												}
 											} else {
-												echo "0 results";
+											echo "<tr>";
+														echo "<th>Staff</th>";
+														echo "<td><font color = 'red'>Do not have staff yet</font></td>";
+													echo "</tr>";
+												//echo "No employee";
 											}
+											echo "</table>";
 											$conn->close();
 										?>
 										</tbody>
@@ -722,7 +770,7 @@ header("location: ../../index.html");
 
 												<form class="form-align" id="form">
 													<div class="input-group">
-														<input type="hidden" name="user" value="<?php echo $manager_id; ?>">
+														<input type="hidden" name="user" value="<?php echo $sv_id; ?>">
 														<div class="form-line">
 															<input type="text" name="message" class="form-control" placeholder = "Type your message here" >
 														</div>

@@ -17,9 +17,10 @@ $project_description = $_POST['project_description'];
 $project_status = $_POST['project_status'];
 $project_date_created = $_POST['project_date_created'];
 $project_due_date = $_POST['project_due_date'];
+$sv_id = $_POST['sv_id'];
 
-$sql = "INSERT INTO project (project_name, project_description, project_date_created, project_due_date, project_status)
-	  VALUES ('$project_name','$project_description', '$project_date_created', '$project_due_date', '$project_status')";
+$sql = "INSERT INTO project (project_name, project_description, project_date_created, project_due_date, project_status, sv_id)
+	  VALUES ('$project_name','$project_description', '$project_date_created', '$project_due_date', '$project_status', '$sv_id')";
 $result = mysqli_query($conn,$sql);
 
 header('Location: sv_view_all_project.php');

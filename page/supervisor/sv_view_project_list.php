@@ -41,6 +41,10 @@ header("location: ../../index.html");
 	
 	<!-- Calendar for date range -->
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	
+	<!-- Bootstrap Select Css -->
+    <link href="../../plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
 
 </head>
 
@@ -355,11 +359,13 @@ header("location: ../../index.html");
                                     <?php
 									include 'database.php';
 
-									$sql = "SELECT project.project_id, project.project_name,project.project_description, project.project_date_created, project.project_due_date, project.project_status, supervisor.sv_id
+									/*$sql = "SELECT project.project_id, project.project_name,project.project_description, project.project_date_created, project.project_due_date, project.project_status, supervisor.sv_id
 											FROM task2, project,supervisor
 											WHERE project.project_id = task2.project_id
 											AND task2.sv_id = supervisor.sv_id
-											AND task2.sv_id = '$abc'";
+											AND task2.sv_id = '$abc'";*/
+											
+									$sql = "SELECT * from project where sv_id= '$abc'";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row
@@ -634,6 +640,26 @@ header("location: ../../index.html");
 																	</div>
 																</div>
 															</div>
+															
+															<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																<label for="task_title">Mananger</label>
+															</div>
+
+															<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																<select name='sv_id' class="form-control show-tick" id="sv_id">
+																	<option value='' selected='selected'>-- Please select --</option>
+																	<?php
+																	include "database.php";
+																	$t = "select * from supervisor ";
+																	$result2 = $conn -> query($t);
+																	while ($row = $result2 -> fetch_assoc()){
+
+																		echo "<option value='".$row['sv_id']."'>".$row['sv_name']."</option>";
+																	}
+																	?>
+																</select>
+															</div>
+
 
 															<div class="row clearfix">
 																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -702,7 +728,7 @@ header("location: ../../index.html");
     <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../../pages/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
