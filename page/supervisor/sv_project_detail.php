@@ -234,10 +234,10 @@ header("location: ../../index.html");
                             <span>Assignments</span>
                         </a>
 						<ul class="ml-menu">
-							<li>
+							<li  class="active">
                                 <a href="../../page/supervisor/sv_view_all_project.php">All Assignments</a>
                             </li>
-							<li class = "active">
+							<li>
                                 <a href="../../page/supervisor/sv_view_project_list.php">My Assignments</a>
                             </li>
                         </ul>
@@ -312,7 +312,7 @@ header("location: ../../index.html");
 						</a>
 					</li>
 					<li>
-						<a href="../../page/supervisor/sv_view_project_list.php">
+						<a href="../../page/supervisor/sv_view_all_project.php">
 							<i class="material-icons">library_books</i> Assignments
 						</a>
 					</li>
@@ -537,17 +537,13 @@ header("location: ../../index.html");
 													<?php
 														include 'database.php';
 
-														if (mysqli_connect_errno())
-														  {
-														  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-														  }
-
-														//$abc=$_SESSION['employee_id'];
+														$abc=$_SESSION['sv_id'];
 														$sql = "SELECT employee.employee_name, task.task_id,task.task_title, task.task_status, task.task_created, task.task_due_date, task.task_description, task.task_comment, project.project_id, project.project_name, employee.employee_id
 																FROM task,project, employee
 																WHERE task.project_id = project.project_id
 																AND task.employee_id = employee.employee_id
-																AND task.project_id =  '$project_id'";
+																AND task.project_id =  '$project_id'
+																AND project.sv_id = '$abc'";
 														$result = $conn->query($sql);
 														if ($result->num_rows > 0) {
 															// output data of each row

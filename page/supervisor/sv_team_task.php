@@ -306,13 +306,13 @@ header("location: ../../index.html");
 		 <div class="body">
 
 			<ol class="breadcrumb">
-				<li>
+				<li class="active">
 					<a href="../../page/supervisor/sv_home.php">
 						<i class="material-icons">home</i> Home
 					</a>
 				</li>
-				<li class="active">
-					<a href="../../page/supervisor/sv_open_task.php">
+				<li>
+					<a href="../../page/supervisor/sv_team_task.php">
 						<i class="material-icons">date_range</i> Tasks
 					</a>
 				</li>
@@ -339,7 +339,7 @@ header("location: ../../index.html");
 							<input type="button" name="filter" id="filter" value="SEARCH" class="btn btn-info" />
 							</div>
 
-							<a class="btn btn-success pull-right" data-toggle="modal" data-target="#addProject"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>NEW TASK</a>
+							<!--<a class="btn btn-success pull-right" data-toggle="modal" data-target="#addProject"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>NEW TASK</a>-->
                         </div>
                         <div class="body">
 
@@ -593,7 +593,7 @@ header("location: ../../index.html");
 										$task_due_date = $_POST['task_due_date'];
 										$task_description = $_POST['task_description'];
 										$task_comment = $_POST['task_comment'];
-										$sql = "UPDATE task2 SET
+										$sql = "UPDATE task SET
 											task_title='$task_title',
 											task_created='$task_created',
 											task_due_date='$task_due_date',
@@ -601,7 +601,7 @@ header("location: ../../index.html");
 											task_comment='$task_comment'
 										   WHERE task_id='$edit_task_id' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="sv_task.php"</script>';
+											echo '<script>window.location.href="sv_team_task.php"</script>';
 										} else {
 											echo "Error updating record: " . $conn->error;
 										}
@@ -629,7 +629,7 @@ header("location: ../../index.html");
 									if(isset($_POST['delete'])){
 
 										$delete_id = $_POST['delete_id'];
-										$sql = "DELETE FROM task2 WHERE task_id='$delete_id' ";
+										$sql = "DELETE FROM task WHERE task_id='$delete_id' ";
 										if ($conn->query($sql) === TRUE) {
 											echo '<script>window.location.href="sv_task.php"</script>';
 											} else {

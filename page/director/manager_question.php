@@ -78,13 +78,18 @@ header("location: ../../index.html");
 							 <?php
 								include "database.php";
 								$sql  = '
-										SELECT employee_id,task_status, COUNT(*)
-										 AS count
-										 FROM task
-										 WHERE task_status="delayed"
+										SELECT task_status, COUNT( * ) AS count
+										FROM (
 
+										SELECT task_status
+										FROM task
+										UNION ALL 
+										SELECT task_status
+										FROM task2
+										)t
+										WHERE task_status =  "Delayed"
+										GROUP BY task_status
 										 ';
-
 										 $result=mysqli_query($conn,$sql);
 											if($result)
 											{
@@ -108,12 +113,18 @@ header("location: ../../index.html");
 
 													<?php
 														include "database.php";
-														$t = "SELECT employee_id,task_status, COUNT(*)
-																	 AS count
-																	 FROM task
-																	 WHERE task_status='delayed'
+														$t = "SELECT task_status, COUNT( * ) AS count
+															FROM (
 
-																	 '";
+															SELECT task_status
+															FROM task
+															UNION ALL 
+															SELECT task_status
+															FROM task2
+															)t
+															WHERE task_status =  'Delayed'
+															GROUP BY task_status
+															'";
 														$result=mysqli_query($conn,$sql);
 
 														if($result)

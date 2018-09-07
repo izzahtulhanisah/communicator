@@ -128,8 +128,7 @@ $manager_idd = $_SESSION['manager_id'];
 															)t
 															WHERE task_status =  'Delayed'
 															GROUP BY task_status
-
-																	 '";
+															'";
 														$result=mysqli_query($conn,$sql);
 
 														if($result)

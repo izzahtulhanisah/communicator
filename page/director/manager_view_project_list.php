@@ -543,14 +543,14 @@ header("location: ../../index.html");}
 										$project_description = $_POST['project_description'];
 										$project_date_created = $_POST['project_date_created'];
 										$project_due_date = $_POST['project_due_date'];
-										$project_status = $_POST['project_status'];
+										//$project_status = $_POST['project_status'];
 
 										$sql = "UPDATE project SET
 											project_name='$project_name',
 											project_description='$project_description',
 											project_date_created='$project_date_created',
-											project_due_date='$project_due_date',
-											project_status='$project_status'
+											project_due_date='$project_due_date'
+										
 											WHERE project_id='$edit_id' ";
 										if ($conn->query($sql) === TRUE) {
 											echo '<script>window.location.href="manager_view_project_list.php"</script>';
@@ -601,64 +601,83 @@ header("location: ../../index.html");}
 												<h4 class="modal-title" id="defaultModalLabel"><center>ADD NEW ASSIGNMENT</center></h4>
 											</div>
 											<div class="modal-body">
-												<form action = "manager_add_project.php" method="post" class="form-horizontal" role="form">
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_name">Title</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																	<input type="text" name="project_name" class="form-control" placeholder="Enter Assignment Title">
+														<form action = "manager_add_project.php" method="post" class="form-horizontal" role="form">
+															<div class="row clearfix">
+																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																	<label for="project_name">Title</label>
+																</div>
+																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																	<div class="form-group">
+																		<div class="form-line">
+																			<input type="text" name="project_name" class="form-control" placeholder="Enter Assignment Title">
+																		</div>
+																	</div>
 																</div>
 															</div>
-														</div>
-													</div>
+															
+															<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																<label for="task_title">Manager</label>
+															</div>
 
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_description">Description</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																<textarea name="project_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Assignment Description" required></textarea>
+															<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																<select name='sv_id' class="form-control show-tick" id="sv_id">
+																	<option value='' selected='selected'>-- Please select --</option>
+																	<?php
+																	include "database.php";
+																	$t = "select * from supervisor ";
+																	$result2 = $conn -> query($t);
+																	while ($row = $result2 -> fetch_assoc()){
+
+																		echo "<option value='".$row['sv_id']."'>".$row['sv_name']."</option>";
+																	}
+																	?>
+																</select>
+															</div>
+
+															<div class="row clearfix">
+																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																	<label for="project_description">Description</label>
+																</div>
+																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																	<div class="form-group">
+																		<div class="form-line">
+																		<textarea name="project_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Assignment Description" required></textarea>
+																		</div>
+																	</div>
 																</div>
 															</div>
-														</div>
-													</div>
 
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_date_created">Start Date</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																	<input type="date" name="project_date_created" class="form-control date">
+															<div class="row clearfix">
+																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																	<label for="project_date_created">Start Date</label>
+																</div>
+																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																	<div class="form-group">
+																		<div class="form-line">
+																			<input type="date" name="project_date_created" class="form-control date">
+																		</div>
+																	</div>
 																</div>
 															</div>
-														</div>
-													</div>
 
-													<div class="row clearfix">
-														<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-															<label for="project_due_date">Due Date</label>
-														</div>
-														<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-															<div class="form-group">
-																<div class="form-line">
-																	<input type="date" name="project_due_date" class="form-control">
+															<div class="row clearfix">
+																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																	<label for="project_due_date">Due Date</label>
+																</div>
+																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																	<div class="form-group">
+																		<div class="form-line">
+																			<input type="date" name="project_due_date" class="form-control">
+																		</div>
+																	</div>
 																</div>
 															</div>
-														</div>
-													</div>
 
-													<div class="modal-footer">
-														<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-														<button type="submit" class="btn btn-success waves-effect"><span class="glyphicon glyphicon-plus"></span>SUBMIT</button>
-													</div>
-												</form>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																<button type="submit" class="btn btn-success waves-effect"><span class="glyphicon glyphicon-plus"></span>SUBMIT</button>
+															</div>
+														</form>
 											</div>
 
 										</div>

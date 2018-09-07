@@ -90,11 +90,17 @@ header("location: ../../index.html");
 								include "database.php";
 
 								$sql  = '
-										SELECT employee_id,task_status, COUNT(*)
-										 AS count
-										 FROM task
-										 WHERE task_status="delayed"
+										SELECT task_status, COUNT( * ) AS count
+										FROM (
 
+										SELECT task_status
+										FROM task
+										UNION ALL 
+										SELECT task_status
+										FROM task2
+										)t
+										WHERE task_status =  "Delayed"
+										GROUP BY task_status
 										 ';
 
 										 $result=mysqli_query($conn,$sql);
@@ -120,12 +126,18 @@ header("location: ../../index.html");
 
 												<?php
 													include "database.php";
-													$t = "SELECT employee_id,task_status, COUNT(*)
-																 AS count
-																 FROM task
-																 WHERE task_status='delayed'
+													$t = "SELECT task_status, COUNT( * ) AS count
+															FROM (
 
-																 '";
+															SELECT task_status
+															FROM task
+															UNION ALL 
+															SELECT task_status
+															FROM task2
+															)t
+															WHERE task_status =  'Delayed'
+															GROUP BY task_status
+															'";
 													$result=mysqli_query($conn,$sql);
 
 													if($result)
@@ -324,7 +336,12 @@ header("location: ../../index.html");
                                 </li>
                                 <li role="presentation">
                                     <a href="#profile_with_icon_title" data-toggle="tab">
-                                        <i class="material-icons">assignment</i> Task
+                                        <i class="material-icons">group</i> Staff Task
+                                    </a>
+                                </li>
+								<li role="presentation">
+                                    <a href="#manager_with_icon_title" data-toggle="tab">
+                                        <i class="material-icons">person</i> Manager Task
                                     </a>
                                 </li>
                                 <li role="presentation">
@@ -345,81 +362,135 @@ header("location: ../../index.html");
 											<tbody>
 
 											 <?php
-												include database.php;
-												$project_id = $_GET['project_id'];
+												include 'database.php';
+											$project_id = $_GET['project_id'];
 
-												$sql = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, employee.employee_name, task.employee_id,
-														GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee
-														FROM project, task, employee
-														WHERE project.project_id = task.project_id
-														AND task.employee_id = employee.employee_id
-														AND task.project_id =  '$project_id'
-														GROUP BY project.project_id
-														";
-												$result = $conn->query($sql);
-
-												if ($result->num_rows > 0) {
-													// output data of each row
-													while($row = $result->fetch_assoc()) {
-														//$id = $row['id'];
-														echo "<tr>";
-															echo "<th>ID</th>";
-															echo "<td>" . $row["project_id"]. "</td>";
-														echo "</tr>";
-
-														echo "<tr>";
-															echo "<th>Title</th>";
-															echo "<td>" . $row["project_name"]. "</td>";
-														echo "</tr>";
-
-														echo "<tr>";
-															echo "<th>Description</th>";
-															echo "<td>" . $row["project_description"]. "</td>";
-														echo "</tr>";
-
-														echo "<tr>";
-															echo "<th>Date Created</th>";
-															echo "<td>" . $row["project_date_created"]. "</td>";
-														echo "</tr>";
-
-														echo "<tr>";
-															echo "<th>Due Date</th>";
-															echo "<td>" . $row["project_due_date"]. "</td>";
-														echo "</tr>";
-
-														echo "<tr>";
-															echo "<th>Status</th>";
-															$project_status = $row['project_status'];
-
-															if($project_status == 'Delayed'){
-																$alert = "<div class='badge bg-red'>
-																<strong>$project_status</strong>
-																</div>";
-
-															}else if($project_status == 'In Progress'){
-																$alert = "<div class='badge bg-blue'>
-																<strong>$project_status</strong>
-																</div>";
-
-															}else {
-																$alert = "<div class='badge bg-green'>
-																<strong>$project_status</strong>
-																</div>";
-																}
-															echo "<td>" . $alert. "</td>";
-														echo "</tr>";
-
-														echo "<tr>";
-															echo "<th>Staff (PIC)</th>";
-															echo "<td>" . $row["employee"]. "</td>";
-														echo "</tr>";
+											/*$sql = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, supervisor.sv_id, supervisor.sv_name, employee.employee_name, task.employee_id, task2.sv_id, 
+													GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee,
+													GROUP_CONCAT( DISTINCT supervisor.sv_name ) AS supervisor
+													FROM project, task, employee, supervisor, task2
+													WHERE project.project_id = task.project_id
+													AND task2.sv_id = supervisor. sv_id 
+													AND task.employee_id = employee.employee_id
+													AND project.project_id = task2.project_id
+													AND task.project_id =  '$project_id'
+													GROUP BY project.project_id
+													";*/
+											$sql = "SELECT project.project_id, project.project_name, project.project_description, 
+														   project.project_date_created, project.project_due_date, project.project_status,project.sv_id,
+														   supervisor.sv_id, supervisor.sv_name
+													FROM project,supervisor 
+													WHERE project.sv_id = supervisor.sv_id
+													AND project.project_id='$project_id'";
+													
+											$result = $conn->query($sql);
 
 
-													}
-												} else {
-													echo "0 results";
+											if ($result->num_rows > 0) {
+												// output data of each row
+												while($row = $result->fetch_assoc()) {
+													//$id = $row['id'];
+													echo "<table class='table table-bordered table-striped table-hover '>";
+													echo "<tr>";
+														echo "<th width = '30%'>ID</th>";
+														echo "<td width = '70%'>" . $row["project_id"]. "</td>";
+													echo "</tr>";
+
+													echo "<tr>";
+														echo "<th>Title</th>";
+														echo "<td>" . $row["project_name"]. "</td>";
+													echo "</tr>";
+
+													echo "<tr>";
+														echo "<th>Description</th>";
+														echo "<td>" . $row["project_description"]. "</td>";
+													echo "</tr>";
+
+													echo "<tr>";
+														echo "<th>Date Created</th>";
+														echo "<td>" . $row["project_date_created"]. "</td>";
+													echo "</tr>";
+
+													echo "<tr>";
+														echo "<th>Due Date</th>";
+														echo "<td>" . $row["project_due_date"]. "</td>";
+													echo "</tr>";
+
+													echo "<tr>";
+														echo "<th>Status</th>";
+														$project_status = $row['project_status'];
+
+														if($project_status == 'Delayed'){
+															$alert = "<div class='badge bg-red'>
+															<strong>$project_status</strong>
+															</div>";
+
+														}else if($project_status == 'In Progress'){
+															$alert = "<div class='badge bg-blue'>
+															<strong>$project_status</strong>
+															</div>";
+
+														}else {
+															$alert = "<div class='badge bg-green'>
+															<strong>$project_status</strong>
+															</div>";
+															}
+														echo "<td>" . $alert. "</td>";
+													echo "</tr>";
+													
+													echo "<tr>";
+													echo "<th>Project Manager</th>";
+														echo "<td>" . $row["sv_name"]. "</td>";
+													echo "</tr>";
+
+													/*echo "<tr>";
+														echo "<th>Staff (PIC)</th>";
+														echo "<td>" . $row["employee"]. "</td>";
+													echo "</tr>";*/
+
+
 												}
-												$conn->close();
+											} else {
+												echo "0 results";
+											}
+											
+											$conn->close();
+										?>
+										
+										<?php
+											include "database.php";
+											$project_id = $_GET['project_id'];
+
+											$sql2 = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, employee.employee_name, task.employee_id,
+													GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee
+													FROM project, task, employee
+													WHERE project.project_id = task.project_id
+													AND task.employee_id = employee.employee_id
+													AND task.project_id =  '$project_id'
+													GROUP BY project.project_id
+													";
+											$result = $conn->query($sql2);
+
+
+											if ($result->num_rows > 0) {
+												// output data of each row
+												while($row = $result->fetch_assoc()) {
+													//$id = $row['id'];
+													
+													echo "<tr>";
+														echo "<th>Staff (PIC)</th>";
+														echo "<td>" . $row["employee"]. "</td>";
+													echo "</tr>";
+												}
+											} else {
+											echo "<tr>";
+														echo "<th>Staff</th>";
+														echo "<td><font color = 'red'>Do not have staff yet</font></td>";
+													echo "</tr>";
+												//echo "No employee";
+											}
+											echo "</table>";
+											$conn->close();
 											?>
 											</tbody>
 										</table>
@@ -506,7 +577,7 @@ header("location: ../../index.html");
 																<td>
 																	<div>
 																		<a href="#defaultModal<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
-																		<a href="#delete<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
+																		<!--<a href="#delete<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>-->
 																	</div>
 																</td>
 															</tr>
@@ -660,6 +731,242 @@ header("location: ../../index.html");
 
                                     </p>
                                 </div>
+								
+								<div role="tabpanel" class="tab-pane fade" id="manager_with_icon_title">
+
+                                    <p>
+									<!-- Exportable Table -->
+									<div class="row clearfix">
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<div class="card">
+
+												<div class="body">
+												<div class="table-responsive">
+													<table class="table table-bordered table-striped table-hover dataTable js-exportable">
+														<thead>
+															<tr>
+																<th width="5%">No.</th>
+																<th width="15%">Manager</th>
+																<th width="20%">Tasks</th>
+																<th width="15%">Start Date</th>
+																<th width="15%">Due Date</th>
+																<th width="15%">Status</th>
+																<th width="25%">Issues</th>
+																<th width="25%">Solutions</th>
+																<th width="10%">Action</th>
+															</tr>
+														</thead>
+
+														<tbody>
+
+														<?php
+															include "database.php";
+															
+															//$abc=$_SESSION['employee_id'];
+															$sql = "SELECT supervisor.sv_name, task2.task_id,task2.task_title, task2.task_status, task2.task_created, task2.task_due_date, task2.task_description, task2.task_comment, project.project_id, project.project_name, supervisor.sv_id
+																	FROM task2,project, supervisor
+																	WHERE task2.project_id = project.project_id
+																	AND task2.sv_id = supervisor.sv_id
+																	AND task2.project_id =  '$project_id'";
+															$result = $conn->query($sql);
+															if ($result->num_rows > 0) {
+																// output data of each row
+																$x=1;
+																while($row = $result->fetch_assoc()) {
+																	$task_id = $row['task_id'];
+																	$sv_name = $row['sv_name'];
+																	$task_title = $row['task_title'];
+																	$project_name = $row['project_name'];
+																	$task_status = $row['task_status'];
+
+																	if($task_status == 'Delayed'){
+																		$alert = "<div class='badge bg-red'>
+																		<strong>$task_status</strong>
+																		</div>";
+
+																		}else if($task_status == 'In Progress'){
+																			$alert = "<div class='badge bg-blue'>
+																			<strong>$task_status</strong>
+																			</div>";
+
+																		}else {
+																			$alert = "<div class='badge bg-green'>
+																			<strong>$task_status</strong>
+																			</div>";
+																		}
+
+																	$task_created = $row['task_created'];
+																	$task_due_date = $row['task_due_date'];
+																	$task_description = $row['task_description'];
+																	$task_comment = $row['task_comment'];
+															?>
+															<tr>
+																<td><?php echo $x; ?></td>
+																<td><?php echo $sv_name; ?></td>
+																<td><?php echo $task_title; ?></td>
+																<td><?php echo date('d-m-Y', strtotime($row['task_created'])); ?></td>
+																<td><?php echo date('d-m-Y', strtotime($row['task_due_date'])); ?></td>
+																<td><?php echo $alert; ?></td>
+																<td><?php echo nl2br($task_description); ?></td>
+																<td><?php echo nl2br($task_comment); ?></td>
+																<td>
+																	<div>
+																		<a href="#defaultModal<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
+																		<!--<a href="#delete<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>-->
+																	</div>
+																</td>
+															</tr>
+														   <!-- Update Task List -->
+																<div class="modal fade" id="defaultModal<?php echo $task_id; ?>" tabindex="-1" role="dialog">
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h4 class="modal-title" id="defaultModalLabel"><center>EDIT TASK</center></h4>
+																			</div>
+																			<div class="modal-body">
+
+																				<form method="post" class="form-horizontal" role="form" action="">
+																					<input type="hidden" name="edit_task_id" value="<?php echo $task_id;  ?>">
+																					<input type="hidden" name="edit_sv_id" value="<?php echo $sv_id;  ?>">
+
+
+																					<div class="row clearfix">
+																						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																							<label for="task_title">Tasks</label>
+																						</div>
+																						<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																							<div class="form-group">
+																								<div class="form-line">
+																									<?php echo $task_title; ?>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+
+																					<div class="row clearfix">
+																						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																							<label for="task_due_date">Due Date</label>
+																						</div>
+																						<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																							<div class="form-group">
+																								<div class="form-line">
+																									<?php echo $before30=date('Y-m-d', strtotime("$task_due_date")); ?>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+
+																					<div class="row clearfix">
+																						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																							<label for="task_description">Issues</label>
+																						</div>
+																						<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																							<div class="form-group">
+																								<div class="form-line">
+
+																								<textarea name="task_description" readonly id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder=""><?php echo $task_description; ?></textarea>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+
+																					<div class="row clearfix">
+																						<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																							<label for="task_comment">Solutions</label>
+																						</div>
+																						<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																							<div class="form-group">
+																								<div class="form-line">
+																								<textarea name="task_comment" id="task_comment" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Solutions"><?php echo $task_comment; ?></textarea>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+
+																					<div class="modal-footer">
+																						<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																						<button type="submit" class="btn btn-success waves-effect" name="update_task"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
+																					</div>
+																				</form>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+
+															 <!-- Delete Project List -->
+																<div class="modal fade" id="delete<?php echo $task_id; ?>" tabindex="-1" role="dialog">
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h4 class="modal-title" id="defaultModalLabel"><center>DELETE TASK</center></h4>
+																			</div>
+																			<div class="modal-body">
+
+																				<form method="post" class="form-horizontal" role="form">
+																					<input type="hidden" name="delete_id" value="<?php echo $task_id; ?>">
+																					<div class="alert bg-red">
+																						<p><strong>Are you sure you want to delete <?php echo $task_title; ?> ?</strong></p>
+																					</div>
+
+																					<div class="modal-footer">
+
+																						<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																						<button type="submit" class="btn btn-danger waves-effect" name="delete"><span class="glyphicon glyphicon-trash"></span>DELETE</button>
+																					</div>
+																				</form>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+
+
+															<?php
+															$x++;}
+
+															//Update Tasks
+															if(isset($_POST['update_task'])){
+																$edit_task_id = $_POST['edit_task_id'];
+																$project_name = $_POST['project_name'];
+																$task_title = $_POST['task_title'];
+																$task_due_date = $_POST['task_due_date'];
+																$task_description = $_POST['task_description'];
+																$task_comment = $_POST['task_comment'];
+																$sql = "UPDATE task2 SET
+																		task_comment='$task_comment'
+																	    WHERE task_id='$edit_task_id' ";
+																if ($conn->query($sql) === TRUE) {
+																	echo "<script>alert('*Solution Added*');window.location.href='javascript:history.back(-1);'</script>";
+																} else {
+																	echo "Error updating record: " . $conn->error;
+																}
+															}
+															 if(isset($_POST['delete'])){
+															// sql to delete a record
+															$delete_id = $_POST['delete_id'];
+															$sql = "DELETE FROM task2 WHERE task_id='$delete_id' ";
+															if ($conn->query($sql) === TRUE) {
+																echo '<script>window.location.href="../../page/director/project_list.php"</script>';
+																} else {
+																	echo "Error deleting record: " . $conn->error;
+																	}
+																}
+
+														}
+															?>
+														</tbody>
+													</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- #END# Exportable Table -->
+
+                                    </p>
+                                </div>
+								
                                 <div role="tabpanel" class="tab-pane fade" id="messages_with_icon_title">
                                     <center><font color = 'green'><b>CHAT WITH YOUR TEAM MEMBERS!</b></font></center>
                                     <p>

@@ -313,7 +313,7 @@ header("location: ../../index.html");
 					</a>
 				</li>
 				<li class="active">
-					<a href="../../page/supervisor/sv_open_task.php">
+					<a href="../../page/supervisor/sv_task.php">
 						<i class="material-icons">date_range</i> Tasks
 					</a>
 				</li>
@@ -656,7 +656,7 @@ header("location: ../../index.html");
 																<option value='' selected='selected'>-- Please select --</option>
 																<?php
 																include "database.php";
-																$t = "select * from project ";
+																$t = "select * from project where sv_id = '$abc' ";
 																$result2 = $conn -> query($t);
 																while ($row = $result2 -> fetch_assoc()){
 

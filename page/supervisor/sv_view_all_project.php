@@ -309,8 +309,10 @@ header("location: ../../index.html");
 						<i class="material-icons">home</i> Home
 					</a>
 				</li>
-				<li class="active">
-					<i class="material-icons">library_books</i> Assignment
+				<li>
+					<a href="../../page/supervisor/sv_view_all_project.php">
+						<i class="material-icons">library_books</i> Assignment
+					</a>
 				</li>
 			</ol>
 
@@ -389,7 +391,7 @@ header("location: ../../index.html");
 
 											echo "<tr>
 													<td>$x</td>
-													<td>$project_name</td>
+													<td><a href = 'sv_project_detail.php?project_id=$project_id&project_name=$project_name'>$project_name</a></td>
 													";
 									?>
 
@@ -561,15 +563,15 @@ header("location: ../../index.html");
 										$project_description = $_POST['project_description'];
 										$project_date_created = $_POST['project_date_created'];
 										$project_due_date = $_POST['project_due_date'];
-										$project_status = $_POST['project_status'];
+										//$project_status = $_POST['project_status'];
 
 										
 										$sql = "UPDATE project SET
 											project_name='$project_name',
 											project_description='$project_description',
 											project_date_created='$project_date_created',
-											project_due_date='$project_due_date',
-											project_status='$project_status'
+											project_due_date='$project_due_date'
+											
 											WHERE project_id='$edit_id' ";
 										if ($conn->query($sql) === TRUE) {
 											echo '<script>window.location.href="sv_view_all_project.php"</script>';

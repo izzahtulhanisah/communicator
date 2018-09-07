@@ -312,7 +312,7 @@ header("location: ../../index.html");
 						<i class="material-icons">home</i> Home
 					</a>
 				</li>
-				<li class="active">
+				<li>
 					<a href="../../page/supervisor/sv_open_task.php">
 						<i class="material-icons">date_range</i> Tasks
 					</a>

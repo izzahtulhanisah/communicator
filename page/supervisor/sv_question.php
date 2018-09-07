@@ -193,14 +193,14 @@ header("location: ../../index.html");
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active">
+                    <li>
                         <a href="../../page/supervisor/sv_home.php">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
                     </li>
 
-					<li>
+					<li class="active">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person</i>
                             <span>Profile</span>
@@ -209,7 +209,7 @@ header("location: ../../index.html");
 							<li>
                                 <a href="../../page/supervisor/sv_view_profile.php">Your Profile</a>
                             </li>
-							<li>
+							<li class="active">
                                 <a href="../../page/supervisor/sv_question.php">Edit Secret Answers</a>
                             </li>
                         </ul>

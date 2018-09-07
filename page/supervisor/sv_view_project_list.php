@@ -310,8 +310,10 @@ header("location: ../../index.html");
 						<i class="material-icons">home</i> Home
 					</a>
 				</li>
-				<li class="active">
-					<i class="material-icons">library_books</i> Assignment
+				<li>
+					<a href="../../page/supervisor/sv_view_project_list.php">
+						<i class="material-icons">library_books</i> Assignment
+					</a>
 				</li>
 			</ol>
 
@@ -389,7 +391,7 @@ header("location: ../../index.html");
 												</div>";
 
 											}else {
-												$alert = $alert = "<div class='badge bg-green'>
+												$alert = "<div class='badge bg-green'>
 												<strong>$project_status</strong>
 												</div>";
 												}
@@ -469,6 +471,25 @@ header("location: ../../index.html");
 																		</div>
 																	</div>
 																</div>
+															</div>
+															
+															<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																<label for="task_title">Manager</label>
+															</div>
+
+															<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																<select name='sv_id' class="form-control show-tick" id="sv_id">
+																	<option value='<?php echo $sv_id; ?>' selected='selected'><?php echo $sv_name; ?></option>
+																	<?php
+																	include "database.php";
+																	$t = "select * from supervisor ";
+																	$result2 = $conn -> query($t);
+																	while ($row = $result2 -> fetch_assoc()){
+
+																		echo "<option value='".$row['sv_id']."'>".$row['sv_name']."</option>";
+																	}
+																	?>
+																</select>
 															</div>
 
 															<div class="row clearfix">
@@ -568,7 +589,8 @@ header("location: ../../index.html");
 										$project_description = $_POST['project_description'];
 										$project_date_created = $_POST['project_date_created'];
 										$project_due_date = $_POST['project_due_date'];
-										$project_status = $_POST['project_status'];
+										//$project_status = $_POST['project_status'];
+										$sv_id = $_POST['sv_id'];
 
 										
 										$sql = "UPDATE project SET
@@ -576,7 +598,8 @@ header("location: ../../index.html");
 											project_description='$project_description',
 											project_date_created='$project_date_created',
 											project_due_date='$project_due_date',
-											project_status='$project_status'
+											
+											sv_id='$sv_id'
 											WHERE project_id='$edit_id' ";
 										if ($conn->query($sql) === TRUE) {
 											echo '<script>window.location.href="sv_view_project_list.php"</script>';
@@ -641,8 +664,21 @@ header("location: ../../index.html");
 																</div>
 															</div>
 															
+															<div class="row clearfix">
+																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																	<label for="project_description">Description</label>
+																</div>
+																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																	<div class="form-group">
+																		<div class="form-line">
+																		<textarea name="project_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Assignment Description" required></textarea>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
 															<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																<label for="task_title">Mananger</label>
+																<label for="task_title">Manager</label>
 															</div>
 
 															<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
@@ -658,20 +694,6 @@ header("location: ../../index.html");
 																	}
 																	?>
 																</select>
-															</div>
-
-
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="project_description">Description</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																		<textarea name="project_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Assignment Description" required></textarea>
-																		</div>
-																	</div>
-																</div>
 															</div>
 
 															<div class="row clearfix">

@@ -147,19 +147,26 @@ header("location: ../../index.html");
                     </li>
 					
 					<li class="active">
+                        <a href="../../page/admin/company_details.php">
+                            <i class="material-icons">account_balance</i>
+                            <span>Company</span>
+                        </a>
+                    </li>
+					
+					<!--<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">account_balance</i>
                             <span>Company</span>
                         </a>
 						<ul class="ml-menu">
-							<li class="active">
+							<li>
                                 <a href="../../page/admin/company_details.php">Details</a>
                             </li>
 							<li>
                                 <a href="../../page/admin/add_company_details.php">Add New</a>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
 
 					<li>
                         <a href="javascript:void(0);" class="menu-toggle">

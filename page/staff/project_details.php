@@ -325,7 +325,7 @@ $employee_id = $_SESSION['employee_id'];
                                 </li>
                                 <li role="presentation">
                                     <a href="#profile_with_icon_title" data-toggle="tab">
-                                        <i class="material-icons">assignment</i> Task
+                                        <i class="material-icons">assignment</i> My Tasks
                                     </a>
                                 </li>
                                 <li role="presentation">
@@ -363,28 +363,38 @@ $employee_id = $_SESSION['employee_id'];
 														<tbody>
 
 															 <?php
-																include "database.php";
+																include 'database.php';
 																$project_id = $_GET['project_id'];
 
-																$sql = "SELECT project.project_id, project.project_name, project.project_description,
-																		project.project_date_created, project.project_due_date, project.project_status, employee.employee_id,
-																		employee.employee_name, task.employee_id,
-																		GROUP_CONCAT( DISTINCT employee.employee_name ) AS pic
-																		FROM project, task, employee
+																/*$sql = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, supervisor.sv_id, supervisor.sv_name, employee.employee_name, task.employee_id, task2.sv_id, 
+																		GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee,
+																		GROUP_CONCAT( DISTINCT supervisor.sv_name ) AS supervisor
+																		FROM project, task, employee, supervisor, task2
 																		WHERE project.project_id = task.project_id
+																		AND task2.sv_id = supervisor. sv_id 
 																		AND task.employee_id = employee.employee_id
+																		AND project.project_id = task2.project_id
 																		AND task.project_id =  '$project_id'
 																		GROUP BY project.project_id
-																		";
+																		";*/
+																$sql = "SELECT project.project_id, project.project_name, project.project_description, 
+																	   project.project_date_created, project.project_due_date, project.project_status,project.sv_id,
+																	   supervisor.sv_id, supervisor.sv_name
+																		FROM project,supervisor 
+																		WHERE project.sv_id = supervisor.sv_id
+																		AND project.project_id='$project_id'";
+																		
 																$result = $conn->query($sql);
+
 
 																if ($result->num_rows > 0) {
 																	// output data of each row
 																	while($row = $result->fetch_assoc()) {
 																		//$id = $row['id'];
+																		echo "<table class='table table-bordered table-striped table-hover '>";
 																		echo "<tr>";
-																			echo "<th>ID</th>";
-																			echo "<td>" . $row["project_id"]. "</td>";
+																			echo "<th width = '30%'>ID</th>";
+																			echo "<td width = '70%'>" . $row["project_id"]. "</td>";
 																		echo "</tr>";
 
 																		echo "<tr>";
@@ -398,7 +408,7 @@ $employee_id = $_SESSION['employee_id'];
 																		echo "</tr>";
 
 																		echo "<tr>";
-																			echo "<th>Start Date</th>";
+																			echo "<th>Date Created</th>";
 																			echo "<td>" . $row["project_date_created"]. "</td>";
 																		echo "</tr>";
 
@@ -406,7 +416,6 @@ $employee_id = $_SESSION['employee_id'];
 																			echo "<th>Due Date</th>";
 																			echo "<td>" . $row["project_due_date"]. "</td>";
 																		echo "</tr>";
-
 
 																		echo "<tr>";
 																			echo "<th>Status</th>";
@@ -429,18 +438,62 @@ $employee_id = $_SESSION['employee_id'];
 																				}
 																			echo "<td>" . $alert. "</td>";
 																		echo "</tr>";
-
-
+																		
 																		echo "<tr>";
-																			echo "<th>Staff (PIC)</th>";
-																			echo "<td>" . $row["pic"]. "</td>";
+																		echo "<th>Project Manager</th>";
+																			echo "<td>" . $row["sv_name"]. "</td>";
 																		echo "</tr>";
+
+																		/*echo "<tr>";
+																			echo "<th>Staff (PIC)</th>";
+																			echo "<td>" . $row["employee"]. "</td>";
+																		echo "</tr>";*/
 
 
 																	}
 																} else {
 																	echo "0 results";
 																}
+																
+																$conn->close();
+															?>
+															
+															<?php
+																include "database.php";
+																$project_id = $_GET['project_id'];
+
+																$sql2 = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, employee.employee_name, task.employee_id,
+																		GROUP_CONCAT( DISTINCT employee.employee_name) AS employee
+																		FROM project, task, employee
+																		WHERE project.project_id = task.project_id
+																		AND task.employee_id = employee.employee_id
+																		AND task.project_id =  '$project_id'
+																		GROUP BY project.project_id
+																		";
+																$result = $conn->query($sql2);
+
+
+																if ($result->num_rows > 0) {
+																	// output data of each row
+																	while($row = $result->fetch_assoc()) {
+																		//$id = $row['id'];
+																		
+
+																		echo "<tr>";
+																			echo "<th>Staff (PIC)</th>";
+																			echo "<td>" . $row["employee"]. "</td>";
+																		echo "</tr>";
+
+
+																	}
+																} else {
+																echo "<tr>";
+																			echo "<th>Staff</th>";
+																			echo "<td><font color = 'red'>Do not have staff yet</font></td>";
+																		echo "</tr>";
+																	//echo "No employee";
+																}
+																echo "</table>";
 																$conn->close();
 															?>
 														</tbody>

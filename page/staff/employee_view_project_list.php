@@ -306,29 +306,31 @@ header("location: ../../index.html");
 								<input type="button" name="filter" id="filter" value="SEARCH" class="btn btn-info" />
 								</div>
 
-								<a class="btn btn-success pull-right" data-toggle="modal" data-target="#addProject"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>NEW ASSIGNMENT</a>
+								<!--<a class="btn btn-success pull-right" data-toggle="modal" data-target="#addProject"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>NEW ASSIGNMENT</a>-->
                         </div>
+						
                         <div class="body">
 						<div class = "table-responsive">
 
                             <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="assignment_table">
-								<thead>
+                                <thead>
                                     <tr>
-                                        <th>No.</th>
-										<th>Title</th>
-										<th>Description</th>
-										<th>Start Date</th>
-										<th>Due Date</th>
-										<th>Status</th>
-										<th>Action</th>
+                                        <th width="5%">No.</th>
+										<th width="10%">Assignment</th>
+										<th width="25%">Description</th>
+										<th width="15%">Start Date</th>
+										<th width="15%">Due Date</th>
+										<th width="10%">Status</th>
+										<!--<th width="15%">Action</th>-->
 									</tr>
+                                    </tr>
                                 </thead>
 
                                 <tbody>
                                     <?php
-									include "database.php";
+									include 'database.php';
 
-									$sql = "SELECT * from project";
+									$sql = "SELECT * FROM project";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row
@@ -363,36 +365,35 @@ header("location: ../../index.html");
 													";
 									?>
 
-												<td><?php echo $project_description; ?></td>
-												<td><?php echo date('d-m-Y', strtotime($row['project_date_created'])); ?></td>
-												<td><?php echo date('d-m-Y', strtotime($row['project_due_date'])); ?></td>
-												<td><?php echo $alert;
+											<td><?php echo $project_description; ?></td>
+											<td><?php echo $project_date_created; ?></td>
+											<td><?php echo $project_due_date; ?></td>
+											<td><?php echo $alert;
 
 												if ($project_status == "Completed"){
 												}
 												else{
 
+													$sql2 = "UPDATE project
+															SET project_status =
+															CASE
+																WHEN NOW() > project_due_date THEN 'Delayed'
+																WHEN NOW() < project_due_date THEN 'In Progress'
+																END
+																WHERE project_id = $project_id
+																";
 
-												$sql2 = "UPDATE project
-														SET project_status =
-														CASE
-															 WHEN NOW() > project_due_date THEN 'Delayed'
-															 WHEN NOW() < project_due_date THEN 'In Progress'
-														END
-														WHERE project_id = $project_id
-														";
-
-												$result2 = $conn -> query($sql2);
+													$result2 = $conn -> query($sql2);
 												}
-												?></td>
-
-									<td>
-										<div>
-											<a href="#defaultModal<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
-											<a href="#delete<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
-											<!--<a href="#complete<?php //echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-ok' aria-hidden='true'></span></button></a> -->
-										</div>
-									</td>
+												?>
+											</td>
+											<!--<td>
+												<div>
+													<a href="#defaultModal<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
+													<a href="#delete<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
+													<a href="#complete<?php echo $project_id;?>" data-toggle="modal"><button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-ok' aria-hidden='true'></span></button></a>
+												</div>
+											</td>-->
 
 
 
@@ -416,7 +417,7 @@ header("location: ../../index.html");
 																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																	<div class="form-group">
 																		<div class="form-line">
-																			<input type="text" id="project_name" name="project_name" value="<?php echo $project_name; ?>" class="form-control" placeholder="Enter Project Title">
+																			<input type="text" id="project_name" name="project_name" value="<?php echo $project_name; ?>" class="form-control" placeholder="Enter Assignment Title">
 																		</div>
 																	</div>
 																</div>
@@ -483,9 +484,9 @@ header("location: ../../index.html");
 
 														<form method="post" class="form-horizontal" role="form">
 															<input type="hidden" name="delete_id" value="<?php echo $project_id; ?>">
-															<div>
+
 																<p><strong>Are you sure you want to delete <?php echo $project_name; ?> ?</strong></p>
-															</div>
+
 
 															<div class="modal-footer">
 																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
@@ -497,24 +498,24 @@ header("location: ../../index.html");
 											</div>
 										</div>
 
-										<!-- Complete Project List -->
+									<!-- Complete Project List -->
 										<div class="modal fade" id="complete<?php echo $project_id; ?>" tabindex="-1" role="dialog">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
-														<h4 class="modal-title" id="defaultModalLabel">Completed Project</h4>
+														<h4 class="modal-title" id="defaultModalLabel"><center>COMPLETE ASSIGNMENT</center></h4>
 													</div>
 													<div class="modal-body">
 
 														<form method="post" class="form-horizontal" role="form">
 															<input type="hidden" name="edit_project_complete" value="<?php echo $project_id; ?>">
 
-																<p><strong>Change status <?php echo $project_name; ?> to <font color = 'blue'>Completed</font>?</strong></p>
+																<p><strong>Change status <?php echo $project_name; ?> to <font color = 'green'>Completed</font>?</strong></p>
 
 
 															<div class="modal-footer">
-																<button type="button" class="btn btn-info waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-																<button type="submit" class="btn btn-success waves-effect" name="complete"><span class="glyphicon glyphicon-ok"></span>COMPLETED</button>
+																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																<button type="submit" class="btn btn-success waves-effect" name="complete"><span class="glyphicon glyphicon-ok"></span>YES</button>
 															</div>
 														</form>
 													</div>
@@ -534,15 +535,16 @@ header("location: ../../index.html");
 										$project_due_date = $_POST['project_due_date'];
 										$project_status = $_POST['project_status'];
 
+										
 										$sql = "UPDATE project SET
 											project_name='$project_name',
 											project_description='$project_description',
 											project_date_created='$project_date_created',
-											project_due_date='$project_due_date'
+											project_due_date='$project_due_date',
+											project_status='$project_status'
 											WHERE project_id='$edit_id' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="employee_view_project_list.php"</script>';
-
+											echo '<script>window.location.href="sv_view_all_project.php"</script>';
 										} else {
 											echo "Error updating record: " . $conn->error;
 										}
@@ -558,20 +560,22 @@ header("location: ../../index.html");
 										$project_status = $_POST['project_status'];
 										$sql = "UPDATE project SET
 											project_status='Completed'
+
 										   WHERE project_id='$edit_project_complete' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="employee_view_project_list.php"</script>';
+											echo '<script>window.location.href="sv_view_all_project.php"</script>';
 										} else {
 											echo "Error updating record: " . $conn->error;
 										}
 									}
+
 
 									if(isset($_POST['delete'])){
 										// sql to delete a record
 										$delete_id = $_POST['delete_id'];
 										$sql = "DELETE FROM project WHERE project_id='$delete_id' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="employee_view_project_list.php"</script>';
+											echo '<script>window.location.href="sv_view_all_project.php"</script>';
 											} else {
 												echo "Error deleting record: " . $conn->error;
 											}
@@ -588,7 +592,7 @@ header("location: ../../index.html");
 												<h4 class="modal-title" id="defaultModalLabel"><center>ADD NEW ASSIGNMENT</center></h4>
 											</div>
 											<div class="modal-body">
-														<form action = "employee_add_project.php" method="post" class="form-horizontal" role="form">
+														<form action = "sv_add_project.php" method="post" class="form-horizontal" role="form">
 															<div class="row clearfix">
 																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
 																	<label for="project_name">Title</label>
@@ -600,6 +604,25 @@ header("location: ../../index.html");
 																		</div>
 																	</div>
 																</div>
+															</div>
+															
+															<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																<label for="task_title">Manager</label>
+															</div>
+
+															<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																<select name='sv_id' class="form-control show-tick" id="sv_id">
+																	<option value='' selected='selected'>-- Please select --</option>
+																	<?php
+																	include "database.php";
+																	$t = "select * from supervisor ";
+																	$result2 = $conn -> query($t);
+																	while ($row = $result2 -> fetch_assoc()){
+
+																		echo "<option value='".$row['sv_id']."'>".$row['sv_name']."</option>";
+																	}
+																	?>
+																</select>
 															</div>
 
 															<div class="row clearfix">
@@ -651,111 +674,6 @@ header("location: ../../index.html");
 										</div>
 									</div>
 								</div>
-
-								<!-- Update Password -->
-										<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h4 class="modal-title" id="defaultModalLabel"><center>CHANGE PASSWORD</center></h4>
-													</div>
-													<div class="modal-body">
-
-														<form method="post" class="form-horizontal" role="form">
-															<input type="hidden" name="edit_id" value="<?php echo $employee_id; ?>">
-
-
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="employee_password">Current Password</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																			<input type="password" id="employee_password" name="employee_password" value="" class="form-control" placeholder="Enter Current Password">
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="password1">New Password</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																			<input type="password" id="password1" name="password1" value="" class="form-control" placeholder="Enter New Password">
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="password2">Confirm Password</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																			<input type="password" id="password2" name="password2" value="" class="form-control" placeholder="Enter Confirm Password">
-																		</div>
-																	</div>
-																</div>
-															</div>
-																<input type="hidden" name="employee_id" value="<?php echo $_SESSION['employee_id']; ?>"  />
-
-															<div class="modal-footer">
-																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-																<button type="submit" class="btn btn-success waves-effect" name="update_password"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
-															</div>
-
-														<?php
-
-															if(isset($_POST['update_password'])){
-																include "database.php";
-
-																$employee_id = mysqli_real_escape_string($conn,$_POST['employee_id']);
-																$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
-																$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
-																$employee_password = mysqli_real_escape_string($conn,$_POST['employee_password']);
-
-																$select = "SELECT * FROM employee WHERE employee_id = '$employee_id' ";
-																$result = $conn->query($select);
-																while($row = $result->fetch_assoc()){
-																	$password = $row["employee_password"];
-																}
-
-																if($employee_password == $password){
-																	if($password1===$password2){
-																		$query = "UPDATE employee SET employee_id= '$employee_id', employee_password='$password1' WHERE  employee_id='$employee_id'  ";
-																					echo "<script type = \"text/javascript\">
-																					alert(\"Password Updated\");
-																					window.location = (\"../../page/staff/employee_view_project_list.php\")
-																				</script>";																		
-																				$result = $con->query($query);
-																	}
-																	else{
-																		echo "<script type = \"text/javascript\">
-																					alert(\"Password Not Match\");
-																					window.location = (\"../../page/staff/employee_home.php\")
-																				</script>";
-																	}
-																}
-																else{
-																	echo "<script type = \"text/javascript\">
-																					alert(\"Wrong Password\");
-																					window.location = (\"../../page/staff/employee_home.php\")
-																				</script>";
-																}
-															}
-														?>
-
-														</form>
-													</div>
-												</div>
-											</div>
-										</div>
                                 </tbody>
                             </table>
 						</div>
