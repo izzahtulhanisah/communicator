@@ -341,7 +341,7 @@ header("location: ../../index.html");
             <!-- #END# Vertical Layout -->
 			
 			<!-- Update Password -->
-			<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
+				<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -350,17 +350,17 @@ header("location: ../../index.html");
 						<div class="modal-body">
 
 							<form method="post" class="form-horizontal" role="form">
-								<input type="hidden" name="edit_id" value="<?php echo $sv_id; ?>">
+								<input type="hidden" name="edit_id" value="<?php echo $admin_id; ?>">
 
 
 								<div class="row clearfix">
 									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-										<label for="sv_password">Current Password</label>
+										<label for="admin_password">Current Password</label>
 									</div>
 									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 										<div class="form-group">
 											<div class="form-line">
-												<input type="password" id="sv_password" name="sv_password" value="" class="form-control" placeholder="Enter Current Password">
+												<input type="password" id="admin_password" name="admin_password" value="" class="form-control" placeholder="Enter Current Password">
 											</div>
 										</div>
 									</div>
@@ -391,7 +391,7 @@ header("location: ../../index.html");
 										</div>
 									</div>
 								</div>
-									<input type="hidden" name="sv_id" value="<?php echo $_SESSION['sv_id']; ?>"  />
+									<input type="hidden" name="admin_id" value="<?php echo $_SESSION['admin_id']; ?>"  />
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
@@ -403,20 +403,20 @@ header("location: ../../index.html");
 								if(isset($_POST['update_password'])){
 								include 'database.php';
 								
-									$sv_id = mysqli_real_escape_string($conn,$_POST['sv_id']);
+									$admin_id = mysqli_real_escape_string($conn,$_POST['admin_id']);
 									$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
 									$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
-									$sv_password = mysqli_real_escape_string($conn,$_POST['sv_password']);
+									$admin_password = mysqli_real_escape_string($conn,$_POST['admin_password']);
 
-									$select = "SELECT * FROM supervisor WHERE sv_id = '$sv_id' ";
+									$select = "SELECT * FROM admin WHERE admin_id = '$admin_id' ";
 									$result = $conn->query($select);
 									while($row = $result->fetch_assoc()){
-										$password = $row["sv_password"];
+										$password = $row["admin_password"];
 									}
 
-									if($sv_password == $password){
+									if($admin_password == $password){
 										if($password1===$password2){
-											$query = "UPDATE supervisor SET sv_id= '$sv_id', sv_password='$password1' WHERE  sv_id='$sv_id'  ";
+											$query = "UPDATE admin SET admin_id= '$admin_id', admin_password='$password1' WHERE  admin_id='$admin_id'  ";
 											echo "<script type = \"text/javascript\">
 														alert(\"New Password Updated\");
 														
@@ -426,14 +426,14 @@ header("location: ../../index.html");
 										else{
 											echo "<script type = \"text/javascript\">
 														alert(\"Password Not Match\");
-														window.location = (\"sv_view_profile.php\")
+														window.location = (\"admin_home.php\")
 													</script>";
 										}
 									}
 									else{
 										echo "<script type = \"text/javascript\">
 														alert(\"Wrong Current Password\");
-														window.location = (\"sv_view_profile.php\")
+														window.location = (\"admin_home.php\")
 													</script>";
 									}
 								}

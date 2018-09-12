@@ -329,8 +329,7 @@ header("location: ../../index.html");
             </div>
             <!-- #END# Vertical Layout -->
 			
-			<!-- Update Password -->
-			<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
+				<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -403,7 +402,7 @@ header("location: ../../index.html");
 										$password = $row["admin_password"];
 									}
 
-									if($sv_password == $password){
+									if($admin_password == $password){
 										if($password1===$password2){
 											$query = "UPDATE admin SET admin_id= '$admin_id', admin_password='$password1' WHERE  admin_id='$admin_id'  ";
 											echo "<script type = \"text/javascript\">
@@ -415,14 +414,14 @@ header("location: ../../index.html");
 										else{
 											echo "<script type = \"text/javascript\">
 														alert(\"Password Not Match\");
-														window.location = (\"admin_view_profile.php\")
+														window.location = (\"admin_home.php\")
 													</script>";
 										}
 									}
 									else{
 										echo "<script type = \"text/javascript\">
 														alert(\"Wrong Current Password\");
-														window.location = (\"admin_view_profile.php\")
+														window.location = (\"admin_home.php\")
 													</script>";
 									}
 								}

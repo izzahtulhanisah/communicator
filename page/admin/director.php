@@ -527,7 +527,7 @@ header("location: ../../index.html");
             <!-- #END# Exportable Table -->
 			
 			<!-- Update Password -->
-			<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
+				<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -546,7 +546,7 @@ header("location: ../../index.html");
 									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 										<div class="form-group">
 											<div class="form-line">
-												<input type="password" id="admin_password" name="sv_password" value="" class="form-control" placeholder="Enter Current Password">
+												<input type="password" id="admin_password" name="admin_password" value="" class="form-control" placeholder="Enter Current Password">
 											</div>
 										</div>
 									</div>
@@ -600,9 +600,9 @@ header("location: ../../index.html");
 										$password = $row["admin_password"];
 									}
 
-									if($sv_password == $password){
+									if($admin_password == $password){
 										if($password1===$password2){
-											$query = "UPDATE admin SET admin_id= '$admin_id', admin_password='$password1' WHERE  admin_id='$sv_id'  ";
+											$query = "UPDATE admin SET admin_id= '$admin_id', admin_password='$password1' WHERE  admin_id='$admin_id'  ";
 											echo "<script type = \"text/javascript\">
 														alert(\"New Password Updated\");
 														
