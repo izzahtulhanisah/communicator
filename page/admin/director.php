@@ -482,7 +482,7 @@ header("location: ../../index.html");
 										$sql = "SELECT * FROM manager
 											WHERE id='$profile_id' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="manager.php"</script>';
+											echo '<script>window.location.href="director.php"</script>';
 										} else {
 											echo "Error updating record: " . $conn->error;
 										}
@@ -499,7 +499,7 @@ header("location: ../../index.html");
 											manager_password='$manager_password'
 											WHERE id='$edit_id' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>alert("Succesfully change password for '.$manager_name.'");window.location.href="manager.php"</script>';
+											echo '<script>alert("Succesfully change password for '.$manager_name.'");window.location.href="director.php"</script>';
 										} else {
 											echo "Error updating record: " . $conn->error;
 										}
@@ -510,7 +510,7 @@ header("location: ../../index.html");
 										$delete_id = $_POST['delete_id'];
 										$sql = "DELETE FROM manager WHERE id='$delete_id' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="manager.php"</script>';
+											echo '<script>window.location.href="director.php"</script>';
 											} else {
 												echo "Error deleting record: " . $conn->error;
 											}
