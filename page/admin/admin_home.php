@@ -418,7 +418,7 @@ header("location: ../../index.html");
 
 									?>
 										<tr>
-											<td><?php echo $highlight_date; ?></td>
+											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?>
 											</td>
