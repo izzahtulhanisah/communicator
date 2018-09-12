@@ -740,61 +740,98 @@ header("location: ../../index.html");
 
 								</p>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="messages_with_icon_title">
-                                    <center><font color = 'green'><b>CHAT WITH YOUR TEAM MEMBERS!</b></font></center>
+                                
+								<div role="tabpanel" class="tab-pane fade" id="messages_with_icon_title">
+                                    <h4><center><font color = 'green'><b>CHAT WITH YOUR TEAM MEMBERS!</b></font></center></h4>
                                     <p>
-									<!-- Basic Example -->
-									<div class="row clearfix">
-										<div class="col-lg-12 col-md-4 col-sm-6 col-xs-12" >
-											<div class="card">
-												<div class="body">
-												<div class="scroll-box">
-												<div id="news" onload="GetNews()"></div>
-												</div>
-												<script>
-												function GetNews() {
-													$.ajax({
-														url: "loaddata.php?id=<?php echo $_REQUEST['project_id']; ?>",
-														success: (function (result) {
-															$("#news").html(result);
-														})
-													})
-												};
-												GetNews(); // To output when the page loads
-												setInterval(GetNews, (2 * 1000)); // x * 1000 to get it in seconds
-												</script>
 
-												<form class="form-align" id="form">
-													<div class="input-group">
-														<input type="hidden" name="user" value="<?php echo $sv_id; ?>">
-														<div class="form-line">
-															<input type="text" name="message" class="form-control" placeholder = "Type your message here" >
+                                    <p><center><i>Only persons in charge (PIC) are allowed to join discussion. </i></center></p>
+
+
+									<!-- Basic Example -->
+
+									<?php
+									include "database.php";
+
+									$project_idd = $_GET['project_id'];
+									$select = "SELECT sv_id from task2 where project_id = $project_idd";
+									$result = $conn->query($select);
+									while($rows = $result->fetch_assoc()){
+										$svid = $rows["sv_id"];
+
+										if ($svid == $sv_id){
+									?>
+												<div class="row clearfix">
+													<div class="col-lg-12 col-md-4 col-sm-6 col-xs-12" >
+														<div class="card">
+
+															<div class="body">
+															<div class="scroll-box">
+															<div id="news" onload="GetNews()"></div>
+															</div>
+															<script>
+															function GetNews() {
+																$.ajax({
+																	url: "loaddata.php?id=<?php echo $_REQUEST['project_id']; ?>",
+																	success: (function (result) {
+																		$("#news").html(result);
+																	})
+																})
+															};
+
+															GetNews(); // To output when the page loads
+															setInterval(GetNews, (2 * 1000)); // x * 1000 to get it in seconds
+															</script>
+
+															<form class="form-align" id = "form">
+																<div class="input-group">
+																	<input type="hidden" name="user" value="<?php echo $sv_id; ?>">
+																	<div class="form-line">
+																		<input type="text" name="message" class="form-control" placeholder = "Type your message here" >
+																	</div>
+																	<input type="hidden" name="project_id" class="form-control" value="<?php echo $_REQUEST['project_id']; ?>">
+																	<span class="input-group-btn">
+																	<button type="submit" name="submit" class="btn btn-success">SEND</button>
+																	</span>
+																</div>
+															</form>
+															<script>
+															  $(function () {
+																$('#form').on('submit', function (e) {
+																  e.preventDefault();
+																  $.ajax({
+																	type: 'post',
+																	url: 'post.php',
+																	data: $('#form').serialize(),
+																  });
+																});
+															  });
+															</script>
+
+
+
+
+															</div>
 														</div>
-														<input type="hidden" name="project_id" class="form-control" value="<?php echo $_REQUEST['project_id']; ?>">
-														<span class="input-group-btn">
-														<button type="submit" name="submit" class="btn btn-warning">Send Chat</button>
-														</span>
 													</div>
-												</form>
-												<script>
-												  $(function () {
-													$('#form').on('submit', function (e) {
-													  e.preventDefault();
-													  $.ajax({
-														type: 'post',
-														url: 'post.php',
-														data: $('#form').serialize(),
-													  });
-													});
-												  });
-												</script>
 												</div>
-											</div>
-										</div>
-									</div>
-									<!-- #END# Basic Example -->                                  
-									</p>
-								</div>
+												<!-- #END# Basic Example -->
+												</p>
+												<?php
+												break;
+												}
+												/*elseif($employeeid != $employee_id){
+												echo '<div class="alert alert-warning">';
+												echo "Sorry! Not part of project team";
+												echo '</div>';
+
+
+												}*/
+												}
+												?>
+                                </div>
+
+                            </div>
                             </div>
                         </div>
                     </div>
