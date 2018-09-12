@@ -371,7 +371,8 @@ header("location: ../../index.html");
 											FROM task2,project, supervisor
 											WHERE task2.project_id = project.project_id
 											AND task2.sv_id = supervisor.sv_id
-											AND  task2.sv_id = '$abc'";
+											AND  task2.sv_id = '$abc'
+											ORDER BY task_due_date asc";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row

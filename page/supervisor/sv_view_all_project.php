@@ -360,7 +360,7 @@ header("location: ../../index.html");
                                     <?php
 									include 'database.php';
 
-									$sql = "SELECT * FROM project";
+									$sql = "SELECT * FROM project ORDER BY project_due_date asc";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row

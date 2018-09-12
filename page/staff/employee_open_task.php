@@ -344,7 +344,8 @@ header("location: ../../index.html");
 											FROM task,project, employee
 											WHERE task.project_id = project.project_id
 											AND task.employee_id = employee.employee_id
-											AND  task.employee_id = '$abc'";
+											AND  task.employee_id = '$abc'
+											ORDER BY task_due_date ASC";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row
