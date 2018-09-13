@@ -348,7 +348,12 @@ header("location: ../../index.html");
                                 </li>
                                 <li role="presentation">
                                     <a href="#profile_with_icon_title" data-toggle="tab">
-                                        <i class="material-icons">assignment</i> Team Tasks
+                                        <i class="material-icons">group</i> Team Tasks
+                                    </a>
+                                </li>
+								<li role="presentation">
+                                    <a href="#mytask" data-toggle="tab">
+                                        <i class="material-icons">person</i> Manager Tasks
                                     </a>
                                 </li>
                                 <li role="presentation">
@@ -601,7 +606,7 @@ header("location: ../../index.html");
 																<div class="modal-dialog" role="document">
 																	<div class="modal-content">
 																		<div class="modal-header">
-																			<h4 class="modal-title" id="defaultModalLabel"><center>EDIT TASK</center></h4>
+																			<h4 class="modal-title" id="defaultModalLabel"><center>ADD SOLUTION</center></h4>
 																		</div>
 																		<div class="modal-body">
 
@@ -644,7 +649,7 @@ header("location: ../../index.html");
 																						<div class="form-group">
 																							<div class="form-line">
 
-																							<textarea name="task_description" readonly id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder=""><?php echo $task_description; ?></textarea>
+																							<textarea name="task_description" readonly id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder="No issues from staff"><?php echo $task_description; ?></textarea>
 																							</div>
 																						</div>
 																					</div>
@@ -725,7 +730,7 @@ header("location: ../../index.html");
 														$delete_id = $_POST['delete_id'];
 														$sql = "DELETE FROM task WHERE task_id='$delete_id' ";
 														if ($conn->query($sql) === TRUE) {
-															echo '<script>window.location.href="../../pages/tables/manager_view_project_list.php"</script>';
+															echo '<script>window.location.href="javascript:history.back(-1);"</script>';
 															} else {
 																echo "Error deleting record: " . $conn->error;
 																}
@@ -744,6 +749,242 @@ header("location: ../../index.html");
 
 								</p>
                                 </div>
+								
+								<!-- Manager Task Tab -->
+								<div role="tabpanel" class="tab-pane fade" id="mytask">
+
+								<p>
+								<!-- Exportable Table -->
+								<div class="row clearfix">
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<div class="card">
+										
+											<div class="body">
+											<div class="table-responsive">
+												<table class="table table-bordered table-striped table-hover dataTable js-exportable">
+													<thead>
+														<tr>
+															<th width="5%">No.</th>
+															<th width="15%">Manager</th>
+															<th width="20%">Tasks</th>
+															<th width="15%">Start Date</th>
+															<th width="15%">Due Date</th>
+															<th width="15%">Status</th>
+															<th width="25%">Issues</th>
+															<th width="25%">Solutions</th>
+															<th width="10%">Action</th>
+														</tr>
+													</thead>
+
+													<tbody>
+
+													<?php
+														include 'database.php';
+													
+														//$abc=$_SESSION['employee_id'];
+														$sql = "SELECT supervisor.sv_name, task2.task_id,task2.task_title, task2.task_status, task2.task_created, task2.task_due_date, task2.task_description, task2.task_comment, project.project_id, project.project_name, supervisor.sv_id
+																FROM task2,project, supervisor
+																WHERE task2.project_id = project.project_id
+																AND task2.sv_id = supervisor.sv_id
+																AND task2.project_id =  '$project_id'";
+														$result = $conn->query($sql);
+														if ($result->num_rows > 0) {
+															// output data of each row
+															$x=1;
+															while($row = $result->fetch_assoc()) {
+																$task_id = $row['task_id'];
+																$sv_name = $row['sv_name'];
+																$task_title = $row['task_title'];
+																$project_name = $row['project_name'];
+																$task_status = $row['task_status'];
+
+																if($task_status == 'Delayed'){
+																	$alert = "<div class='badge bg-red'>
+																	<strong>$task_status</strong>
+																	</div>";
+
+																	}else if($task_status == 'In Progress'){
+																		$alert = "<div class='badge bg-blue'>
+																		<strong>$task_status</strong>
+																		</div>";
+
+																	}else {
+																		$alert = "<div class='badge bg-green'>
+																		<strong>$task_status</strong>
+																		</div>";
+																	}
+
+																$task_created = $row['task_created'];    
+																$task_due_date = $row['task_due_date'];
+																$task_description = $row['task_description'];
+																$task_comment = $row['task_comment'];
+														?>
+														<tr>
+															<td><?php echo $x; ?></td>
+															<td><?php echo $sv_name; ?></td>
+															<td><?php echo $task_title; ?></td>
+															<td><?php echo $task_created; ?></td>
+															<td><?php echo $task_due_date; ?></td>
+															<td><?php echo $alert; ?></td>
+															<td><?php echo nl2br($task_description); ?></td>
+															<td><?php echo nl2br($task_comment); ?></td>
+															<td>
+																<div>
+																	<a href="#updateM<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
+																	<a href="#deleteM<?php echo $task_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
+																</div>
+															</td>
+														</tr>
+													   <!-- Update Task List -->
+															<div class="modal fade" id="updateM<?php echo $task_id; ?>" tabindex="-1" role="dialog">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h4 class="modal-title" id="defaultModalLabel"><center>ADD SOLUTIONS & ISSUES</center></h4>
+																		</div>
+																		<div class="modal-body">
+
+																			<form method="post" class="form-horizontal" role="form" action="">
+																				<input type="hidden" name="edit_task_id" value="<?php echo $task_id;  ?>">
+																				<input type="hidden" name="edit_sv_id" value="<?php echo $sv_id;  ?>">
+
+
+																				<div class="row clearfix">
+																					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																						<label for="task_title">Tasks</label>
+																					</div>
+																					<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																						<div class="form-group">
+																							<div class="form-line">
+																								<?php echo $task_title; ?>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+
+																				<div class="row clearfix">
+																					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																						<label for="task_due_date">Due Date</label>
+																					</div>
+																					<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																						<div class="form-group">
+																							<div class="form-line">
+																								<?php echo $before30=date('Y-m-d', strtotime("$task_due_date")); ?>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+
+																				<div class="row clearfix">
+																					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																						<label for="task_description">Issues</label>
+																					</div>
+																					<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																						<div class="form-group">
+																							<div class="form-line">
+
+																							<textarea name="task_description" id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Issues"><?php echo $task_description; ?></textarea>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+
+																				<div class="row clearfix">
+																					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+																						<label for="task_comment">Solutions</label>
+																					</div>
+																					<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+																						<div class="form-group">
+																							<div class="form-line">
+																							<textarea name="task_comment" id="task_comment" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Solutions"><?php echo $task_comment; ?></textarea>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																					<button type="submit" class="btn btn-success waves-effect" name="updateM"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
+																				</div>
+																			</form>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+
+														 <!-- Delete Project List -->
+															<div class="modal fade" id="deleteM<?php echo $task_id; ?>" tabindex="-1" role="dialog">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h4 class="modal-title" id="defaultModalLabel"><center>DELETE TASK</center></h4>
+																		</div>
+																		<div class="modal-body">
+																			<form method="post" class="form-horizontal" role="form">
+																				<input type="hidden" name="delete_id" value="<?php echo $task_id; ?>">
+																				<div class="alert bg-red">
+																					<p><strong>Are you sure you want to delete <?php echo $task_title; ?> ?</strong></p>
+																				</div>
+
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+																					<button type="submit" class="btn btn-danger waves-effect" name="deleteM"><span class="glyphicon glyphicon-trash"></span>DELETE</button>
+																				</div>
+																			</form>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+														<?php
+														$x++;}
+
+														//Update Tasks
+														if(isset($_POST['updateM'])){
+															$edit_task_id = $_POST['edit_task_id'];
+															//$task_id = $_POST['task_id'];
+															//$edit_employee_id = $_POST['edit_employee_id'];
+															$project_name = $_POST['project_name'];
+															$task_title = $_POST['task_title'];
+															$task_due_date = $_POST['task_due_date'];
+															$task_description = $_POST['task_description'];
+															$task_comment = $_POST['task_comment'];
+															$sql = "UPDATE task2 SET
+																task_comment='$task_comment',
+																task_description='$task_description'
+															   WHERE task_id='$edit_task_id' ";
+															if ($conn->query($sql) === TRUE) {
+																echo "<script>alert('*Successfully Added*');window.location.href='javascript:history.back(-1);'</script>";
+															} else {
+																echo "Error updating record: " . $conn->error;
+															}
+														}
+														 if(isset($_POST['deleteM'])){
+														// sql to delete a record
+														$delete_id = $_POST['delete_id'];
+														$sql = "DELETE FROM task2 WHERE task_id='$delete_id' ";
+														if ($conn->query($sql) === TRUE) {
+															echo '<script>window.location.href="javascript:history.back(-1);"</script>';
+															} else {
+																echo "Error deleting record: " . $conn->error;
+																}
+															}
+
+													}
+														?>
+													</tbody>
+												</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- #END# Exportable Table -->
+
+								</p>
+                                </div>
+								
                                 <div role="tabpanel" class="tab-pane fade" id="messages_with_icon_title">
                                     <center><font color = 'green'><b>CHAT WITH YOUR TEAM MEMBERS!</b></font></center>
                                     <p>

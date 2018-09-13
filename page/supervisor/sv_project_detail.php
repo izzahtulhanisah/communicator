@@ -597,7 +597,7 @@ header("location: ../../index.html");
 																<div class="modal-dialog" role="document">
 																	<div class="modal-content">
 																		<div class="modal-header">
-																			<h4 class="modal-title" id="defaultModalLabel"><center>EDIT TASK</center></h4>
+																			<h4 class="modal-title" id="defaultModalLabel"><center>ADD SOLUTION</center></h4>
 																		</div>
 																		<div class="modal-body">
 
@@ -640,7 +640,7 @@ header("location: ../../index.html");
 																						<div class="form-group">
 																							<div class="form-line">
 
-																							<textarea name="task_description" readonly id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder=""><?php echo $task_description; ?></textarea>
+																							<textarea name="task_description" readonly id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder="No issues from staff"><?php echo $task_description; ?></textarea>
 																							</div>
 																						</div>
 																					</div>
