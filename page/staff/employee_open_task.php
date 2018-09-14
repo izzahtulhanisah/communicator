@@ -625,7 +625,7 @@ header("location: ../../index.html");
 																<label for="task_title">Assignment</label>
 															</div>
 
-																 <div class="col-sm-10">
+																<div class="col-sm-10">
 																 	<select name='project_id' class="form-control show-tick" id="project_id">
 																		<option value='' selected='selected'>-- Please select --</option>
 																		<?php

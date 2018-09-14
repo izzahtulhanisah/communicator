@@ -367,14 +367,25 @@ header("location: ../../index.html");
 
 									$abc=$_SESSION['sv_id'];
 
-									$sql = "SELECT task.task_id,task.task_title, task.task_status, task.task_created, task.task_due_date, task.task_description, task.task_comment, project.project_id, project.project_name, 
+									/*$sql = "SELECT task.task_id,task.task_title, task.task_status, task.task_created, task.task_due_date, task.task_description, task.task_comment, project.project_id, project.project_name, 
 											employee.employee_id,employee.employee_name, task.employee_id, task2.project_id
 											FROM task2, task, employee, project
 											WHERE task2.project_id = task.project_id
 											AND task.employee_id = employee.employee_id
-											AND  task.project_id = project.project_id
+											AND task.project_id = project.project_id
 											AND task2.sv_id= '$abc'
-											ORDER BY task_due_date ASC";
+											";
+									*/
+									
+									$sql = "SELECT task.task_id,task.task_title, task.task_status, task.task_created, task.task_due_date, task.task_description, task.task_comment, project.project_id, project.project_name, 
+											employee.employee_id,employee.employee_name, task.employee_id
+											FROM task, employee, project
+											WHERE task.employee_id = employee.employee_id
+											AND task.project_id = project.project_id
+											AND task.sv_id= '$abc'
+											ORDER BY employee.employee_name ASC
+
+											";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row
@@ -419,7 +430,7 @@ header("location: ../../index.html");
 												else{
 
 
-												$sql2 = "UPDATE task2
+												$sql2 = "UPDATE task
 													SET task_status =
 													CASE
 														 WHEN NOW() > task_due_date THEN 'Delayed'
@@ -450,7 +461,7 @@ header("location: ../../index.html");
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
-														<h4 class="modal-title" id="defaultModalLabel"><center>EDIT TASK</h4>
+														<h4 class="modal-title" id="defaultModalLabel"><center>ADD SOLUTION</h4>
 													</div>
 													<div class="modal-body">
 
@@ -465,7 +476,7 @@ header("location: ../../index.html");
 																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																	<div class="form-group">
 																		<div class="form-line">
-																			<input type="text" id="task_title" name="task_title" value="<?php echo $task_title; ?>" class="form-control" placeholder="Enter Tasks Title" required>
+																			<?php echo $task_title; ?>
 																		</div>
 																	</div>
 																</div>
@@ -478,7 +489,7 @@ header("location: ../../index.html");
 																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																	<div class="form-group">
 																		<div class="form-line">
-																			<input type="date" id="task_created" name="task_created" value="<?php echo $before30=date('Y-m-d', strtotime("$task_created")); ?>" class="form-control" placeholder="Ex: 30/07/2018">
+																			<?php echo $before30=date('Y-m-d', strtotime("$task_created")); ?>
 																		</div>
 																	</div>
 																</div>
@@ -491,7 +502,7 @@ header("location: ../../index.html");
 																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																	<div class="form-group">
 																		<div class="form-line">
-																			<input type="date" id="task_due_date" name="task_due_date" value="<?php echo $before30=date('Y-m-d', strtotime("$task_due_date")); ?>" class="form-control">
+																			<?php echo $before30=date('Y-m-d', strtotime("$task_due_date")); ?>
 																		</div>
 																	</div>
 																</div>
@@ -504,7 +515,7 @@ header("location: ../../index.html");
 																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
 																	<div class="form-group">
 																		<div class="form-line">
-																		<textarea name="task_description" id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Issues"><?php echo $task_description; ?></textarea>
+																		<textarea readonly name="task_description" id="task_description" cols="30" rows="5" class="form-control no-resize" placeholder="No issues from staff"><?php echo $task_description; ?></textarea>
 																		</div>
 																	</div>
 																</div>
@@ -595,10 +606,7 @@ header("location: ../../index.html");
 										$task_description = $_POST['task_description'];
 										$task_comment = $_POST['task_comment'];
 										$sql = "UPDATE task SET
-											task_title='$task_title',
-											task_created='$task_created',
-											task_due_date='$task_due_date',
-											task_description='$task_description',
+											
 											task_comment='$task_comment'
 										   WHERE task_id='$edit_task_id' ";
 										if ($conn->query($sql) === TRUE) {
@@ -616,11 +624,11 @@ header("location: ../../index.html");
 										$task_due_date = $_POST['task_due_date'];
 										$task_description = $_POST['task_description'];
 										$task_comment = $_POST['task_comment'];
-										$sql = "UPDATE task2 SET
+										$sql = "UPDATE task SET
 											task_status='Completed'
 										   WHERE task_id='$edit_task_complete' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="sv_task.php"</script>';
+											echo '<script>window.location.href="sv_team_task.php"</script>';
 										} else {
 											echo "Error updating record: " . $conn->error;
 										}
@@ -632,7 +640,7 @@ header("location: ../../index.html");
 										$delete_id = $_POST['delete_id'];
 										$sql = "DELETE FROM task WHERE task_id='$delete_id' ";
 										if ($conn->query($sql) === TRUE) {
-											echo '<script>window.location.href="sv_task.php"</script>';
+											echo '<script>window.location.href="sv_team_task.php"</script>';
 											} else {
 												echo "Error deleting record: " . $conn->error;
 											}
