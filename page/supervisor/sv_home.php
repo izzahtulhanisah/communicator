@@ -435,8 +435,8 @@ header("location: ../../index.html");
                                         <tr>
                                             <th width= '15%'>Date</th>
                                             <th width= '50%'>Details</th>
-                                            <th width= '15%'></th>
-
+                                            <th width= '15%'>Attention to</th>
+											<th width= '15%'>Created By</th>										
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -454,7 +454,7 @@ header("location: ../../index.html");
 											$highlight_date = $row['highlight_date'];
 											$highlight_message = $row['highlight_message'];
 											$highlight_status = $row['highlight_status'];
-											$manager_id = $row['manager_id'];
+											$user = $row['user'];
 
 
 											if($highlight_status == 'Important'){
@@ -489,6 +489,7 @@ header("location: ../../index.html");
 											<td><?php echo $highlight_date; ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?>
+											<td><?php echo $user;?>
 											</td>
 
 									<?php

@@ -330,6 +330,7 @@ $sv_id = $_SESSION['sv_id'];
                                             <th width= '15%'>Date</th>
                                             <th width= '50%'>Details</th>
                                             <th width= '15%'>Status</th>
+											<th width= '15%'>Created By</th>
 											<th width= '15%'>Action</th>
 
                                         </tr>
@@ -348,7 +349,7 @@ $sv_id = $_SESSION['sv_id'];
 											$highlight_date = $row['highlight_date'];
 											$highlight_message = $row['highlight_message'];
 											$highlight_status = $row['highlight_status'];
-											$manager_id = $row['manager_id'];
+											$user = $row['user'];
 
 
 											if($highlight_status == 'Important'){
@@ -381,9 +382,10 @@ $sv_id = $_SESSION['sv_id'];
 											<td><?php echo $highlight_date; ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?></td>
+											<td><?php echo $user;?></td>
 
 											<td>
-												<div class='btn-group' role='group' aria-label='...'>
+												<div>
 													<a href="#defaultModal<?php echo $id_highlight;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
 													<a href="#delete<?php echo $id_highlight;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
 												</div>
@@ -515,7 +517,13 @@ $sv_id = $_SESSION['sv_id'];
 												<h4 class="modal-title" id="defaultModalLabel"><center>NEW MESSAGE FOR HIGHLIGHTS</center></h4>
 											</div>
 											<div class="modal-body">
+											<?php
+											include 'database.php';
+												$abc=$_SESSION['sv_id'];
+											?>
 														<form action = "sv_add_highlight.php" method="post" class="form-horizontal" role="form">
+															<input type="hidden" name="user" value="<?php echo $abc; ?>">
+
 
 															<div class="row clearfix">
 																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
