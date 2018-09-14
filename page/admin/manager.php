@@ -234,16 +234,16 @@ header("location: ../../index.html");
 
 		 <div class="body">
 
-                            <ol class="breadcrumb">
-                                <li>
-                                    <a href="../../page/admin/admin_home.php">
-                                        <i class="material-icons">home</i> Home
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <i class="material-icons">group</i> Manager List
-                                </li>
-                            </ol>
+			<ol class="breadcrumb">
+				<li>
+					<a href="../../page/admin/admin_home.php">
+						<i class="material-icons">home</i> Home
+					</a>
+				</li>
+				<li class="active">
+					<i class="material-icons">group</i> Manager List
+				</li>
+			</ol>
 
         </div>
 
@@ -297,7 +297,7 @@ header("location: ../../index.html");
 										<div>
 											<a href="#profile<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span></button></a>
 											<a href="#defaultModal<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
-											<a href="#delete<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
+											<a href="#delete<?php echo $sv_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
 
 										</div></center>
 									</td>
@@ -443,7 +443,7 @@ header("location: ../../index.html");
 
 
 									 <!-- Delete Employee List -->
-										<div class="modal fade" id="delete<?php echo $id; ?>" tabindex="-1" role="dialog">
+										<div class="modal fade" id="delete<?php echo $sv_id; ?>" tabindex="-1" role="dialog">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
@@ -452,7 +452,7 @@ header("location: ../../index.html");
 													<div class="modal-body">
 
 														<form method="post" class="form-horizontal" role="form">
-															<input type="hidden" name="delete_id" value="<?php echo $id; ?>">
+															<input type="hidden" name="delete_id" value="<?php echo $sv_id; ?>">
 															<div class="alert bg-red">
 																<p><strong><center>Are you sure you want to delete details of:  </center>
 															</div>
@@ -512,7 +512,10 @@ header("location: ../../index.html");
 									if(isset($_POST['delete'])){
 										// sql to delete a record
 										$delete_id = $_POST['delete_id'];
-										$sql = "DELETE FROM supervisor WHERE id='$delete_id' ";
+										$sql = "DELETE FROM supervisor WHERE sv_id='$delete_id' ";
+										$sql2 = "DELETE FROM task2 WHERE sv_id='$delete_id' ";
+										$result = $conn->query($sql2);
+										
 										if ($conn->query($sql) === TRUE) {
 											echo '<script>window.location.href="manager.php"</script>';
 											} else {

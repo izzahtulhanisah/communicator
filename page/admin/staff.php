@@ -299,7 +299,7 @@ header("location: ../../index.html");
 										<div>
 											<a href="#profile<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span></button></a>
 											<a href="#defaultModal<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
-											<a href="#delete<?php echo $id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
+											<a href="#delete<?php echo $employee_id;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
 
 										</div></center>
 									</td>
@@ -471,7 +471,7 @@ header("location: ../../index.html");
 
 
 									 <!-- Delete Employee List -->
-										<div class="modal fade" id="delete<?php echo $id; ?>" tabindex="-1" role="dialog">
+										<div class="modal fade" id="delete<?php echo $employee_id; ?>" tabindex="-1" role="dialog">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
@@ -480,7 +480,7 @@ header("location: ../../index.html");
 													<div class="modal-body">
 
 														<form method="post" class="form-horizontal" role="form">
-															<input type="hidden" name="delete_id" value="<?php echo $id; ?>">
+															<input type="hidden" name="delete_id" value="<?php echo $employee_id; ?>">
 															<div class="alert bg-red">
 																<p><strong><center>Are you sure you want to delete details of:  </center>
 															</div>
@@ -538,7 +538,10 @@ header("location: ../../index.html");
 									if(isset($_POST['delete'])){
 										// sql to delete a record
 										$delete_id = $_POST['delete_id'];
-										$sql = "DELETE FROM employee WHERE id='$delete_id' ";
+										$sql = "DELETE FROM employee WHERE employee_id='$delete_id' ";
+										$sql2 = "DELETE FROM task WHERE employee_id='$delete_id' ";
+										$result = $conn->query($sql2);
+										
 										if ($conn->query($sql) === TRUE) {
 											echo '<script>window.location.href="staff.php"</script>';
 											} else {
