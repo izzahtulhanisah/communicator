@@ -316,8 +316,8 @@ $manager_idd = $_SESSION['manager_id'];
                                         <tr>
                                             <th width= '15%'>Date</th>
                                             <th width= '45%'>Details</th>
-                                            <th width= '15%'>Status</th>
-											<!--<th width= '15%'>Created By</th>-->
+                                            <th width= '15%'>Attention To</th>
+											<th width= '15%'>Created By</th>
 											<th width= '15%'>Action</th>
 
                                         </tr>
@@ -326,7 +326,7 @@ $manager_idd = $_SESSION['manager_id'];
                                     <?php
 									include "database.php";
 
-									$sql = "SELECT * from highlight";
+									$sql = "SELECT * from highlight ORDER BY highlight_date DESC";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row
@@ -336,7 +336,7 @@ $manager_idd = $_SESSION['manager_id'];
 											$highlight_date = $row['highlight_date'];
 											$highlight_message = $row['highlight_message'];
 											$highlight_status = $row['highlight_status'];
-											$manager_id = $row['manager_id'];
+											$user = $row['user'];
 
 
 											if($highlight_status == 'Important'){
@@ -369,7 +369,7 @@ $manager_idd = $_SESSION['manager_id'];
 											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?></td>
-											<!--<td><?php echo $manager_id;?></td>-->
+											<td><i><?php echo $user;?></i></td>
 
 											<td>
 												<div class='' role='group' aria-label='...'>
@@ -410,7 +410,7 @@ $manager_idd = $_SESSION['manager_id'];
 																</div>
 																<div class="col-sm-8">
 																	<select class="form-control show-tick" name= "highlight_status" id="highlight_status">
-																		<option value="" selected='selected'><?php echo $highlight_status;?></option>
+																		<!--<option value="<?php '$highlight_status';?>" selected='selected'><?php echo $highlight_status;?></option>-->
 																		<option value="Important">Important</option>
 																		<option value="Staff">Staff</option>
 																		<option value="Manager">Manager</option>
@@ -501,7 +501,12 @@ $manager_idd = $_SESSION['manager_id'];
 												<h4 class="modal-title" id="defaultModalLabel"><center>NEW MESSAGE FOR HIGHLIGHTS</center></h4>
 											</div>
 											<div class="modal-body">
+											<?php
+											include 'database.php';
+												$abc=$_SESSION['manager_id'];
+											?>
 											<form action = "manager_add_highlight.php" method="post" class="form-horizontal" role="form">
+											<input type="hidden" name="user" value="<?php echo $abc; ?>">
 
 												<div class="row clearfix">
 													<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">

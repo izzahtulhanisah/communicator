@@ -433,8 +433,8 @@ $manager_idd = $_SESSION['manager_id'];
                                         <tr>
                                             <th width= '15%'>Date</th>
                                             <th width= '50%'>Details</th>
-                                            <th width= '15%'></th>
-                                            <!--<th width= '15%'>By</th>-->
+                                            <th width= '15%'>Attention To</th>
+                                           <th width= '15%'>Created By</th>
 
                                         </tr>
                                     </thead>
@@ -452,7 +452,7 @@ $manager_idd = $_SESSION['manager_id'];
 											$highlight_date = $row['highlight_date'];
 											$highlight_message = $row['highlight_message'];
 											$highlight_status = $row['highlight_status'];
-											$manager_id = $row['manager_id'];
+											$user = $row['user'];
 
 
 											if($highlight_status == 'Important'){
@@ -485,7 +485,7 @@ $manager_idd = $_SESSION['manager_id'];
 											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?></td>
-											<!--<td><i><?php echo $manager_id;?></i>-->
+											<td><i><?php echo $user;?></i>
 											</td>
 
 									<?php
