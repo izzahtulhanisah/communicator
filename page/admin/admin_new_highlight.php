@@ -96,8 +96,7 @@ header("location: ../../index.html");
 											$highlight_date = $row['highlight_date'];
 											$highlight_message = $row['highlight_message'];
 											$highlight_status = $row['highlight_status'];
-											$manager_id = $row['manager_id'];
-											$admin_id = $row['admin_id'];
+											$user = $row['user'];
 
 
 											if($highlight_status == 'Important'){
@@ -132,9 +131,10 @@ header("location: ../../index.html");
 											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
 											<td><?php echo $alert;?></td>
+											<td><?php echo $user;?></td>
 
 											<td>
-												<div class='btn-group' role='group' aria-label='...'>
+												<div>
 													<a href="#defaultModal<?php echo $id_highlight;?>" data-toggle="modal"><button type='button' class='btn btn-warning btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></a>
 													<a href="#delete<?php echo $id_highlight;?>" data-toggle="modal"><button type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></a>
 												</div>
@@ -267,45 +267,50 @@ header("location: ../../index.html");
 												<h4 class="modal-title" id="defaultModalLabel"><center>NEW MESSAGE FOR HIGHLIGHTS</center></h4>
 											</div>
 											<div class="modal-body">
-														<form action = "add_highlight.php" method="post" class="form-horizontal" role="form">
+											<?php
+											include 'database.php';
+												$abc=$_SESSION['admin_id'];
+											?>
+											<form action = "admin_add_highlight.php" method="post" class="form-horizontal" role="form">
+											<input type="hidden" name="user" value="<?php echo $abc; ?>">
 
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="highlight_message">Details</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																		<textarea name="highlight_message" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Message" required></textarea>
-																		</div>
-																	</div>
-																</div>
+												<div class="row clearfix">
+													<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+														<label for="highlight_message">Details</label>
+													</div>
+													<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+														<div class="form-group">
+															<div class="form-line">
+															<textarea name="highlight_message" cols="30" rows="5" class="form-control no-resize" placeholder="Enter Message" required></textarea>
 															</div>
+														</div>
+													</div>
+												</div>
 
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="highlight_status">Status</label>
-																</div>
-																<div class="col-sm-8">
-																	<select class="form-control show-tick" name= "highlight_status" id="highlight_status">
-																		<option value="" selected='selected'>-- Please select --</option>
-																		<option value="Important">Important</option>
-																		<option value="Staff">Staff</option>
-																		<option value="Manager">Manager</option>
-																		<option value="All">All</option>
-																		<option value="Others">Others</option>
-																	</select>
-																</div>
-															</div>
+												<div class="row clearfix">
+													<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+														<label for="highlight_status">Status</label>
+													</div>
+													<div class="col-sm-8">
+														<select class="form-control show-tick" name= "highlight_status" id="highlight_status">
+															<option value="" selected='selected'>-- Please select --</option>
+															<option value="Important">Important</option>
+															<option value="Staff">Staff</option>
+															<option value="Manager">Manager</option>
+															<option value="All">All</option>
+															<option value="Others">Others</option>
+														</select>
+													</div>
+												</div>
 
 
 
-															<div class="modal-footer">
+												<div class="modal-footer">
 
-																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-																<button type="submit" class="btn btn-success waves-effect"><span class="glyphicon glyphicon-plus"></span>POST</button>
-															</div>
-														</form>
+													<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+													<button type="submit" class="btn btn-success waves-effect"><span class="glyphicon glyphicon-plus"></span>POST</button>
+												</div>
+											</form>
 											</div>
 
 										</div>
@@ -322,106 +327,106 @@ header("location: ../../index.html");
             </div>
 
 			<!-- Update Password -->
-										<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h4 class="modal-title" id="defaultModalLabel">Change Password</h4>
-													</div>
-													<div class="modal-body">
+			<div class="modal fade" id="changepass" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="defaultModalLabel">Change Password</h4>
+						</div>
+						<div class="modal-body">
 
-														<form method="post" class="form-horizontal" role="form">
-															<input type="hidden" name="edit_id" value="<?php echo $admin_id; ?>">
+							<form method="post" class="form-horizontal" role="form">
+								<input type="hidden" name="edit_id" value="<?php echo $admin_id; ?>">
 
 
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="admin_password">Current Password</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																			<input type="text" id="admin_password" name="admin_password" value="" class="form-control" placeholder="Enter Current Password">
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="password1">New Password</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																			<input type="text" id="password1" name="password1" value="" class="form-control" placeholder="Enter New Password">
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-															<div class="row clearfix">
-																<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-																	<label for="password2">Confirm Password</label>
-																</div>
-																<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-																	<div class="form-group">
-																		<div class="form-line">
-																			<input type="text" id="password2" name="password2" value="" class="form-control" placeholder="Enter Confirm Password">
-																		</div>
-																	</div>
-																</div>
-															</div>
-																<input type="hidden" name="admin_id" value="<?php echo $_SESSION['admin_id']; ?>"  />
-
-															<div class="modal-footer">
-
-																<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
-																<button type="submit" class="btn btn-success waves-effect" name="update_password"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
-															</div>
-
-														<?php
-
-															if(isset($_POST['update_password'])){
-																include "database.php";
-
-																$admin_id = mysqli_real_escape_string($conn,$_POST['admin_id']);
-																$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
-																$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
-																$admin_password = mysqli_real_escape_string($conn,$_POST['admin_password']);
-
-																$select = "SELECT * FROM admin WHERE admin_id = '$admin_id' ";
-																$result = $conn->query($select);
-																while($row = $result->fetch_assoc()){
-																	$password = $row["admin_password"];
-																}
-
-																if($admin_password == $password){
-																	if($password1===$password2){
-																		$query = "UPDATE admin SET admin_id= '$admin_id', admin_password='$password1' WHERE  admin_id='$admin_id'  ";
-																		$result = $conn->query($query);
-																	}
-																	else{
-																		echo "<script type = \"text/javascript\">
-																					alert(\"Password Not Match\");
-																					window.location = (\"admin_home.php\")
-																				</script>";
-																	}
-																}
-																else{
-																	echo "<script type = \"text/javascript\">
-																					alert(\"Wrong Password\");
-																					window.location = (\"admin_home.php\")
-																				</script>";
-																}
-															}
-														?>
-
-														</form>
-													</div>
-												</div>
+								<div class="row clearfix">
+									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+										<label for="admin_password">Current Password</label>
+									</div>
+									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+										<div class="form-group">
+											<div class="form-line">
+												<input type="text" id="admin_password" name="admin_password" value="" class="form-control" placeholder="Enter Current Password">
 											</div>
 										</div>
+									</div>
+								</div>
+
+								<div class="row clearfix">
+									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+										<label for="password1">New Password</label>
+									</div>
+									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+										<div class="form-group">
+											<div class="form-line">
+												<input type="text" id="password1" name="password1" value="" class="form-control" placeholder="Enter New Password">
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row clearfix">
+									<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+										<label for="password2">Confirm Password</label>
+									</div>
+									<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+										<div class="form-group">
+											<div class="form-line">
+												<input type="text" id="password2" name="password2" value="" class="form-control" placeholder="Enter Confirm Password">
+											</div>
+										</div>
+									</div>
+								</div>
+									<input type="hidden" name="admin_id" value="<?php echo $_SESSION['admin_id']; ?>"  />
+
+								<div class="modal-footer">
+
+									<button type="button" class="btn btn-bg-grey waves-effect" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></span>CLOSE</button>
+									<button type="submit" class="btn btn-success waves-effect" name="update_password"><span class="glyphicon glyphicon-edit"></span>SAVE</button>
+								</div>
+
+							<?php
+
+								if(isset($_POST['update_password'])){
+									include "database.php";
+
+									$admin_id = mysqli_real_escape_string($conn,$_POST['admin_id']);
+									$password1 = mysqli_real_escape_string($conn,$_POST['password1']);
+									$password2 = mysqli_real_escape_string($conn,$_POST['password2']);
+									$admin_password = mysqli_real_escape_string($conn,$_POST['admin_password']);
+
+									$select = "SELECT * FROM admin WHERE admin_id = '$admin_id' ";
+									$result = $conn->query($select);
+									while($row = $result->fetch_assoc()){
+										$password = $row["admin_password"];
+									}
+
+									if($admin_password == $password){
+										if($password1===$password2){
+											$query = "UPDATE admin SET admin_id= '$admin_id', admin_password='$password1' WHERE  admin_id='$admin_id'  ";
+											$result = $conn->query($query);
+										}
+										else{
+											echo "<script type = \"text/javascript\">
+														alert(\"Password Not Match\");
+														window.location = (\"admin_home.php\")
+													</script>";
+										}
+									}
+									else{
+										echo "<script type = \"text/javascript\">
+														alert(\"Wrong Password\");
+														window.location = (\"admin_home.php\")
+													</script>";
+									}
+								}
+							?>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
     </section>
 	        <!-- #END# Coding dalam container -->

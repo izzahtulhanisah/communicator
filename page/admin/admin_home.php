@@ -349,7 +349,7 @@ header("location: ../../index.html");
                     <div class="card">
                         <div class="header bg-blue-grey">
                                 <h2><center><strong>
-                                                      HIGHLIGHTS
+                                 HIGHLIGHTS
 								<!--<button type="button" class="btn bg-teal waves-effect pull-right">
                                      <i class="material-icons">add_circle_outline</i>New Project -->
 
@@ -366,7 +366,8 @@ header("location: ../../index.html");
                                         <tr>
                                             <th width= '15%'>Date</th>
                                             <th width= '50%'>Details</th>
-                                            <th width= '15%'></th>
+                                            <th width= '15%'>Attention To</th>
+                                           <th width= '15%'>Created By</th>
 
                                         </tr>
                                     </thead>
@@ -376,7 +377,7 @@ header("location: ../../index.html");
 									include 'database.php';
 
 
-									$sql = "SELECT * from highlight";
+									$sql = "SELECT * from highlight ORDER BY highlight_date DESC";
 									$result = $conn->query($sql);
 									if ($result->num_rows > 0) {
 										// output data of each row
@@ -386,7 +387,7 @@ header("location: ../../index.html");
 											$highlight_date = $row['highlight_date'];
 											$highlight_message = $row['highlight_message'];
 											$highlight_status = $row['highlight_status'];
-											$manager_id = $row['manager_id'];
+											$user = $row['user'];
 
 
 											if($highlight_status == 'Important'){
@@ -420,8 +421,8 @@ header("location: ../../index.html");
 										<tr>
 											<td><?php echo date('d-m-Y', strtotime($row['highlight_date'])); ?></td>
 											<td><?php echo $highlight_message; ?></td>
-											<td><?php echo $alert;?>
-											</td>
+											<td><?php echo $alert;?></td>
+											<td><?php echo $user;?></td>
 
 									<?php
 									$x++;}
