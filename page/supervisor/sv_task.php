@@ -657,7 +657,9 @@ header("location: ../../index.html");
 																<option value='' selected='selected'>-- Please select --</option>
 																<?php
 																include "database.php";
-																$t = "select * from project where sv_id = '$abc' ";
+																//$t = "select * from project where sv_id = '$abc' ";
+																$t = "select * from project";
+																$result2 = $conn -> query($t);
 																$result2 = $conn -> query($t);
 																while ($row = $result2 -> fetch_assoc()){
 
