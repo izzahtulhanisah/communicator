@@ -362,140 +362,187 @@ $employee_id = $_SESSION['employee_id'];
 
 														<tbody>
 
-															 <?php
-																include 'database.php';
-																$project_id = $_GET['project_id'];
+														<?php
+														include 'database.php';
+															$project_id = $_GET['project_id'];
 
-																/*$sql = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, supervisor.sv_id, supervisor.sv_name, employee.employee_name, task.employee_id, task2.sv_id, 
-																		GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee,
-																		GROUP_CONCAT( DISTINCT supervisor.sv_name ) AS supervisor
-																		FROM project, task, employee, supervisor, task2
-																		WHERE project.project_id = task.project_id
-																		AND task2.sv_id = supervisor. sv_id 
-																		AND task.employee_id = employee.employee_id
-																		AND project.project_id = task2.project_id
-																		AND task.project_id =  '$project_id'
-																		GROUP BY project.project_id
-																		";*/
-																$sql = "SELECT project.project_id, project.project_name, project.project_description, 
-																	   project.project_date_created, project.project_due_date, project.project_status,project.sv_id,
-																	   supervisor.sv_id, supervisor.sv_name
-																		FROM project,supervisor 
-																		WHERE project.sv_id = supervisor.sv_id
-																		AND project.project_id='$project_id'";
-																		
-																$result = $conn->query($sql);
-
-
-																if ($result->num_rows > 0) {
-																	// output data of each row
-																	while($row = $result->fetch_assoc()) {
-																		//$id = $row['id'];
-																		echo "<table class='table table-bordered table-striped table-hover '>";
-																		echo "<tr>";
-																			echo "<th width = '30%'>ID</th>";
-																			echo "<td width = '70%'>" . $row["project_id"]. "</td>";
-																		echo "</tr>";
-
-																		echo "<tr>";
-																			echo "<th>Title</th>";
-																			echo "<td>" . $row["project_name"]. "</td>";
-																		echo "</tr>";
-
-																		echo "<tr>";
-																			echo "<th>Description</th>";
-																			echo "<td>" . $row["project_description"]. "</td>";
-																		echo "</tr>";
-
-																		echo "<tr>";
-																			echo "<th>Date Created</th>";
-																			echo "<td>" . $row["project_date_created"]. "</td>";
-																		echo "</tr>";
-
-																		echo "<tr>";
-																			echo "<th>Due Date</th>";
-																			echo "<td>" . $row["project_due_date"]. "</td>";
-																		echo "</tr>";
-
-																		echo "<tr>";
-																			echo "<th>Status</th>";
-																			$project_status = $row['project_status'];
-
-																			if($project_status == 'Delayed'){
-																				$alert = "<div class='badge bg-red'>
-																				<strong>$project_status</strong>
-																				</div>";
-
-																			}else if($project_status == 'In Progress'){
-																				$alert = "<div class='badge bg-blue'>
-																				<strong>$project_status</strong>
-																				</div>";
-
-																			}else {
-																				$alert = "<div class='badge bg-green'>
-																				<strong>$project_status</strong>
-																				</div>";
-																				}
-																			echo "<td>" . $alert. "</td>";
-																		echo "</tr>";
-																		
-																		echo "<tr>";
-																		echo "<th>Project Manager</th>";
-																			echo "<td>" . $row["sv_name"]. "</td>";
-																		echo "</tr>";
-
-																		/*echo "<tr>";
-																			echo "<th>Staff (PIC)</th>";
-																			echo "<td>" . $row["employee"]. "</td>";
-																		echo "</tr>";*/
+															/*$sql = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, supervisor.sv_id, supervisor.sv_name, employee.employee_name, task.employee_id, task2.sv_id, 
+																	GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee,
+																	GROUP_CONCAT( DISTINCT supervisor.sv_name ) AS supervisor
+																	FROM project, task, employee, supervisor, task2
+																	WHERE project.project_id = task.project_id
+																	AND task2.sv_id = supervisor. sv_id 
+																	AND task.employee_id = employee.employee_id
+																	AND project.project_id = task2.project_id
+																	AND task.project_id =  '$project_id'
+																	GROUP BY project.project_id
+																	";*/
+															/*$sql = "SELECT project.project_id, project.project_name, project.project_description, 
+																		   project.project_date_created, project.project_due_date, project.project_status,project.sv_id,
+																		   supervisor.sv_id, supervisor.sv_name
+																	FROM project,supervisor 
+																	WHERE project.sv_id = supervisor.sv_id
+																	AND project.project_id='$project_id'";*/
+																	
+															$sql = "SELECT project.project_id, project.project_name, project.project_description, 
+																		   project.project_date_created, project.project_due_date, project.project_status,project.sv_id
+																	FROM project
+																	WHERE project.project_id='$project_id'";
+																	
+															$result = $conn->query($sql);
 
 
-																	}
-																} else {
-																	echo "0 results";
+															if ($result->num_rows > 0) {
+																// output data of each row
+																while($row = $result->fetch_assoc()) {
+																	//$id = $row['id'];
+																	echo "<table class='table table-bordered table-striped table-hover '>";
+																	echo "<tr>";
+																		echo "<th width = '30%'>ID</th>";
+																		echo "<td width = '70%'>" . $row["project_id"]. "</td>";
+																	echo "</tr>";
+
+																	echo "<tr>";
+																		echo "<th>Title</th>";
+																		echo "<td>" . $row["project_name"]. "</td>";
+																	echo "</tr>";
+
+																	echo "<tr>";
+																		echo "<th>Description</th>";
+																		echo "<td>" . $row["project_description"]. "</td>";
+																	echo "</tr>";
+
+																	echo "<tr>";
+																		echo "<th>Date Created</th>";
+																		echo "<td>" . $row["project_date_created"]. "</td>";
+																	echo "</tr>";
+
+																	echo "<tr>";
+																		echo "<th>Due Date</th>";
+																		echo "<td>" . $row["project_due_date"]. "</td>";
+																	echo "</tr>";
+
+																	echo "<tr>";
+																		echo "<th>Status</th>";
+																		$project_status = $row['project_status'];
+
+																		if($project_status == 'Delayed'){
+																			$alert = "<div class='badge bg-red'>
+																			<strong>$project_status</strong>
+																			</div>";
+
+																		}else if($project_status == 'In Progress'){
+																			$alert = "<div class='badge bg-blue'>
+																			<strong>$project_status</strong>
+																			</div>";
+
+																		}else {
+																			$alert = "<div class='badge bg-green'>
+																			<strong>$project_status</strong>
+																			</div>";
+																			}
+																		echo "<td>" . $alert. "</td>";
+																	echo "</tr>";
+																	
+																	/*echo "<tr>";
+																	echo "<th>Project Manager</th>";
+																		echo "<td>" . $row["sv_name"]. "</td>";
+																	echo "</tr>";
+
+																	/*echo "<tr>";
+																		echo "<th>Staff (PIC)</th>";
+																		echo "<td>" . $row["employee"]. "</td>";
+																	echo "</tr>";*/
+
+
 																}
-																
-																$conn->close();
-															?>
+															} else {
+																echo "0 results";
+															}
 															
-															<?php
-																include "database.php";
-																$project_id = $_GET['project_id'];
-
-																$sql2 = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, employee.employee_name, task.employee_id,
-																		GROUP_CONCAT( DISTINCT employee.employee_name) AS employee
-																		FROM project, task, employee
-																		WHERE project.project_id = task.project_id
-																		AND task.employee_id = employee.employee_id
-																		AND task.project_id =  '$project_id'
-																		GROUP BY project.project_id
-																		";
-																$result = $conn->query($sql2);
-
-
-																if ($result->num_rows > 0) {
-																	// output data of each row
-																	while($row = $result->fetch_assoc()) {
-																		//$id = $row['id'];
-																		
-
-																		echo "<tr>";
-																			echo "<th>Staff (PIC)</th>";
-																			echo "<td>" . $row["employee"]. "</td>";
-																		echo "</tr>";
+															$conn->close();
+														?>
+														
+														<?php
+															include "database.php";
+															$project_id = $_GET['project_id'];
+															
+															$sql3 = "SELECT project.project_id, project.project_name,project.sv_id,supervisor.sv_id, supervisor.sv_name
+																	 FROM project,supervisor
+																	 WHERE project.project_id= '$project_id'
+																	 AND project.sv_id= supervisor.sv_id
+																	 ";								
+															//$result = $conn->query($sql2);
+															$result3 = $conn->query($sql3);
 
 
-																	}
-																} else {
-																echo "<tr>";
-																			echo "<th>Staff</th>";
-																			echo "<td><font color = 'red'>Do not have staff yet</font></td>";
-																		echo "</tr>";
-																	//echo "No employee";
+															if ($result3->num_rows > 0) {
+																// output data of each row
+																while($row = $result3->fetch_assoc()) {
+																	//$id = $row['id'];
+
+																	echo "<tr>";
+																		echo "<th>Project Manager</th>";
+																		echo "<td>" . $row["sv_name"]. "</td>";
+																	echo "</tr>";
+
+
 																}
-																echo "</table>";
-																$conn->close();
-															?>
+															} else {
+															echo "<tr>";
+																		echo "<th>Project Manager</th>";
+																		echo "<td><font color = 'red'>Do not have manager yet</font></td>";
+																	echo "</tr>";
+																//echo "No employee";
+															}
+															//echo "</table>";
+															$conn->close();
+														?>
+														
+														<?php
+															include "database.php";
+															$project_id = $_GET['project_id'];
+
+															$sql2 = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, employee.employee_name, task.employee_id,
+																	GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee
+																	FROM project, task, employee
+																	WHERE project.project_id = task.project_id
+																	AND task.employee_id = employee.employee_id
+																	AND task.project_id =  '$project_id'
+																	GROUP BY project.project_id
+																	";
+															
+															/*$sql3 = "SELECT project.project_id, project.project_name,project.sv_id
+																	 WHERE project.project_id= '$project_id'
+																	 ";		*/									
+															$result = $conn->query($sql2);
+															//$result = $conn->query($sql3);
+
+
+															if ($result->num_rows > 0) {
+																// output data of each row
+																while($row = $result->fetch_assoc()) {
+																	//$id = $row['id'];
+																	
+
+																	echo "<tr>";
+																		echo "<th>Staff (PIC)</th>";
+																		echo "<td>" . $row["employee"]. "</td>";
+																	echo "</tr>";
+
+
+																}
+															} else {
+															echo "<tr>";
+																		echo "<th>Staff</th>";
+																		echo "<td><font color = 'red'>Do not have staff yet</font></td>";
+																	echo "</tr>";
+																//echo "No employee";
+															}
+															echo "</table>";
+															$conn->close();
+														?>
+										
 														</tbody>
 													</table>
 												</div>
