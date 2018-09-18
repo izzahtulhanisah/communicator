@@ -158,21 +158,6 @@ header("location: ../../index.html");
                         </a>
                     </li>
 					
-					<!--<li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">account_balance</i>
-                            <span>Company</span>
-                        </a>
-						<ul class="ml-menu">
-							<li>
-                                <a href="../../page/admin/company_details.php">Details</a>
-                            </li>
-							<li>
-                                <a href="../../page/admin/add_company_details.php">Add New</a>
-                            </li>
-                        </ul>
-                    </li>-->
-
 					<li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">edit</i>
@@ -212,7 +197,7 @@ header("location: ../../index.html");
                     </li>
 					
 					<li>
-                        <a href="https://goo.gl/forms/7jMeopZr5O4mSgoe2">
+                        <a href="https://goo.gl/forms/qiNY9XG76N9iZUuy2">
                             <i class="material-icons">feedback</i>
                             <span>Feedback</span>
                         </a>
@@ -242,20 +227,20 @@ header("location: ../../index.html");
 
 		 <div class="body">
 
-                            <ol class="breadcrumb">
-                                <li>
-                                    <a href="../../page/admin/admin_home.php">
-                                        <i class="material-icons">home</i> Home
-                                    </a>
-                                </li>
-                                <li>
-									<a href="../../page/admin/admin_view_project_list.php">
-										<i class="material-icons">library_books</i> Assignment
-									</a>
-								</li>
-                            </ol>
+			<ol class="breadcrumb">
+				<li>
+					<a href="../../page/admin/admin_home.php">
+						<i class="material-icons">home</i> Home
+					</a>
+				</li>
+				<li>
+					<a href="../../page/admin/admin_view_project_list.php">
+						<i class="material-icons">library_books</i> Assignment
+					</a>
+				</li>
+			</ol>
 
-                        </div>
+		</div>
              <!--<div class="block-header">
                 <h2>
                     JQUERY DATATABLES
