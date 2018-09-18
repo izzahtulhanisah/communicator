@@ -383,12 +383,17 @@ header("location: ../../index.html");
 													AND task.project_id =  '$project_id'
 													GROUP BY project.project_id
 													";*/
-											$sql = "SELECT project.project_id, project.project_name, project.project_description, 
+											/*$sql = "SELECT project.project_id, project.project_name, project.project_description, 
 														   project.project_date_created, project.project_due_date, project.project_status,project.sv_id,
 														   supervisor.sv_id, supervisor.sv_name
 													FROM project,supervisor 
 													WHERE project.sv_id = supervisor.sv_id
-													AND project.project_id='$project_id'";
+													AND project.project_id='$project_id'";*/
+													
+											$sql = "SELECT project.project_id, project.project_name, project.project_description, 
+														   project.project_date_created, project.project_due_date, project.project_status,project.sv_id
+													FROM project
+													WHERE project.project_id='$project_id'";
 													
 											$result = $conn->query($sql);
 
@@ -445,7 +450,7 @@ header("location: ../../index.html");
 														echo "<td>" . $alert. "</td>";
 													echo "</tr>";
 													
-													echo "<tr>";
+													/*echo "<tr>";
 													echo "<th>Project Manager</th>";
 														echo "<td>" . $row["sv_name"]. "</td>";
 													echo "</tr>";
@@ -467,6 +472,42 @@ header("location: ../../index.html");
 										<?php
 											include "database.php";
 											$project_id = $_GET['project_id'];
+											
+											$sql3 = "SELECT project.project_id, project.project_name,project.sv_id,supervisor.sv_id, supervisor.sv_name
+													 FROM project,supervisor
+													 WHERE project.project_id= '$project_id'
+													 AND project.sv_id= supervisor.sv_id
+													 ";								
+											//$result = $conn->query($sql2);
+											$result3 = $conn->query($sql3);
+
+
+											if ($result3->num_rows > 0) {
+												// output data of each row
+												while($row = $result3->fetch_assoc()) {
+													//$id = $row['id'];
+
+													echo "<tr>";
+														echo "<th>Project Manager</th>";
+														echo "<td>" . $row["sv_name"]. "</td>";
+													echo "</tr>";
+
+
+												}
+											} else {
+											echo "<tr>";
+														echo "<th>Project Manager</th>";
+														echo "<td><font color = 'red'>Do not have manager yet</font></td>";
+													echo "</tr>";
+												//echo "No employee";
+											}
+											//echo "</table>";
+											$conn->close();
+										?>
+										
+										<?php
+											include "database.php";
+											$project_id = $_GET['project_id'];
 
 											$sql2 = "SELECT project.project_id, project.project_name, project.project_description, project.project_date_created, project.project_due_date, project.project_status, employee.employee_id, employee.employee_name, task.employee_id,
 													GROUP_CONCAT( DISTINCT employee.employee_name ) AS employee
@@ -476,7 +517,12 @@ header("location: ../../index.html");
 													AND task.project_id =  '$project_id'
 													GROUP BY project.project_id
 													";
+											
+											/*$sql3 = "SELECT project.project_id, project.project_name,project.sv_id
+													 WHERE project.project_id= '$project_id'
+													 ";		*/									
 											$result = $conn->query($sql2);
+											//$result = $conn->query($sql3);
 
 
 											if ($result->num_rows > 0) {
@@ -502,6 +548,7 @@ header("location: ../../index.html");
 											echo "</table>";
 											$conn->close();
 										?>
+										
 										</tbody>
 									</table>
 								</div>
